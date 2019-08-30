@@ -1,0 +1,26 @@
+@mixin list {
+    ul {
+        background: $brown;
+        width: max-content;
+        border-radius: 25px;
+        margin-bottom: 25px;
+
+        li {
+            padding: 10px 20px;
+            border-radius: 25px;
+            background: $brown;
+            color: $white;
+            cursor: pointer;
+
+            &:hover {
+                background: $red;
+                z-index: 1;
+            }
+        }
+
+        .active-li {
+            background: $red;
+            z-index: 1;
+        }
+    }
+}

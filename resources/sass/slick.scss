@@ -1,0 +1,28 @@
+.btn-prev,.btn-next{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 35%;
+
+    color: #fefefe;
+    height: 50px;
+    width:50px;
+    background: $golden;
+    border-radius: 50px;
+    box-sizing: content-box;
+    i{
+        font-size: 25px;
+    }
+    border:none;
+    &:hover{
+        background: #bfa465;
+    }
+}
+
+.btn-next{
+right: -80px;
+}
+.btn-prev{
+left: -80px;
+}

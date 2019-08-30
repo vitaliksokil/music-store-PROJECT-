@@ -1,0 +1,22 @@
+
+@media screen and (max-width: 39.9375em) {
+    .slide-item {
+        min-height: 280px;
+        background-position: center;
+        background-size: cover;
+    }
+}
+
+@media screen and (min-width: 40em) {
+    .slide-item {
+        height: 360px;
+        min-height: 360px;
+    }
+}
+
+@media screen and (min-width: 64em) {
+    .slide-item {
+        height: 600px;
+        min-height: 600px;
+    }
+}

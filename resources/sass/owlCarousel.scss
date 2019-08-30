@@ -1,0 +1,37 @@
+
+.owl-prev, .owl-next {
+    span {
+        font-size: 75px;
+        font-weight: normal;
+        color: #808080;
+    }
+
+    &:hover {
+        span {
+            color: #9b9b9b;
+        }
+    }
+}
+
+.owl-theme .owl-nav [class*=owl-]:hover {
+    background: none;
+    color: #9b9b9b;
+}
+
+.owl-nav {
+    position: absolute;
+    top: -68%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .owl-next {
+        position: relative;
+        right: -70px;
+    }
+
+    .owl-prev {
+        position: relative;
+        left: -70px;
+    }
+}
