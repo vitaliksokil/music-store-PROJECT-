@@ -15,11 +15,10 @@ Route::get('/', function () {
     return view('layouts.app');
 });
 
-Auth::routes(['verify' => true]);
-
 
 //Route::get('profile', 'UserController@profile')->middleware('verified');
 
 
 //Route::get('/home', 'HomeController@index')->name('home');
-Route::get('{path}', 'HomeController@index')->where('path','([A-z\d-\/_.]+)?');
+Route::get('/{any}', 'HomeController@index')->where('any', '.*');
+//Route::get('{path}', 'HomeController@index')->where('path','([A-z\d-\/_.]+)?');

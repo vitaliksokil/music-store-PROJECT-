@@ -12,26 +12,99 @@ require('owl.carousel');
 require('slick-carousel');
 
 
-
-
 // vue router
 import VueRouter from 'vue-router'
+import axios from 'axios'
+import VueAxios from 'vue-axios';
+import {Form, HasError, AlertError} from 'vform'
+import auth from './auth.js';
 
+window.auth = auth;
+
+Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
 
 const routes = [
-    {path: '/', component: require('./components/Home').default},
-    {path: '/profile', component: require('./components/Profile').default},
-    {path: '/login', component: require('./components/Profile').default},
-    {path: '/register', component: require('./components/Profile').default},
+    {
+        path: '/',
+        component: require('./components/Home').default,
+        name: 'home'
+    },
+    {
+        path: '/profile',
+        component: require('./components/Profile').default,
+        name: 'profile',
+        meta: { middlewareAuth: true }
 
-    // {path: '*', component: require('./components/NotFound').default},
+
+    },
+    {
+        path: '/login',
+        component: require('./components/auth/Login').default,
+        name: 'login',
+        meta: { middlewareAuth: false }
+
+    },
+
+    {
+        path: '/register',
+        component: require('./components/auth/Register').default,
+        name: 'register',
+        meta: { middlewareAuth: false }
+
+
+    },
+    {
+        path: '/logout',
+        component: require('./components/auth/Logout').default,
+        name: 'logout',
+        meta: { middlewareAuth: true }
+
+
+    },
+
+    {
+        path: '*',
+        component: require('./components/NotFound').default,
+        name: '404'
+    },
 ];
 
 const router = new VueRouter({
-    mode:"history",
+    mode: "history",
     routes // short for `routes: routes`
 });
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.middlewareAuth)) {
+        if (!auth.check()) {
+            next({
+                path: '/login',
+                query: { redirect: to.fullPath }
+            });
+
+            return;
+        }
+    }
+
+    next();
+});
+
+// vform
+
+window.Form = Form;
+Vue.component(HasError.name, HasError);
+Vue.component(AlertError.name, AlertError);
+
+
+
+window.Event = new Vue;
+
+
+
+// window.access_token = localStorage.getItem('access_token');
+// axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
+// axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -54,4 +127,16 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     router,
+    data() {
+        return {
+            authenticated: auth.check(),
+            user: auth.user
+        }
+    },
+    mounted() {
+        Event.$on('userLoggedIn', () => {
+            this.authenticated = true;
+            this.user = auth.user;
+        });
+    }
 }).$mount('#app');

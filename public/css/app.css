@@ -16993,6 +16993,10 @@ hr {
   border: 1px solid #ad9797;
 }
 
+form {
+  padding: 50px 0;
+}
+
 .col-1,
 .col-2,
 .col-3,
@@ -17594,5 +17598,17 @@ footer .pages table td {
 .user-name {
   padding: 20px;
   color: #ffffff;
+}
+
+.router-link-active {
+  font-weight: bold;
+}
+
+.router-link-active:hover {
+  text-decoration: none;
+}
+
+.router-link-active:visited {
+  color: #ed1c24;
 }
 

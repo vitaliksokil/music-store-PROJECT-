@@ -18,18 +18,16 @@
                             <li><a href="">Как купить</a></li>
                             <li><a href="">Гарантия</a></li>
                             <li><a href="">Доставка</a></li>
-                            @guest
-                                <li>
-                                    <router-link to="/login" class="hover-off">{{ __('Sign in') }}</router-link>
-                                    <router-link to="/register" class="border p-1 hover-off">{{ __('Sign up') }}</a>
-                                </li>
-                            @else
-                                <li>
-                                    <a href="#" class="hover-off"><span class="dotted">Мой арсенал</span></a>
-                                    <router-link to="/profile">Мой профиль</router-link>
-                                </li>
-                            @endguest
 
+                                <li v-if="!(authenticated && user)">
+                                    <router-link :to="{name:'login'}" class="hover-off">Sign in</router-link>
+                                    <router-link :to="{name:'register'}" class="border p-1 hover-off">Sign up</router-link>
+                                </li>
+                                <li v-else>
+                                    <router-link :to="{name:'profile'}">Мой профиль</router-link>
+                                    <router-link :to="{name:'logout'}" class="hover-off"><span class="dotted">Logout</span></router-link>
+
+                                </li>
 
                         </ul>
 

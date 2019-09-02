@@ -539,3 +539,14 @@ footer {
     padding: 20px;
     color:$white;
 }
+
+.router-link-active{
+    font-weight: bold;
+
+    &:hover{
+        text-decoration: none;
+    }
+    &:visited{
+        color:$red;
+    }
+}
