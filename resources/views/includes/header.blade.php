@@ -19,13 +19,13 @@
                             <li><a href="">Гарантия</a></li>
                             <li><a href="">Доставка</a></li>
 
-                                <li v-if="!(authenticated && user)">
+                                <li v-if="!isAuth">
                                     <router-link :to="{name:'login'}" class="hover-off">Sign in</router-link>
                                     <router-link :to="{name:'register'}" class="border p-1 hover-off">Sign up</router-link>
                                 </li>
                                 <li v-else>
                                     <router-link :to="{name:'profile'}">Мой профиль</router-link>
-                                    <router-link :to="{name:'logout'}" class="hover-off"><span class="dotted">Logout</span></router-link>
+                                    <a @click="logout()" class="hover-off" style="cursor:pointer;"><span class="dotted">Logout</span></a>
 
                                 </li>
 

@@ -56,10 +56,8 @@
             register() {
                 this.form.post('api/register')
                     .then(({data}) => {
-                        let accessToken = data.data.auth.access_token;
-                        localStorage.setItem('access_token', accessToken);
-                        localStorage.setItem('user', data.data.user);
-                        this.$router.push('/profile');
+                        auth.login(data.data.access_token, data.user);
+                        this.$router.push('/');
                     }).catch(({data}) => {
 
                 })

@@ -3,6 +3,8 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+//:TODO email verification
+// :TODO forgot password
 
 require('./bootstrap');
 
@@ -17,9 +19,10 @@ import VueRouter from 'vue-router'
 import axios from 'axios'
 import VueAxios from 'vue-axios';
 import {Form, HasError, AlertError} from 'vform'
-import auth from './auth.js';
+import Auth from './auth.js';
+import Swal from 'sweetalert2'
 
-window.auth = auth;
+window.Swal = Swal;
 
 Vue.use(VueAxios, axios);
 Vue.use(VueRouter);
@@ -28,13 +31,14 @@ const routes = [
     {
         path: '/',
         component: require('./components/Home').default,
-        name: 'home'
+        name: 'home',
+
     },
     {
         path: '/profile',
         component: require('./components/Profile').default,
         name: 'profile',
-        meta: { middlewareAuth: true }
+        meta: {requiresAuth: true},
 
 
     },
@@ -42,7 +46,7 @@ const routes = [
         path: '/login',
         component: require('./components/auth/Login').default,
         name: 'login',
-        meta: { middlewareAuth: false }
+        meta: {requiresAuth: false},
 
     },
 
@@ -50,16 +54,8 @@ const routes = [
         path: '/register',
         component: require('./components/auth/Register').default,
         name: 'register',
-        meta: { middlewareAuth: false }
 
-
-    },
-    {
-        path: '/logout',
-        component: require('./components/auth/Logout').default,
-        name: 'logout',
-        meta: { middlewareAuth: true }
-
+        meta: {requiresAuth: false},
 
     },
 
@@ -75,18 +71,26 @@ const router = new VueRouter({
     routes // short for `routes: routes`
 });
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.middlewareAuth)) {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        // этот путь требует авторизации, проверяем залогинен ли
+        // пользователь, и если нет, перенаправляем на страницу логина
         if (!auth.check()) {
             next({
                 path: '/login',
-                query: { redirect: to.fullPath }
-            });
-
-            return;
+            })
+        } else {
+            next();
         }
-    }
+    } else {
 
-    next();
+        if (auth.check()) {
+            if (to.path !== '/' && to.path === '/login' || to.path === '/register') {
+                next('/profile')
+            }
+        }
+        next();
+        // всегда так или иначе нужно вызвать next()!
+    }
 });
 
 // vform
@@ -96,14 +100,14 @@ Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
 
 
-
 window.Event = new Vue;
 
 
-
-// window.access_token = localStorage.getItem('access_token');
+// let access_token = localStorage.getItem('token');
 // axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
 // axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+window.auth = new Auth();
 
 
 /**
@@ -129,14 +133,26 @@ const app = new Vue({
     router,
     data() {
         return {
-            authenticated: auth.check(),
-            user: auth.user
+            isAuth: auth.check()
+        }
+    },
+    methods: {
+        logout() {
+            auth.logout();
         }
     },
     mounted() {
         Event.$on('userLoggedIn', () => {
-            this.authenticated = true;
-            this.user = auth.user;
+            this.isAuth = auth.check();
+
         });
+
+        Event.$on('logout', () => {
+            this.isAuth = false;
+            if(router.currentRoute.path !== '/'){
+                router.push('/');
+            }
+
+        })
     }
 }).$mount('#app');

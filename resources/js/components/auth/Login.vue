@@ -46,7 +46,7 @@
                             this.form.errors.set(data.field, data.message);
                             return 0;
                         }
-                        auth.login(data.data.access_token, data.user);
+                        auth.login(data.data.token, data.data.user);
 
                         this.$router.push('/');
                     }).catch(() => {
