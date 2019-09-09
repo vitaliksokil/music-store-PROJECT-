@@ -5,6 +5,10 @@ class Auth {
         this.token = window.localStorage.getItem('token');
         this.user = window.localStorage.getItem('user');
 
+        if(this.user != null){
+            this.emailVerification = JSON.parse(this.user).email_verified_at;
+        }
+
         if (this.token) {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.token;
             //when using console create an auth (auth.login('token',{}) reloading the page will logout fake user
@@ -24,7 +28,7 @@ class Auth {
             confirmButtonText: 'Yes, logout'
         }).then((result) => {
             if (result.value) {
-                axios.post('api/logout').then(({data})=>{
+                axios.post('/api/logout').then(({data})=>{
                     localStorage.clear();
                     Event.$emit('logout');
                     this.token = null;
@@ -46,9 +50,11 @@ class Auth {
     }
     getUser(callback) {
 
-        axios.get('api/get-user')
+        axios.get('/api/get-user')
             .then(({data}) => {
                 this.user = data;
+                window.localStorage.setItem('user',JSON.stringify(this.user));
+                this.emailVerification = this.user.email_verified_at;
                 callback();
             })
             .catch(({response}) => {
@@ -80,6 +86,9 @@ class Auth {
     }
     check () {
         return  !! this.token;
+    }
+    checkEmailVerification(){
+        return !! this.emailVerification;
     }
 
 }

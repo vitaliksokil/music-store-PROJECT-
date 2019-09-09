@@ -54,10 +54,14 @@
         },
         methods: {
             register() {
-                this.form.post('api/register')
+                this.form.post('/api/register')
                     .then(({data}) => {
                         auth.login(data.data.access_token, data.user);
-                        this.$router.push('/');
+
+                        this.axios.post('/api/send-verification-email').then(({message})=>{
+                            this.$router.push('/verify/token');
+                        });
+
                     }).catch(({data}) => {
 
                 })

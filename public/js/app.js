@@ -2642,7 +2642,7 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      this.form.post('api/login').then(function (_ref) {
+      this.form.post('/api/login').then(function (_ref) {
         var data = _ref.data;
 
         if (data.status === 'error') {
@@ -2726,13 +2726,100 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      this.form.post('api/register').then(function (_ref) {
+      this.form.post('/api/register').then(function (_ref) {
         var data = _ref.data;
         auth.login(data.data.access_token, data.user);
 
-        _this.$router.push('/');
-      })["catch"](function (_ref2) {
-        var data = _ref2.data;
+        _this.axios.post('/api/send-verification-email').then(function (_ref2) {
+          var message = _ref2.message;
+
+          _this.$router.push('/verify/token');
+        });
+      })["catch"](function (_ref3) {
+        var data = _ref3.data;
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Verify.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Verify.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      messageType: '',
+      message: '',
+      token: this.$route.params.token
+    };
+  },
+  methods: {
+    resend: function resend() {
+      var _this = this;
+
+      this.axios.post('/api/send-verification-email').then(function (_ref) {
+        var message = _ref.message;
+        _this.message = 'Email is resent';
+        _this.messageType = 'resend';
+      });
+    }
+  },
+  name: "Verify",
+  mounted: function mounted() {
+    var _this2 = this;
+
+    if (this.token === 'token') {
+      this.axios.post('/api/send-verification-email').then(function (_ref2) {
+        var message = _ref2.message;
+      });
+    } else {
+      this.axios.get('/api/verify-email/' + this.token).then(function (response) {
+        _this2.messageType = response.data.messageType;
+        _this2.message = response.data.message;
+
+        if (response.data.messageType === 'success') {
+          Event.$emit('emailVerified');
+        }
       });
     }
   }
@@ -51470,6 +51557,101 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Verify.vue?vue&type=template&id=2f4f1de5&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/auth/Verify.vue?vue&type=template&id=2f4f1de5&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "pt-4 pb-4" }, [
+      _vm.token === "token"
+        ? _c(
+            "div",
+            { staticClass: "alert alert-primary", attrs: { role: "alert" } },
+            [
+              _c("h4", { staticClass: "alert-heading" }, [
+                _vm._v("Verify your email!!!")
+              ]),
+              _vm._v(" "),
+              _vm.messageType === "resend"
+                ? _c("p", [_vm._v(_vm._s(_vm.message) + "\n            ")])
+                : _c("p", [
+                    _vm._v(
+                      "We have sent a message to your email address, please go to your email and follow the instruction to\n                verify your email!!!\n            "
+                    )
+                  ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-0" }, [
+                _vm._v(
+                  "If you have not received an email, press here to resend ->\n                "
+                ),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.resend($event)
+                      }
+                    }
+                  },
+                  [_vm._v("RESEND")]
+                )
+              ])
+            ]
+          )
+        : _vm.messageType === "success"
+        ? _c(
+            "div",
+            { staticClass: "alert alert-success", attrs: { role: "alert" } },
+            [
+              _c("h4", { staticClass: "alert-heading" }, [
+                _vm._v(_vm._s(_vm.messageType))
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.message))])
+            ]
+          )
+        : _vm.messageType === "error"
+        ? _c(
+            "div",
+            { staticClass: "alert alert-error", attrs: { role: "alert" } },
+            [
+              _c("h4", { staticClass: "alert-heading" }, [
+                _vm._v(_vm._s(_vm.messageType))
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(_vm.message))])
+            ]
+          )
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
 /*!********************************************************************!*\
   !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -66481,7 +66663,6 @@ __webpack_require__.r(__webpack_exports__);
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-//:TODO email verification
 // :TODO forgot password
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
@@ -66510,7 +66691,8 @@ var routes = [{
   component: __webpack_require__(/*! ./components/Profile */ "./resources/js/components/Profile.vue")["default"],
   name: 'profile',
   meta: {
-    requiresAuth: true
+    requiresAuth: true,
+    emailVerify: true
   }
 }, {
   path: '/login',
@@ -66525,6 +66707,14 @@ var routes = [{
   name: 'register',
   meta: {
     requiresAuth: false
+  }
+}, {
+  path: '/verify/:token',
+  component: __webpack_require__(/*! ./components/auth/Verify */ "./resources/js/components/auth/Verify.vue")["default"],
+  name: 'verify',
+  meta: {
+    requiresAuth: true,
+    emailVerify: false
   }
 }, {
   path: '*',
@@ -66549,6 +66739,28 @@ router.beforeEach(function (to, from, next) {
     } else {
       next();
     }
+
+    if (to.matched.some(function (record) {
+      return record.meta.emailVerify;
+    })) {
+      if (auth.check()) {
+        if (!auth.checkEmailVerification()) {
+          if (to.path === '/profile') {
+            next('/verify/token');
+          }
+        }
+      }
+    } else {
+      if (auth.check()) {
+        if (auth.checkEmailVerification()) {
+          if (to.path === '/verify/' + router.history.current.params.token) {
+            next('/profile');
+          }
+        }
+      }
+    }
+
+    next();
   } else {
     if (auth.check()) {
       if (to.path !== '/' && to.path === '/login' || to.path === '/register') {
@@ -66589,7 +66801,8 @@ var app = new Vue({
   router: router,
   data: function data() {
     return {
-      isAuth: auth.check()
+      isAuth: auth.check(),
+      emailVerify: auth.checkEmailVerification()
     };
   },
   methods: {
@@ -66609,6 +66822,10 @@ var app = new Vue({
       if (router.currentRoute.path !== '/') {
         router.push('/');
       }
+    });
+    Event.$on('emailVerified', function () {
+      window.auth = new _auth_js__WEBPACK_IMPORTED_MODULE_4__["default"]();
+      _this.emailVerify = auth.checkEmailVerification();
     });
   }
 }).$mount('#app');
@@ -66643,6 +66860,10 @@ function () {
     this.token = window.localStorage.getItem('token');
     this.user = window.localStorage.getItem('user');
 
+    if (this.user != null) {
+      this.emailVerification = JSON.parse(this.user).email_verified_at;
+    }
+
     if (this.token) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = 'Bearer ' + this.token; //when using console create an auth (auth.login('token',{}) reloading the page will logout fake user
 
@@ -66664,7 +66885,7 @@ function () {
         confirmButtonText: 'Yes, logout'
       }).then(function (result) {
         if (result.value) {
-          axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('api/logout').then(function (_ref) {
+          axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/logout').then(function (_ref) {
             var data = _ref.data;
             localStorage.clear();
             Event.$emit('logout');
@@ -66689,9 +66910,11 @@ function () {
     value: function getUser(callback) {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('api/get-user').then(function (_ref2) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/get-user').then(function (_ref2) {
         var data = _ref2.data;
         _this2.user = data;
+        window.localStorage.setItem('user', JSON.stringify(_this2.user));
+        _this2.emailVerification = _this2.user.email_verified_at;
         callback();
       })["catch"](function (_ref3) {
         var response = _ref3.response;
@@ -66723,6 +66946,11 @@ function () {
     key: "check",
     value: function check() {
       return !!this.token;
+    }
+  }, {
+    key: "checkEmailVerification",
+    value: function checkEmailVerification() {
+      return !!this.emailVerification;
     }
   }]);
 
@@ -67220,6 +67448,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_d4f9cbe2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_d4f9cbe2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Verify.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/auth/Verify.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Verify_vue_vue_type_template_id_2f4f1de5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Verify.vue?vue&type=template&id=2f4f1de5&scoped=true& */ "./resources/js/components/auth/Verify.vue?vue&type=template&id=2f4f1de5&scoped=true&");
+/* harmony import */ var _Verify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Verify.vue?vue&type=script&lang=js& */ "./resources/js/components/auth/Verify.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Verify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Verify_vue_vue_type_template_id_2f4f1de5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Verify_vue_vue_type_template_id_2f4f1de5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "2f4f1de5",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/auth/Verify.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Verify.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/auth/Verify.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Verify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Verify.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Verify.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Verify_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/auth/Verify.vue?vue&type=template&id=2f4f1de5&scoped=true&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/auth/Verify.vue?vue&type=template&id=2f4f1de5&scoped=true& ***!
+  \********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Verify_vue_vue_type_template_id_2f4f1de5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Verify.vue?vue&type=template&id=2f4f1de5&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/auth/Verify.vue?vue&type=template&id=2f4f1de5&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Verify_vue_vue_type_template_id_2f4f1de5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Verify_vue_vue_type_template_id_2f4f1de5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

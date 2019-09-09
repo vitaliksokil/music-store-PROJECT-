@@ -40,7 +40,7 @@
         },
         methods: {
             login() {
-                this.form.post('api/login')
+                this.form.post('/api/login')
                     .then(({data}) => {
                         if (data.status === 'error') {
                             this.form.errors.set(data.field, data.message);

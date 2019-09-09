@@ -21,5 +21,7 @@ Route::post('/register','Api\AuthController@register');
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'API\AuthController@logout');
     Route::get('/get-user', 'API\AuthController@getUser');
+    Route::post('/send-verification-email', 'Auth\EmailVerificationController@sendVerificationEmail');
+    Route::get('/verify-email/{token}', 'Auth\EmailVerificationController@verify');
 
 });

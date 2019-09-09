@@ -1,21 +1,30 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+        <div class="pt-4 pb-4">
+            <div v-if='token==="token"' class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">Verify your email!!!</h4>
+                <p v-if="messageType==='resend'">{{message}}
+                </p>
+                <p v-else>We have sent a message to your email address, please go to your email and follow the instruction to
+                    verify your email!!!
+                </p>
 
-                    <div class="card-body">
-                        @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-                        @endif
+                <hr>
+                <p class="mb-0">If you have not received an email, press here to resend ->
+                    <button @click.prevent="resend" class="btn btn-primary">RESEND</button>
+                </p>
+            </div>
 
-                        {{ __('Before proceeding, please check your email for a verification link.') }}
-                        {{ __('If you did not receive the email') }}, <a href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
-                    </div>
-                </div>
+            <div v-else-if="messageType==='success'" class="alert alert-success" role="alert">
+                <h4 class="alert-heading">{{messageType}}</h4>
+                <hr>
+                <p>{{message}}</p>
+            </div>
+
+            <div v-else-if="messageType==='error'" class="alert alert-error" role="alert">
+                <h4 class="alert-heading">{{messageType}}</h4>
+                <hr>
+                <p>{{message}}</p>
             </div>
         </div>
     </div>
@@ -23,7 +32,38 @@
 
 <script>
     export default {
-        name: "Verify"
+        data() {
+            return {
+                messageType: '',
+                message: '',
+                token: this.$route.params.token,
+            }
+        },
+        methods: {
+            resend() {
+                this.axios.post('/api/send-verification-email').then(({message}) => {
+                    this.message = 'Email is resent';
+                    this.messageType = 'resend';
+                });
+            }
+        },
+        name: "Verify",
+        mounted() {
+            if(this.token === 'token'){
+                this.axios.post('/api/send-verification-email').then(({message})=>{
+
+                });
+            }else{
+                this.axios.get('/api/verify-email/' + this.token).then((response) => {
+                    this.messageType = response.data.messageType;
+                    this.message = response.data.message;
+                    if(response.data.messageType === 'success'){
+                        Event.$emit('emailVerified');
+                    }
+                })
+            }
+        }
+
     }
 </script>
 

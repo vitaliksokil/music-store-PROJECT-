@@ -3,7 +3,6 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-//:TODO email verification
 // :TODO forgot password
 
 require('./bootstrap');
@@ -38,7 +37,12 @@ const routes = [
         path: '/profile',
         component: require('./components/Profile').default,
         name: 'profile',
-        meta: {requiresAuth: true},
+        meta:
+            {
+                requiresAuth: true,
+                emailVerify: true,
+
+            },
 
 
     },
@@ -55,7 +59,21 @@ const routes = [
         component: require('./components/auth/Register').default,
         name: 'register',
 
-        meta: {requiresAuth: false},
+        meta: {
+            requiresAuth: false,
+        },
+
+    },
+
+    {
+        path: '/verify/:token',
+        component: require('./components/auth/Verify').default,
+        name: 'verify',
+        meta:
+            {
+                requiresAuth: true,
+                emailVerify: false,
+            },
 
     },
 
@@ -81,6 +99,25 @@ router.beforeEach((to, from, next) => {
         } else {
             next();
         }
+        if (to.matched.some(record => record.meta.emailVerify)) {
+            if (auth.check()) {
+                if (!auth.checkEmailVerification()) {
+                    if (to.path === '/profile') {
+                        next('/verify/token')
+                    }
+                }
+            }
+        } else {
+            if (auth.check()) {
+                if (auth.checkEmailVerification()) {
+                    if (to.path === '/verify/'+router.history.current.params.token) {
+
+                        next('/profile');
+                    }
+                }
+            }
+        }
+        next();
     } else {
 
         if (auth.check()) {
@@ -133,7 +170,8 @@ const app = new Vue({
     router,
     data() {
         return {
-            isAuth: auth.check()
+            isAuth: auth.check(),
+            emailVerify: auth.checkEmailVerification(),
         }
     },
     methods: {
@@ -149,9 +187,14 @@ const app = new Vue({
 
         Event.$on('logout', () => {
             this.isAuth = false;
-            if(router.currentRoute.path !== '/'){
+            if (router.currentRoute.path !== '/') {
                 router.push('/');
             }
+
+        });
+        Event.$on('emailVerified', () => {
+            window.auth = new Auth();
+            this.emailVerify = auth.checkEmailVerification();
 
         })
     }
