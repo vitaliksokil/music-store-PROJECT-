@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\SendMailable;
+use App\Mail\emailVerificationMail;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 class EmailVerificationController extends Controller
@@ -16,7 +16,7 @@ class EmailVerificationController extends Controller
         $token = Str::random(60);
         $user->verification_token = $token;
         $user->save();
-        Mail::to(trim($user->email))->send(new SendMailable($user));
+        Mail::to(trim($user->email))->send(new emailVerificationMail($user));
 
         return response(['success' => 'Email was send successfully']);
 

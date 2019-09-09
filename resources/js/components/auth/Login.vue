@@ -15,6 +15,7 @@
                 <input type="password" class="form-control" id="password" placeholder="Password"
                        v-model="form.password" :class="{ 'is-invalid' : form.errors.has('password')  }">
                 <has-error :form="form" field="password"></has-error>
+                <small id="forgotPassword" class="form-text text-muted" style="cursor: pointer;text-decoration: underline" @click.prevent="forgotPassword()"><a>Forgot password?</a></small>
 
             </div>
             <div class="form-group form-check">
@@ -52,6 +53,36 @@
                     }).catch(() => {
 
                 })
+            },
+            async forgotPassword() {
+                const {value: email} = await Swal.fire({
+                    title: 'Input email address',
+                    input: 'email',
+                    inputPlaceholder: 'Enter your email address',
+                });
+                if (email) {
+                    this.$Progress.start();
+                    this.axios.post('/api/send-reset-password-email',{email:email}).then((response)=>{
+                        this.$Progress.finish();
+                        let messageType = response.data.messageType;
+                        let message = response.data.message;
+                        if(messageType === 'success'){
+                            Swal.fire(
+                                'Success!!!',
+                                message,
+                                'success'
+                            )
+
+                        }else{
+                            this.$Progress.fail();
+                            Swal.fire(
+                                'Error',
+                                message,
+                                'error'
+                            )
+                        }
+                    });
+                }
             }
         }
     }

@@ -22,6 +22,7 @@
 
     @include('includes/header')
     <router-view></router-view>
+    <vue-progress-bar></vue-progress-bar>
     @include('includes/footer')
 
 </div>

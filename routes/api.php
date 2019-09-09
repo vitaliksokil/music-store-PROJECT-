@@ -18,6 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/login','Api\AuthController@login');
 Route::post('/register','Api\AuthController@register');
+Route::post('/send-reset-password-email','Api\AuthController@sendResetPasswordEmail');
+Route::post('/reset-password','Api\AuthController@resetPassword');
+Route::get('/verify-reset-token/{token}-{email}','Api\AuthController@verifyResetToken');
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'API\AuthController@logout');
     Route::get('/get-user', 'API\AuthController@getUser');

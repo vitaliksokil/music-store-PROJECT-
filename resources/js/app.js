@@ -3,7 +3,6 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-// :TODO forgot password
 
 require('./bootstrap');
 
@@ -20,6 +19,12 @@ import VueAxios from 'vue-axios';
 import {Form, HasError, AlertError} from 'vform'
 import Auth from './auth.js';
 import Swal from 'sweetalert2'
+import VueProgressBar from 'vue-progressbar'
+
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+});
 
 window.Swal = Swal;
 
@@ -76,7 +81,16 @@ const routes = [
             },
 
     },
+    {
+        path: '/reset-password/:token-:email',
+        component: require('./components/auth/Reset').default,
+        name: 'reset-password',
 
+        meta: {
+            requiresAuth: false,
+        },
+
+    },
     {
         path: '*',
         component: require('./components/NotFound').default,

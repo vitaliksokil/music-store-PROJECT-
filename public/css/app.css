@@ -19241,3 +19241,7 @@ footer .pages table td {
   color: #ed1c24;
 }
 
+.__cov-progress {
+  height: 5px !important;
+}
+
