@@ -18,10 +18,6 @@
                 <small id="forgotPassword" class="form-text text-muted" style="cursor: pointer;text-decoration: underline" @click.prevent="forgotPassword()"><a>Forgot password?</a></small>
 
             </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
             <button :disabled="form.busy" type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
@@ -35,7 +31,7 @@
                 form: new Form({
                     email: '',
                     password: '',
-                }),
+                 }),
                 token: null,
             }
         },

@@ -3,7 +3,6 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -20,6 +19,16 @@ import {Form, HasError, AlertError} from 'vform'
 import Auth from './auth.js';
 import Swal from 'sweetalert2'
 import VueProgressBar from 'vue-progressbar'
+import { VueEditor } from "vue2-editor";
+
+import VueBus from 'vue-bus';
+
+import Gate from './Gate'
+
+window.auth = new Auth();
+
+Vue.prototype.$gate =new Gate(localStorage.getItem('user'));
+Vue.use(VueBus);
 
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
@@ -40,7 +49,7 @@ const routes = [
     },
     {
         path: '/profile',
-        component: require('./components/Profile').default,
+        component: require('./components/Profile/Profile').default,
         name: 'profile',
         meta:
             {
@@ -48,7 +57,41 @@ const routes = [
                 emailVerify: true,
 
             },
+        children:[
+            {
+                path: 'settings',
+                component: require('./components/Profile/Settings').default,
+                name: 'profile-settings',
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
 
+                    },
+            },
+            {
+                path: 'products',
+                component: require('./components/Profile/Products').default,
+                name: 'profile-products',
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
+                        isAdmin:true
+                    },
+            },
+            {
+                path: 'add-product',
+                component: require('./components/Profile/AddProduct').default,
+                name: 'profile-add-product',
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
+                        isAdmin:true
+                    },
+            }
+        ]
 
     },
     {
@@ -116,17 +159,30 @@ router.beforeEach((to, from, next) => {
         if (to.matched.some(record => record.meta.emailVerify)) {
             if (auth.check()) {
                 if (!auth.checkEmailVerification()) {
-                    if (to.path === '/profile') {
-                        next('/verify/token')
+                    next('/verify/token');
+                }
+            }
+            if (to.matched.some(record => record.meta.isAdmin)) {
+                if(auth.check()){
+                    if(auth.checkEmailVerification()){
+                        if(!Vue.prototype.$gate.isAdmin()){
+                            next({name:'404'})
+                        }
                     }
                 }
+            }else{
+                next();
             }
         } else {
             if (auth.check()) {
                 if (auth.checkEmailVerification()) {
                     if (to.path === '/verify/'+router.history.current.params.token) {
-
-                        next('/profile');
+                        // go to /verify/token if we are from settings, have just changed our email address
+                        if(from.path ==='/profile/settings'){
+                            next(to.fullPath);
+                        }else{
+                            next('/profile');
+                        }
                     }
                 }
             }
@@ -153,13 +209,10 @@ Vue.component(AlertError.name, AlertError);
 
 window.Event = new Vue;
 
-
+Vue.component(VueEditor.name,VueEditor);
 // let access_token = localStorage.getItem('token');
 // axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
 // axios.defaults.headers.post['Content-Type'] = 'application/json';
-
-window.auth = new Auth();
-
 
 /**
  * The following block of code may be used to automatically register your
@@ -171,8 +224,6 @@ window.auth = new Auth();
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -196,6 +247,7 @@ const app = new Vue({
     mounted() {
         Event.$on('userLoggedIn', () => {
             this.isAuth = auth.check();
+            Vue.prototype.$gate =new Gate(localStorage.getItem('user'));
 
         });
 

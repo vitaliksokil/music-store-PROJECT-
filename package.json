@@ -27,13 +27,17 @@
     "dependencies": {
         "@websanova/vue-auth": "^2.21.14-beta",
         "admin-lte": "^2.4.17",
+        "froala-editor": "^3.0.5",
         "owl.carousel": "^2.3.4",
+        "quill": "^1.3.6",
         "slick-carousel": "^1.8.1",
         "sweetalert2": "^8.17.1",
         "vform": "^1.0.1",
         "vue-axios": "^2.1.4",
+        "vue-bus": "^1.2.1",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.1.2",
+        "vue2-editor": "^2.10.2",
         "vuex": "^3.1.1",
         "vuex-persistedstate": "^2.5.4"
     }
