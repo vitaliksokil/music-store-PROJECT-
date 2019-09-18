@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="copyright">
-                        <h4>&copy; 2019 Музыкальный арсенал</h4>
+                        <h4>&copy; 2019 <span v-text="siteInfo.sitename"></span></h4>
                         <a href="#">Правила использования сайта</a>
                     </div>
                     <div class="dev-info">
@@ -23,14 +23,14 @@
                             </h4>
                         </div>
                         <div class="store-info-street">
-                            <p><i class="fas fa-map-marker-alt"></i>ул. Октябрьская, 34</p>
-                            <p><i class="fas fa-phone-alt"></i>(383) 240-80-80, 240-80-00</p>
-                            <p><i class="fas fa-clock"></i>Сегодня с 10:00 до 19:00</p>
+                            <p><i class="fas fa-map-marker-alt"></i><span v-text="siteInfo.street"></span></p>
+                            <p><i class="fas fa-phone-alt"></i><span v-text="siteInfo.phonenumber"></span></p>
+                            <p><i class="fas fa-clock"></i><span v-text="siteInfo.schedule"></span></p>
                         </div>
                         <div class="store-info-sn">
-                            <a href="#"><i class="fab fa-vk"></i></a>
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><img src="{{asset('images/olx.png')}}" alt=""></a>
+                            <a :href="siteInfo.vk"><i class="fab fa-vk"></i></a>
+                            <a :href="siteInfo.facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a :href="siteInfo.olx"><img src="{{asset('images/olx.png')}}" alt=""></a>
                         </div>
                     </div>
                 </div>

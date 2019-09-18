@@ -4,12 +4,13 @@
             <div class="row d-flex justify-content-around align-items-center">
                 <div class="col-lg-2 header-info-location">
                     <p>
-                        <span class="dotted">Town</span> -> <span class="underline">Street</span>
+                        <span class="dotted" v-text="siteInfo.town"></span> -> <span class="underline" v-text="siteInfo.street"></span>
                     </p>
                 </div>
                 <div class="col-lg-2">
                     <p>
-                        <span><i class="fas fa-phone fa-flip-horizontal"></i></span> (383) 240-80-80,240-80-80
+                        <span><i class="fas fa-phone fa-flip-horizontal"></i></span>
+                        <span v-text="siteInfo.phonenumber"></span>
                     </p>
                 </div>
                 <div class="col-lg-6">
@@ -24,7 +25,7 @@
                                     <router-link :to="{name:'register'}" class="border p-1 hover-off">Sign up</router-link>
                                 </li>
                                 <li v-else>
-                                    <router-link :to="{name:'profile'}">Мой профиль</router-link>
+                                    <router-link :to="{name:'profile'}" :siteInfo="siteInfo">Мой профиль</router-link>
                                     <a @click="logout()" class="hover-off" style="cursor:pointer;"><span class="dotted">Logout</span></a>
 
                                 </li>
@@ -43,7 +44,7 @@
             <div class="row align-items-center justify-content-around">
                 <div class="col-lg-4">
                     <div class="logo">
-                        <router-link to="/"> <img src="{{asset('images/logo.png')}}" alt="">
+                        <router-link to="/"> <img :src="`/images/${siteInfo.logo}`" alt="">
                             <p>Мы работаем на ваш талант!</p></router-link>
 
                     </div>

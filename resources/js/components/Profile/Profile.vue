@@ -29,7 +29,9 @@
                         <li>
 
                         </li>
-                        <li v-if="$gate.isAdmin()">
+                    </ul>
+                    <ul class="sidebar-menu" data-widget="tree" v-if="$gate.isAdmin()">
+                        <li>
                             <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                                aria-controls="collapseExample" @click.prevent="isOpenMenu = !isOpenMenu">
                                 <i class="fas fa-cogs orange"></i>
@@ -50,6 +52,12 @@
                                     </router-link>
                                 </li>
                             </ul>
+
+                        </li>
+                        <li>
+                            <router-link :to="{name:'profile-site-info'}"><i class="fas fa-sliders-h golden"></i>
+                                <span>Site information</span>
+                            </router-link>
                         </li>
                     </ul>
                     <!-- /.sidebar-menu -->
@@ -76,7 +84,7 @@
                                     </tr>
                                     <tr>
                                         <th>Type</th>
-                                        <td v-if="user.type == '1'">Admin</td>
+                                        <td v-if="$gate.isAdmin()">Admin</td>
                                         <td v-else>User</td>
                                     </tr>
                                     <tr>

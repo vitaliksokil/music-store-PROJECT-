@@ -14,6 +14,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     <tr v-for="product in products">
                         <td><img :src="`/images/products/${product.photo}`" alt=""></td>
                         <th>{{product.id}}</th>
@@ -33,7 +34,15 @@
                             >
                                 <i class="fas fa-trash-alt"></i>
                             </button>
+                            <router-link :to="{name:'product-item',params:{id:product.id}}">
+                                <button class="btn btn-info" :title="'View'">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </router-link>
+
                         </td>
+
+
                     </tr>
                     </tbody>
                 </table>
@@ -42,7 +51,8 @@
 
 
         <!-- Modal -->
-        <div class="modal fade" id="editMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="editMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -62,20 +72,23 @@
                             </div>
                             <div class="form-group">
                                 <label for="description">Description</label>
-                                <vue-editor v-model="form.description" id="description" :class="{ 'border-danger' : form.errors.has('description')  }"></vue-editor>
+                                <vue-editor v-model="form.description" id="description"
+                                            :class="{ 'border-danger' : form.errors.has('description')  }"></vue-editor>
                                 <div class="red">{{form.errors.get('description')}}</div>
                             </div>
                             <div class="form-group">
                                 <label for="price">Price</label>
                                 <input type="number" class="form-control" id="price" min="0"
-                                       oninput="validity.valid||(value='');" v-model="form.price" :class="{ 'is-invalid' : form.errors.has('price')  }">
+                                       oninput="validity.valid||(value='');" v-model="form.price"
+                                       :class="{ 'is-invalid' : form.errors.has('price')  }">
                                 <has-error :form="form" field="price"></has-error>
 
                             </div>
                             <div class="form-group">
                                 <label for="photo">Photo</label>
                                 <input type="file" class="form-control-file" id="photo"
-                                       @change="onAttachmentChange" :class="{ 'is-invalid' : form.errors.has('photo')  }"
+                                       @change="onAttachmentChange"
+                                       :class="{ 'is-invalid' : form.errors.has('photo')  }"
                                 >
                                 <has-error :form="form" field="photo"></has-error>
                             </div>
@@ -99,13 +112,13 @@
         data() {
             return {
                 products: [],
-                form:new Form({
+                form: new Form({
                     title: '',
                     description: '',
                     price: '',
                     photo: ''
                 }),
-                currentProductId:'',
+                currentProductId: '',
             }
         },
         methods: {
@@ -124,14 +137,14 @@
                     this.$Progress.fail();
                 })
             },
-            getProduct(id){
-                this.form.get('/api/product-get/'+id).then((response)=>{
+            getProduct(id) {
+                this.form.get('/api/product-get/' + id).then((response) => {
                     this.form.fill(response.data);
                 });
                 this.currentProductId = id;
 
             },
-            deleteProduct(id){
+            deleteProduct(id) {
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -141,7 +154,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
-                    this.axios.delete('/api/product-destroy/'+id).then(()=>{
+                    this.axios.delete('/api/product-destroy/' + id).then(() => {
                         this.getProducts();
                         if (result.value) {
                             Swal.fire(
@@ -153,33 +166,33 @@
                     })
                 })
             },
-            submitEdit(id){
+            submitEdit(id) {
                 this.$Progress.start();
-                this.form.put('/api/product-edit/'+id).then((response)=>{
+                this.form.put('/api/product-edit/' + id).then((response) => {
                     let message = response.data.message;
-                    let messageType= response.data.messageType;
-                   if(messageType === 'success'){
-                       this.$Progress.finish();
-                       Swal.fire({
-                           position: 'top-end',
-                           type: messageType,
-                           title: message,
-                           showConfirmButton: false,
-                           timer: 2000
-                       });
-                       $('#editMode').modal('hide');
-                       this.getProducts();
-                   }else{
-                       this.$Progress.fail();
-                       Swal.fire({
-                           position: 'top-end',
-                           type: 'error',
-                           title: response.data.message,
-                           showConfirmButton: false,
-                           timer: 3000
-                       })
-                   }
-                }).catch((response)=>{
+                    let messageType = response.data.messageType;
+                    if (messageType === 'success') {
+                        this.$Progress.finish();
+                        Swal.fire({
+                            position: 'top-end',
+                            type: messageType,
+                            title: message,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        $('#editMode').modal('hide');
+                        this.getProducts();
+                    } else {
+                        this.$Progress.fail();
+                        Swal.fire({
+                            position: 'top-end',
+                            type: 'error',
+                            title: response.data.message,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }).catch((response) => {
                     this.$Progress.fail();
                     Swal.fire({
                         position: 'top-end',
@@ -194,15 +207,15 @@
             onAttachmentChange(e) {
                 let file = e.target.files[0];
                 let reader = new FileReader();
-                if(!file.type.match(/image/)){
-                    this.form.errors.set('photo','File should be an image');
+                if (!file.type.match(/image/)) {
+                    this.form.errors.set('photo', 'File should be an image');
                     this.form.photo = '';
-                    return ;
+                    return;
                 }
-                if(file.size/1024 > 2048){
-                    this.form.errors.set('photo','Size should be less then 2048KB');
+                if (file.size / 1024 > 2048) {
+                    this.form.errors.set('photo', 'Size should be less then 2048KB');
                     this.form.photo = '';
-                    return ;
+                    return;
                 }
                 let ap = this;
                 reader.onloadend = function (file) {
@@ -218,7 +231,7 @@
             threePoints: function (value) {
                 if (value.length > 20) {
                     return value.slice(0, 20) + '...';
-                }else{
+                } else {
                     return value;
                 }
             }
@@ -227,14 +240,16 @@
 </script>
 
 <style scoped>
-tr:hover{
-    background: #e4e4e4;
-    cursor: pointer;
-}
-    img{
-        width:150px;
+    tr:hover {
+        background: #e4e4e4;
+        cursor: pointer;
     }
-    td,th{
-        vertical-align:unset;
+
+    img {
+        width: 150px;
+    }
+
+    td, th {
+        vertical-align: unset;
     }
 </style>

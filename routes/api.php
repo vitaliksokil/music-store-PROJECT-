@@ -18,6 +18,8 @@ Route::post('/register','Api\AuthController@register');
 Route::post('/send-reset-password-email','Api\AuthController@sendResetPasswordEmail');
 Route::post('/reset-password','Api\AuthController@resetPassword');
 Route::get('/verify-reset-token/{token}-{email}','Api\AuthController@verifyResetToken');
+Route::get('/product-get-current/{id}','ProductController@getCurrentProductByID');
+
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'API\AuthController@logout');
     Route::get('/get-user', 'API\AuthController@getUser');
@@ -32,4 +34,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/product-get/{id}','ProductController@getProductByID');
     Route::put('/product-edit/{id}','ProductController@update');
     Route::delete('/product-destroy/{id}','ProductController@destroy');
+
+    Route::put('/site-info','SiteController@update');
+    Route::get('/site-info','SiteController@getInfo');
 });

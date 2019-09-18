@@ -46,18 +46,21 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'photo' => 'required',
         ]);
+        $product = Product::find($id);
+
         if (strlen($request->photo) > 50) {
             $this->convertImageName($request);
+            $image_path = public_path().'/images/products/' . $product->photo;
+            @unlink($image_path); // deleting photo
         }
 
-        $product = Product::find($id);
-       if($product->update($request->all())){
-           return response(['messageType' => 'success', 'message' => 'Product was updated successfully']);
+        if ($product->update($request->all())) {
+            return response(['messageType' => 'success', 'message' => 'Product was updated successfully']);
 
-       }else{
-           return response(['messageType' => 'error', 'message' => 'Something went wrong']);
+        } else {
+            return response(['messageType' => 'error', 'message' => 'Something went wrong']);
 
-       }
+        }
     }
 
     public function getProductByID($id)
@@ -70,7 +73,10 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $this->authorize('isAdmin');
-        Product::find($id)->delete();
+        $product = Product::find($id);
+        $image_path = public_path().'/images/products/' . $product->photo;
+        @unlink($image_path); // deleting photo
+        $product->delete();
 
 
     }
@@ -85,5 +91,10 @@ class ProductController extends Controller
         $this->authorize('isAdmin');
 
         return Product::all();
+    }
+
+    public function getCurrentProductByID($id)
+    {
+        return Product::findOrFail($id);
     }
 }
