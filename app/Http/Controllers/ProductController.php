@@ -22,10 +22,13 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric',
             'photo' => 'required',
+            'category' => 'required'
         ]);
         $this->convertImageName($request);
 
-        Product::create($request->all());
+        $product = Product::create($request->except('category'));
+        $product->category()->attach($request->category);
+
         return response(['messageType' => 'success', 'message' => 'New product has been successfully created!!!']);
     }
 
@@ -45,16 +48,19 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required|numeric',
             'photo' => 'required',
+            'category' => 'required'
         ]);
         $product = Product::find($id);
 
         if (strlen($request->photo) > 50) {
             $this->convertImageName($request);
-            $image_path = public_path().'/images/products/' . $product->photo;
+            $image_path = public_path() . '/images/products/' . $product->photo;
             @unlink($image_path); // deleting photo
         }
 
-        if ($product->update($request->all())) {
+        if ($product->update($request->except('category'))) {
+            $product->category()->detach();
+            $product->category()->attach($request->category);
             return response(['messageType' => 'success', 'message' => 'Product was updated successfully']);
 
         } else {
@@ -67,14 +73,14 @@ class ProductController extends Controller
     {
         $this->authorize('isAdmin');
 
-        return Product::find($id);
+        return  Product::with('category:id')->where('id',$id)->get();
     }
 
     public function destroy($id)
     {
         $this->authorize('isAdmin');
         $product = Product::find($id);
-        $image_path = public_path().'/images/products/' . $product->photo;
+        $image_path = public_path() . '/images/products/' . $product->photo;
         @unlink($image_path); // deleting photo
         $product->delete();
 
@@ -88,11 +94,30 @@ class ProductController extends Controller
 
     public function getProducts()
     {
+        // todo remove the line below if it would be necessary
         $this->authorize('isAdmin');
-
-        return Product::all();
+        $products = Product::all();
+        $productsWithCategories = [];
+        $i = 0;
+        foreach ($products as $product) {
+            $productsWithCategories[$i] = $product->toArray();
+//            dd($product->category->toArray()[0]);
+            $productsWithCategories[$i]['category_title'] = $product->category->first()->title;
+            $i++;
+        }
+        return $productsWithCategories;
     }
-
+    //delete
+//    public function getProductCategory(){
+//        $allProducts = Product::all();
+//        $categories = [];
+//
+//        foreach ($allProducts as $product) {
+//            $categories[$product->id] = $product->category->pluck('id')[0];
+//        }
+//
+//        return $categories;
+//    }
     public function getCurrentProductByID($id)
     {
         return Product::findOrFail($id);

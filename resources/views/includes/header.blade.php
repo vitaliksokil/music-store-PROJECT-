@@ -4,7 +4,8 @@
             <div class="row d-flex justify-content-around align-items-center">
                 <div class="col-lg-2 header-info-location">
                     <p>
-                        <span class="dotted" v-text="siteInfo.town"></span> -> <span class="underline" v-text="siteInfo.street"></span>
+                        <span class="dotted" v-text="siteInfo.town"></span> -> <span class="underline"
+                                                                                     v-text="siteInfo.street"></span>
                     </p>
                 </div>
                 <div class="col-lg-2">
@@ -20,15 +21,15 @@
                             <li><a href="">Гарантия</a></li>
                             <li><a href="">Доставка</a></li>
 
-                                <li v-if="!isAuth">
-                                    <router-link :to="{name:'login'}" class="hover-off">Sign in</router-link>
-                                    <router-link :to="{name:'register'}" class="border p-1 hover-off">Sign up</router-link>
-                                </li>
-                                <li v-else>
-                                    <router-link :to="{name:'profile'}" :siteInfo="siteInfo">Мой профиль</router-link>
-                                    <a @click="logout()" class="hover-off" style="cursor:pointer;"><span class="dotted">Logout</span></a>
+                            <li v-if="!isAuth">
+                                <router-link :to="{name:'login'}" class="hover-off">Sign in</router-link>
+                                <router-link :to="{name:'register'}" class="border p-1 hover-off">Sign up</router-link>
+                            </li>
+                            <li v-else>
+                                <router-link :to="{name:'profile'}" :siteInfo="siteInfo">Мой профиль</router-link>
+                                <a @click="logout()" class="hover-off" style="cursor:pointer;"><span class="dotted">Logout</span></a>
 
-                                </li>
+                            </li>
 
                         </ul>
 
@@ -44,7 +45,7 @@
             <div class="row align-items-center justify-content-around">
                 <div class="col-lg-4">
                     <div class="logo">
-                        <router-link to="/"> <img :src="`/images/${siteInfo.logo}`" alt="">
+                        <router-link to="/"><img :src="`/images/${siteInfo.logo}`" alt="">
                             <p>Мы работаем на ваш талант!</p></router-link>
 
                     </div>
@@ -73,7 +74,20 @@
                     <nav>
                         <ul class="d-flex justify-content-around">
                             <li><a href="" class="active">Акции</a></li>
-                            <li><a href="">Музыкальные инструменты</a></li>
+                            <li id="categoriesShow">
+                                <a href="">Музыкальные инструменты</a>
+                                <div class="container">
+                                    <div id="categories-items">
+                                        <div class="triangle-red"></div>
+                                        <div class="triangle"></div>
+                                        <div class="border"></div>
+                                        <div class="row justify-content-around" v-html="treeCategories">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </li>
                             <li><a href="">DJ</a></li>
                             <li><a href="">Шоу-техника</a></li>
                             <li><a href="">Студия</a></li>
@@ -83,8 +97,10 @@
                             <li><a href="">Стойки</a></li>
                         </ul>
                     </nav>
+
                 </div>
             </div>
+
         </div>
     </div>
 </header>

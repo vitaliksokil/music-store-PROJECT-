@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'title', 'description', 'price','photo'
+        'title', 'description', 'price', 'photo'
     ];
     protected $hidden = [
         'created_at', 'updated_at',
     ];
+
+    public function category()
+    {
+        return $this->belongsToMany('App\Category');
+    }
 }

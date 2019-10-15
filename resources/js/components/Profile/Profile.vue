@@ -59,6 +59,11 @@
                                 <span>Site information</span>
                             </router-link>
                         </li>
+                        <li>
+                            <router-link :to="{name:'profile-categories'}"><i class="fas fa-drum pink"></i>
+                                <span>Categories</span>
+                            </router-link>
+                        </li>
                     </ul>
                     <!-- /.sidebar-menu -->
                 </section>

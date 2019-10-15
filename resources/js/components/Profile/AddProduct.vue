@@ -12,14 +12,22 @@
                     </div>
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <vue-editor v-model="form.description" id="description" :class="{ 'border-danger' : form.errors.has('description')  }"></vue-editor>
+                        <vue-editor v-model="form.description" id="description"
+                                    :class="{ 'border-danger' : form.errors.has('description')  }"></vue-editor>
                         <div class="red">{{form.errors.get('description')}}</div>
                     </div>
                     <div class="form-group">
                         <label for="price">Price</label>
                         <input type="number" class="form-control" id="price" min="0"
-                               oninput="validity.valid||(value='');" v-model="form.price" :class="{ 'is-invalid' : form.errors.has('price')  }">
+                               oninput="validity.valid||(value='');" v-model="form.price"
+                               :class="{ 'is-invalid' : form.errors.has('price')  }">
                         <has-error :form="form" field="price"></has-error>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <CategoriesList  :categories="categories"  :class="{ 'is-invalid' : form.errors.has('category')  }"></CategoriesList>
+                        <has-error :form="form" field="category"></has-error>
 
                     </div>
                     <div class="form-group">
@@ -37,35 +45,45 @@
 </template>
 
 <script>
+    import CategoriesList from './CategoriesList'
 
     export default {
         name: "AddProduct",
+
         data() {
             return {
+                categories: {},
                 form: new Form({
                     title: '',
                     description: '',
                     price: '',
-                    photo: ''
+                    photo: '',
+                    category: ''
                 })
             }
         },
         methods: {
+            // todo fix duplicate of code, here getAllCategories and in Categories.vue
+            getAllCategories() {
+                this.axios.get('/api/category').then((response) => {
+                    this.categories = response.data;
+                });
+            },
             submit() {
                 this.$Progress.start();
-                this.form.post('/api/product-create').then((response)=>{
+                this.form.post('/api/product-create').then((response) => {
                     this.$Progress.finish();
                     let message = response.data.message;
-                    let messageType= response.data.messageType;
-                        Swal.fire({
-                            position: 'top-end',
-                            type: messageType,
-                            title: message,
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
+                    let messageType = response.data.messageType;
+                    Swal.fire({
+                        position: 'top-end',
+                        type: messageType,
+                        title: message,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
                     this.form.reset();
-                }).catch((response)=>{
+                }).catch((response) => {
                     this.$Progress.fail();
                     Swal.fire({
                         position: 'top-end',
@@ -79,32 +97,49 @@
             onAttachmentChange(e) {
                 let file = e.target.files[0];
                 let reader = new FileReader();
-                if(!file.type.match(/image/)){
-                    this.form.errors.set('photo','File should be an image');
+                if (!file.type.match(/image/)) {
+                    this.form.errors.set('photo', 'File should be an image');
                     this.form.photo = '';
-                    return ;
+                    return;
                 }
-                if(file.size/1024 > 2048){
-                    this.form.errors.set('photo','Size should be less then 2048KB');
+                if (file.size / 1024 > 2048) {
+                    this.form.errors.set('photo', 'Size should be less then 2048KB');
                     this.form.photo = '';
-                    return ;
+                    return;
                 }
                 let ap = this;
                 reader.onloadend = function (file) {
                     ap.form.photo = reader.result;
                 };
                 reader.readAsDataURL(file);
-            }
-        }
+            },
+        },
+
+        mounted() {
+            let categoriesComponent = this;
+            Event.$on('formParentID', function ([parentID, selectedID]) {
+                if (selectedID) {
+                    // categoriesComponent.formEdit.parent_id = parentID;
+                } else {
+                    categoriesComponent.form.category = parentID;
+                }
+            })
+        },
+        created(){
+            this.getAllCategories();
+        },
+        components: {
+            CategoriesList,
+        },
     }
 </script>
 
 <style>
-.ql-editor p {
-    text-transform: unset;
-}
+    .ql-editor p {
+        text-transform: unset;
+    }
 
-    .border-danger{
+    .border-danger {
         border: 1px solid red;
     }
 </style>

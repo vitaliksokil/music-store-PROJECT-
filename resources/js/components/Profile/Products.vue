@@ -7,6 +7,7 @@
                     <tr>
                         <th scope="col">Photo</th>
                         <th scope="col">ID</th>
+                        <th scope="col">Category title</th>
                         <th scope="col">Title</th>
                         <th scope="col">Description</th>
                         <th scope="col">Price</th>
@@ -18,6 +19,7 @@
                     <tr v-for="product in products">
                         <td><img :src="`/images/products/${product.photo}`" alt=""></td>
                         <th>{{product.id}}</th>
+                        <th>{{product.category_title}}</th>
                         <td>{{product.title}}</td>
                         <td>{{product.description | threePoints}}</td>
                         <td>{{product.price}}</td>
@@ -85,6 +87,12 @@
 
                             </div>
                             <div class="form-group">
+                                <label for="category">Category</label>
+                                <CategoriesList  :categories="categories" :selectedID="form.category"  :class="{ 'is-invalid' : form.errors.has('category')  }"></CategoriesList>
+                                <has-error :form="form" field="category"></has-error>
+
+                            </div>
+                            <div class="form-group">
                                 <label for="photo">Photo</label>
                                 <input type="file" class="form-control-file" id="photo"
                                        @change="onAttachmentChange"
@@ -107,21 +115,30 @@
 </template>
 
 <script>
+    import CategoriesList from './CategoriesList'
+
     export default {
         name: "AddProduct",
         data() {
             return {
+                categories:'',
                 products: [],
                 form: new Form({
                     title: '',
                     description: '',
                     price: '',
-                    photo: ''
+                    photo: '',
+                    category:''
                 }),
                 currentProductId: '',
             }
         },
         methods: {
+            getAllCategories() {
+                this.axios.get('/api/category').then((response) => {
+                    this.categories = response.data;
+                });
+            },
             createProduct() {
                 this.axios.post('/api/products-create').then((response) => {
                     console.log(response);
@@ -139,7 +156,8 @@
             },
             getProduct(id) {
                 this.form.get('/api/product-get/' + id).then((response) => {
-                    this.form.fill(response.data);
+                    this.form.fill(response.data[0]);
+                    this.form.category = this.form.category[0].id;
                 });
                 this.currentProductId = id;
 
@@ -154,16 +172,18 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
-                    this.axios.delete('/api/product-destroy/' + id).then(() => {
-                        this.getProducts();
-                        if (result.value) {
+                    if (result.value) {
+                        this.axios.delete('/api/product-destroy/' + id).then(() => {
+                            this.getProducts();
+
                             Swal.fire(
                                 'Deleted!',
                                 'Your file has been deleted.',
                                 'success'
                             )
-                        }
-                    })
+
+                        })
+                    }
                 })
             },
             submitEdit(id) {
@@ -222,10 +242,16 @@
                     ap.form.photo = reader.result;
                 };
                 reader.readAsDataURL(file);
-            }
+            },
         },
+
         mounted() {
             this.getProducts();
+            this.getAllCategories();
+            let pr = this;
+            Event.$on('formParentID',function (data) {
+                pr.form.category = data[0];
+            });
         },
         filters: {
             threePoints: function (value) {
@@ -235,7 +261,10 @@
                     return value;
                 }
             }
-        }
+        },
+        components: {
+            CategoriesList,
+        },
     }
 </script>
 

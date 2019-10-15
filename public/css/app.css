@@ -18856,11 +18856,62 @@ header .header-categories {
   border-top: 1px solid #d9d9d9;
   border-bottom: 2px solid #ed1c24;
   padding: 25px 0;
+  position: relative;
 }
 
 header .header-categories li a {
   color: #503737;
   font-size: 17px;
+}
+
+header .header-categories #categories-items {
+  position: absolute;
+  top: 54px;
+  z-index: 999;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 35px 100px;
+  background: #fff;
+}
+
+header .header-categories #categories-items .triangle-red {
+  border: 20px solid transparent;
+  border-bottom: 20px solid #ed1c24;
+  position: absolute;
+  top: -40px;
+  left: 85px;
+}
+
+header .header-categories #categories-items .triangle {
+  border: 20px solid transparent;
+  border-bottom: 20px solid white;
+  position: absolute;
+  top: -38px;
+  left: 85px;
+}
+
+header .header-categories #categories-items .categories-item {
+  margin: 0 15px;
+}
+
+header .header-categories #categories-items .border {
+  height: 35px;
+  width: 100%;
+  position: absolute;
+  top: -35px;
+  z-index: 999;
+  border: none !important;
+}
+
+header .header-categories #categoriesShow a {
+  padding: 3px 10px;
+  border-radius: 50px;
+}
+
+header .header-categories #categoriesShow a:hover {
+  background: #ed1c24;
+  color: white;
 }
 
 .main {

@@ -12,23 +12,22 @@ require('slick-carousel');
 
 
 // vue router
-import VueRouter from 'vue-router'
 import axios from 'axios'
 import VueAxios from 'vue-axios';
 import {Form, HasError, AlertError} from 'vform'
 import Auth from './auth.js';
+import router from './router.js';
 import Swal from 'sweetalert2'
 import VueProgressBar from 'vue-progressbar'
 import {VueEditor} from "vue2-editor";
 
-import VueBus from 'vue-bus';
 
 import Gate from './Gate'
 
 window.auth = new Auth();
 
+
 Vue.prototype.$gate = new Gate(localStorage.getItem('user'));
-Vue.use(VueBus);
 
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
@@ -38,189 +37,6 @@ Vue.use(VueProgressBar, {
 window.Swal = Swal;
 
 Vue.use(VueAxios, axios);
-Vue.use(VueRouter);
-
-const routes = [
-    {
-        path: '/',
-        component: require('./components/Home').default,
-        name: 'home',
-
-    },
-    {
-        path: '/profile',
-        component: require('./components/Profile/Profile').default,
-        name: 'profile',
-        meta:
-            {
-                requiresAuth: true,
-                emailVerify: true,
-
-            },
-        children: [
-            {
-                path: 'settings',
-                component: require('./components/Profile/Settings').default,
-                name: 'profile-settings',
-                meta:
-                    {
-                        requiresAuth: true,
-                        emailVerify: true,
-
-                    },
-            },
-            {
-                path: 'products',
-                component: require('./components/Profile/Products').default,
-                name: 'profile-products',
-                meta:
-                    {
-                        requiresAuth: true,
-                        emailVerify: true,
-                        isAdmin: true
-                    },
-            },
-            {
-                path: 'add-product',
-                component: require('./components/Profile/AddProduct').default,
-                name: 'profile-add-product',
-                meta:
-                    {
-                        requiresAuth: true,
-                        emailVerify: true,
-                        isAdmin: true
-                    },
-            },
-            {
-                path: 'site-info',
-                component: require('./components/Profile/SiteInfo').default,
-                name: 'profile-site-info',
-
-                meta:
-                    {
-                        requiresAuth: true,
-                        emailVerify: true,
-                        isAdmin: true
-                    },
-            }
-        ]
-
-    },
-    {
-        path: '/login',
-        component: require('./components/auth/Login').default,
-        name: 'login',
-        meta: {requiresAuth: false},
-
-    },
-
-    {
-        path: '/register',
-        component: require('./components/auth/Register').default,
-        name: 'register',
-
-        meta: {
-            requiresAuth: false,
-        },
-
-    },
-
-    {
-        path: '/verify/:token',
-        component: require('./components/auth/Verify').default,
-        name: 'verify',
-        meta:
-            {
-                requiresAuth: true,
-                emailVerify: false,
-            },
-
-    },
-    {
-        path: '/reset-password/:token-:email',
-        component: require('./components/auth/Reset').default,
-        name: 'reset-password',
-
-        meta: {
-            requiresAuth: false,
-        },
-
-    },
-    {
-        path: '/product-item/:id',
-        component: require('./components/products/ProductItem').default,
-        name: 'product-item',
-
-        meta: {
-            requiresAuth: false,
-        },
-
-    },
-    {
-        path: '*',
-        component: require('./components/NotFound').default,
-        name: '404'
-    },
-];
-
-const router = new VueRouter({
-    mode: "history",
-    routes // short for `routes: routes`
-});
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        // этот путь требует авторизации, проверяем залогинен ли
-        // пользователь, и если нет, перенаправляем на страницу логина
-        if (!auth.check()) {
-            next({
-                path: '/login',
-            })
-        } else {
-            next();
-        }
-        if (to.matched.some(record => record.meta.emailVerify)) {
-            if (auth.check()) {
-                if (!auth.checkEmailVerification()) {
-                    next('/verify/token');
-                }
-            }
-            if (to.matched.some(record => record.meta.isAdmin)) {
-                if (auth.check()) {
-                    if (auth.checkEmailVerification()) {
-                        if (!Vue.prototype.$gate.isAdmin()) {
-                            next({name: '404'})
-                        }
-                    }
-                }
-            } else {
-                next();
-            }
-        } else {
-            if (auth.check()) {
-                if (auth.checkEmailVerification()) {
-                    if (to.path === '/verify/' + router.history.current.params.token) {
-                        // go to /verify/token if we are from settings, have just changed our email address
-                        if (from.path === '/profile/settings') {
-                            next(to.fullPath);
-                        } else {
-                            next('/profile');
-                        }
-                    }
-                }
-            }
-        }
-        next();
-    } else {
-
-        if (auth.check()) {
-            if (to.path !== '/' && to.path === '/login' || to.path === '/register') {
-                next('/profile')
-            }
-        }
-        next();
-        // всегда так или иначе нужно вызвать next()!
-    }
-});
 
 // vform
 
@@ -254,6 +70,8 @@ const app = new Vue({
     router,
     data() {
         return {
+            categories: '',
+            treeCategories:'',
             isAuth: auth.check(),
             emailVerify: auth.checkEmailVerification(),
             siteInfo: {},
@@ -269,10 +87,45 @@ const app = new Vue({
                 delete this.siteInfo.id;
             })
         },
+        getCategories() {
+            this.axios.get('/api/category').then((response) => {
+                this.categories = response.data;
+                this.treeCategories = this.creatingTree();
+            });
+        },
+        creatingTree(categories = this.categories, tree = '') {
+            for (let category of categories) {
+                if (!category.parent_id) {
+                    // category has not children
+                    tree += `<div class="col-lg-4 mb-5">`;
+                    tree += '<div class="categories-item">';
+                    tree += '<div class="categories-img text-center">';
+                    tree += `<img src='/images/categories/${category.photo}' style="max-width: 100%; height:70px" alt="">`;
+                    tree += '</div>';
+                    tree += '<div class="categories-title">';
+                    tree += `<h2>${category.title}</h2>`;
+                    tree += '</div>';
+                    tree +=
+                                '<div class="categories-list">' +
+                                    '<ul>';
+                    for (let child  of category.children){
+                        tree += `<li style="text-align: center"><a href="#">${child.title}</a></li>`
+                    }
+                            tree += '</ul>' +
+                                '</div>' +
+                            '</div>' +
+                        ' </div>'
+                }
+            }
+            return tree;
+
+        },
     },
     mounted() {
+        this.getCategories();
         this.getSiteInfo();
         let app = this;
+
         Event.$on('userLoggedIn', () => {
             this.isAuth = auth.check();
             Vue.prototype.$gate = new Gate(localStorage.getItem('user'));
@@ -288,11 +141,25 @@ const app = new Vue({
         });
         Event.$on('emailVerified', () => {
             window.auth = new Auth();
+            // todo this.emailVerify is inside this function not inside the app.js, but it works, very weird-_- and upper as well
             this.emailVerify = auth.checkEmailVerification();
 
         });
-        Event.$on('siteInfoUpdated',function () {
+        Event.$on('siteInfoUpdated', function () {
             app.getSiteInfo();
-        })
+        });
+        Event.$on('changesInCategories', function () {
+            app.treeCategories = app.getCategories();
+        });
+
+        $(document).ready(function () {
+            $('#categoriesShow').hover(function () {
+                    $('#categories-items').css('display', 'flex');
+                },
+                function () {
+                    $('#categories-items').css('display', 'none');
+                }
+            );
+        });
     }
 }).$mount('#app');
