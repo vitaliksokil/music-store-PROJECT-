@@ -32,6 +32,12 @@
                     </ul>
                     <ul class="sidebar-menu" data-widget="tree" v-if="$gate.isAdmin()">
                         <li>
+                            <router-link :to="{name:'profile-users'}"><i class="fas fa-users green"></i>
+                                <span>Users</span>
+                            </router-link>
+                        </li>
+
+                        <li>
                             <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                                aria-controls="collapseExample" @click.prevent="isOpenMenu = !isOpenMenu">
                                 <i class="fas fa-cogs orange"></i>

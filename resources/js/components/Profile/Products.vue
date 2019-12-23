@@ -2,6 +2,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search" v-model="query" @keydown.enter.prevent="search" >
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" @click.prevent="search"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
@@ -131,9 +137,29 @@
                     category:''
                 }),
                 currentProductId: '',
+                query:''
             }
         },
         methods: {
+            search(){
+                this.$Progress.start();
+
+                let query = this.query;
+                this.axios.get('/api/findProduct?q=' + query)
+                    .then((data) => {
+                        this.$Progress.finish();
+                        this.products = data.data;
+                    }).catch(() => {
+
+                    this.$Progress.fail();
+
+                    Swal.fire(
+                        'Error!',
+                        'Something\'s gone wrong.',
+                        'error'
+                    )
+                });
+            },
             getAllCategories() {
                 this.axios.get('/api/category').then((response) => {
                     this.categories = response.data;

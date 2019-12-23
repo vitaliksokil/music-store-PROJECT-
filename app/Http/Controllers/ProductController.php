@@ -14,6 +14,20 @@ class ProductController extends Controller
 
     }
 
+    public function search(){
+        if($search = \Request::get('q')){
+            $products =Product::where(function ($query) use ($search){
+                $query->where('id','LIKE',"%$search%")
+                    ->orWhere('title','LIKE',"%$search%")
+                    ->orWhere('price','LIKE',"%$search%")
+                    ->orWhere('description','LIKE',"%$search%");
+            })->get();
+        }else{
+            $products = $this->getProducts();
+        }
+        return $products;
+    }
+
     public function create(Request $request)
     {
         $this->authorize('isAdmin');
@@ -101,23 +115,12 @@ class ProductController extends Controller
         $i = 0;
         foreach ($products as $product) {
             $productsWithCategories[$i] = $product->toArray();
-//            dd($product->category->toArray()[0]);
             $productsWithCategories[$i]['category_title'] = $product->category->first()->title;
             $i++;
         }
         return $productsWithCategories;
     }
-    //delete
-//    public function getProductCategory(){
-//        $allProducts = Product::all();
-//        $categories = [];
-//
-//        foreach ($allProducts as $product) {
-//            $categories[$product->id] = $product->category->pluck('id')[0];
-//        }
-//
-//        return $categories;
-//    }
+
     public function getCurrentProductByID($id)
     {
         return Product::findOrFail($id);

@@ -18895,6 +18895,10 @@ header .header-categories #categories-items .categories-item {
   margin: 0 15px;
 }
 
+header .header-categories #categories-items .categories-item .router-link-active:visited h2 {
+  color: #ed1c24;
+}
+
 header .header-categories #categories-items .border {
   height: 35px;
   width: 100%;
@@ -18912,6 +18916,11 @@ header .header-categories #categoriesShow a {
 header .header-categories #categoriesShow a:hover {
   background: #ed1c24;
   color: white;
+}
+
+header .header-categories #categoriesShow .categories-title:hover {
+  background: transparent !important;
+  color: #503737 !important;
 }
 
 .main {
@@ -19037,7 +19046,12 @@ header .header-categories #categoriesShow a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 350px;
+  height: 250px;
+}
+
+.discounts-items .discount-item-wrap .discount-item .discount-item-img img {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .discounts-items .discount-item-wrap .discount-item .discount-items-text {
@@ -19107,7 +19121,7 @@ header .header-categories #categoriesShow a:hover {
   bottom: 35px;
   margin: 0 auto;
   padding: 10px;
-  background: #ffffff;
+  background: transparent;
   width: -webkit-min-content;
   width: -moz-min-content;
   width: min-content;

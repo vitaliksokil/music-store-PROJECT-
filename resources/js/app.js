@@ -43,6 +43,7 @@ Vue.use(VueAxios, axios);
 window.Form = Form;
 Vue.component(HasError.name, HasError);
 Vue.component(AlertError.name, AlertError);
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 
 window.Event = new Vue;
@@ -71,10 +72,10 @@ const app = new Vue({
     data() {
         return {
             categories: '',
-            treeCategories:'',
             isAuth: auth.check(),
             emailVerify: auth.checkEmailVerification(),
             siteInfo: {},
+            query:''
         }
     },
     methods: {
@@ -90,36 +91,16 @@ const app = new Vue({
         getCategories() {
             this.axios.get('/api/category').then((response) => {
                 this.categories = response.data;
-                this.treeCategories = this.creatingTree();
             });
         },
-        creatingTree(categories = this.categories, tree = '') {
-            for (let category of categories) {
-                if (!category.parent_id) {
-                    // category has not children
-                    tree += `<div class="col-lg-4 mb-5">`;
-                    tree += '<div class="categories-item">';
-                    tree += '<div class="categories-img text-center">';
-                    tree += `<img src='/images/categories/${category.photo}' style="max-width: 100%; height:70px" alt="">`;
-                    tree += '</div>';
-                    tree += '<div class="categories-title">';
-                    tree += `<h2>${category.title}</h2>`;
-                    tree += '</div>';
-                    tree +=
-                                '<div class="categories-list">' +
-                                    '<ul>';
-                    for (let child  of category.children){
-                        tree += `<li style="text-align: center"><a href="#">${child.title}</a></li>`
-                    }
-                            tree += '</ul>' +
-                                '</div>' +
-                            '</div>' +
-                        ' </div>'
-                }
+        mainSearch(){
+            if(this.$route.name !== 'search'){
+                router.push({name:'search',params:{query:this.query}});
+            }else{
+                Event.$emit('mainSearchQuery',this.query)
             }
-            return tree;
 
-        },
+        }
     },
     mounted() {
         this.getCategories();
@@ -149,7 +130,7 @@ const app = new Vue({
             app.getSiteInfo();
         });
         Event.$on('changesInCategories', function () {
-            app.treeCategories = app.getCategories();
+            app.getCategories();
         });
 
         $(document).ready(function () {

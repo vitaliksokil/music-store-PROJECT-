@@ -42,7 +42,6 @@ class SiteController extends Controller
         }
     }
     public function getInfo(){
-        $this->authorize('isAdmin');
         return response()->json(DB::table('site')->find(1));
     }
 }

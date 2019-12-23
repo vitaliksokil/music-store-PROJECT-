@@ -77,6 +77,18 @@ const routes = [
                         emailVerify: true,
                         isAdmin: true
                     },
+            },
+            {
+                path: 'users',
+                component: require('./components/Profile/Users').default,
+                name: 'profile-users',
+
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
+                        isAdmin: true
+                    },
             }
         ]
 
@@ -128,6 +140,24 @@ const routes = [
 
         meta: {
             requiresAuth: false,
+        },
+
+    },
+    {
+        path: '/category/:id',
+        component: require('./components/products/Category').default,
+        name: 'category',
+        meta: {
+            requiresAuth: false
+        },
+
+    },
+    {
+        path: '/search/:query',
+        component: require('./components/Search').default,
+        name: 'search',
+        meta: {
+            requiresAuth: false
         },
 
     },

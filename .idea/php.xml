@@ -102,6 +102,11 @@
       <path value="$PROJECT_DIR$/vendor/intervention/image" />
     </include_path>
   </component>
+  <component name="PhpProjectServersManager">
+    <servers>
+      <server host="localhost" id="3e5dbea9-af27-4e9f-9908-8acffbd52bbd" name="phpDebug" />
+    </servers>
+  </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
   <component name="PhpUnit">
     <phpunit_settings>

@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
 
+    public function search(){
+        if($search = \Request::get('q')){
+            $categories =Category::where(function ($query) use ($search){
+                $query->where('id','LIKE',"%$search%")
+                    ->orWhere('title','LIKE',"%$search%");
+            })->get();
+        }else{
+            $categories = $this->index();
+        }
+        return $categories;
+    }
+
     function list_categories(Array $categories)
     {
         $data = [];
@@ -80,11 +92,12 @@ class CategoryController extends Controller
      * Display the specified resource.
      *
      * @param \App\Category $category
-     * @return \Illuminate\Http\Response
+     * @return Category|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object
      */
     public function show($category)
     {
-        return Category::findOrFail($category);
+
+        return Category::with('children')->where('id', $category)->first();
     }
 
     /**
@@ -177,5 +190,38 @@ class CategoryController extends Controller
         $this->deletePhotos($category->products());
         $category->products()->delete();
         $category->delete();
+    }
+
+
+    function listCategoriesWithProducts(Array $categories)
+    {
+        static $products = [];
+
+        foreach ($categories as $category) {
+
+            $categoryData = Category::with(['children','products'])->where('id', $category['id'])->first();
+
+            $categoryChildren = $categoryData->children->toArray();
+            $categoryProducts = $categoryData->products->toArray();
+            if($categoryProducts){
+                if(is_array($categoryProducts)){
+                    foreach ($categoryProducts as $cat){
+                        $products[] = $cat;
+                    }
+                }
+            }
+            if($categoryChildren){
+               $this->listCategoriesWithProducts($categoryChildren);
+            }
+
+        }
+        return $products;
+    }
+
+
+    public function getProductsByCategory($id){
+        $data = Category::with(['children','products'])->where('id',$id)->get()->toArray(); // categories with 1 level of children
+        $categories = $this->listCategoriesWithProducts($data); // creating infinite levels of children, children of children!!!
+        return $categories;
     }
 }

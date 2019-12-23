@@ -7,18 +7,13 @@
 @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "~@fortawesome/fontawesome-free/scss/solid.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
-
 @import '~owl.carousel/dist/assets/owl.carousel.min.css';
 @import '~owl.carousel/dist/assets/owl.theme.default.min.css';
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
-
 @import "~admin-lte/dist/css/AdminLTE.min.css";
 @import "~admin-lte/dist/css/skins/_all-skins.min.css";
-
 @import '~sweetalert2/src/sweetalert2.scss';
-
-
 @import "slick";
 @import "mixin";
 @import "media";
@@ -106,6 +101,7 @@ header {
 
         .cart {
             text-align: center;
+
             button {
                 border: 1px solid #919191;
                 color: $greyDarken;
@@ -133,39 +129,55 @@ header {
         border-bottom: 2px solid $red;
         padding: 25px 0;
         position: relative;
+
         li {
             a {
                 color: $brown;
                 font-size: 17px;
             }
         }
-        #categories-items{
+
+        #categories-items {
             position: absolute;
             top: 54px;
             z-index: 999;
             display: none;
             flex-direction: column;
             align-items: center;
-            padding: 35px 100px ;
+            padding: 35px 100px;
             background: #fff;
-            .triangle-red{
+
+            .triangle-red {
                 border: 20px solid transparent;
                 border-bottom: 20px solid $red;
                 position: absolute;
                 top: -40px;
-                left:85px;
+                left: 85px;
             }
-            .triangle{
+
+            .triangle {
                 border: 20px solid transparent;
                 border-bottom: 20px solid white;
                 position: absolute;
                 top: -38px;
-                left:85px;
+                left: 85px;
             }
-            .categories-item{
+
+            .categories-item {
                 margin: 0 15px;
+
+                .router-link-active {
+                    &:visited {
+                        h2{
+                            color: $red;
+
+                        }
+                    }
+
+                }
             }
-            .border{
+
+            .border {
                 height: 35px;
                 width: 100%;
                 position: absolute;
@@ -174,12 +186,21 @@ header {
                 border: none !important;
             }
         }
-        #categoriesShow a{
+
+        #categoriesShow a {
             padding: 3px 10px;
             border-radius: 50px;
-            &:hover{
+
+            &:hover {
                 background: $red;
-                color:white;
+                color: white;
+            }
+        }
+
+        #categoriesShow .categories-title {
+            &:hover {
+                background: transparent !important;
+                color: #503737 !important;
             }
         }
     }
@@ -288,7 +309,11 @@ header {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                height: 350px;
+                height: 250px;
+                img{
+                    max-width: 100%;
+                    max-height: 100%;
+                }
             }
 
             .discount-items-text {
@@ -374,7 +399,7 @@ header {
             bottom: 35px;
             margin: 0 auto;
             padding: 10px;
-            background: $white;
+            background: transparent;
             width: min-content;
 
             li {
@@ -580,21 +605,23 @@ footer {
     background-size: cover;
 }
 
-.user-name{
+.user-name {
     padding: 20px;
-    color:$white;
+    color: $white;
 }
 
-.router-link-active{
+.router-link-active {
     font-weight: bold;
 
-    &:hover{
+    &:hover {
         text-decoration: none;
     }
-    &:visited{
-        color:$red;
+
+    &:visited {
+        color: $red;
     }
 }
-.__cov-progress{
+
+.__cov-progress {
     height: 5px !important;
 }

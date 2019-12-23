@@ -1,7 +1,15 @@
 <template>
     <div class="container">
         <div class="row justify-content-between">
-            <div class="col-lg-5">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Search" v-model="query"
+                       @keydown.enter.prevent="search">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" @click.prevent="search"><i
+                        class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="col-lg-4">
                 <form @submit.prevent="addNewCategory">
                     <h3 class="alert alert-success text-center">Add new category</h3>
                     <div class="form-group">
@@ -31,7 +39,7 @@
                 </form>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
@@ -62,12 +70,11 @@
                                 <i class="fas fa-trash-alt"></i>
                             </button>
 
-                            <!--                            todo pressing on the link show all products in that category-->
-                            <!--                            <router-link :to="{name:'product-item',params:{id:product.id}}">-->
-                            <!--                                <button class="btn btn-info" :title="'View'">-->
-                            <!--                                    <i class="fas fa-eye"></i>-->
-                            <!--                                </button>-->
-                            <!--                            </router-link>-->
+                            <router-link :to="{name:'category',params:{id:category.id}}">
+                                <button class="btn btn-info" :title="'View'">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </router-link>
 
                         </td>
 
@@ -102,7 +109,8 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="parent_id">Parent category</label>
-                                    <CategoriesList :categories="categories" :selectedID="formEdit.parent_id"></CategoriesList>
+                                    <CategoriesList :categories="categories"
+                                                    :selectedID="formEdit.parent_id"></CategoriesList>
 
                                 </div>
                                 <div class="form-group">
@@ -136,6 +144,7 @@
         data() {
             return {
                 categories: {},
+                query: '',
                 form: new Form({
                     title: '',
                     photo: '',
@@ -150,6 +159,25 @@
             }
         },
         methods: {
+            search() {
+                this.$Progress.start();
+
+                let query = this.query;
+                this.axios.get('/api/findCategory?q=' + query)
+                    .then((data) => {
+                        this.$Progress.finish();
+                        this.categories = data.data;
+                    }).catch(() => {
+
+                    this.$Progress.fail();
+
+                    Swal.fire(
+                        'Error!',
+                        'Something\'s gone wrong.',
+                        'error'
+                    )
+                });
+            },
             getAllCategories() {
                 this.axios.get('/api/category').then((response) => {
                     this.categories = response.data;
@@ -239,16 +267,16 @@
         },
         mounted() {
             let categoriesComponent = this;
-            Event.$on('formParentID',function ([parentID,selectedID]) {
-                if(selectedID || selectedID === null){
+            Event.$on('formParentID', function ([parentID, selectedID]) {
+                if (selectedID || selectedID === null) {
                     categoriesComponent.formEdit.parent_id = parentID;
-                }else{
+                } else {
                     categoriesComponent.form.parent_id = parentID;
                 }
             })
 
         },
-        components:{
+        components: {
             CategoriesList,
         },
 
