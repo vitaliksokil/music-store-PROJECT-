@@ -625,3 +625,38 @@ footer {
 .__cov-progress {
     height: 5px !important;
 }
+
+.feedbacks{
+
+}
+.feedbacks-title {
+    h1 {
+        color: $brown;
+        text-align: center;
+    }
+}
+.feedback{
+    border: 4px solid $golden;
+    padding: 10px;
+    margin-bottom: 20px;
+    .feedback-username{
+        h5{
+            font-size: 20px;
+            margin-bottom: 0;
+        }
+    }
+    p{
+        text-decoration: none;
+        text-transform: none;
+    }
+}
+.likes{
+    i{
+        margin-right: 15px;
+        font-size: 20px;
+
+    }
+}
+.cursor-pointer{
+    cursor: pointer;
+}

@@ -4973,6 +4973,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../auth */ "./resources/js/auth.js");
 //
 //
 //
@@ -4993,17 +4994,130 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProductItem",
   data: function data() {
     return {
       currentProductID: this.$route.params.id,
+      feedback: '',
+      user_id: '',
+      errors: {},
       productItem: {
         title: '',
         price: '',
         description: '',
-        photo: ''
-      }
+        photo: '',
+        feedbacks: []
+      },
+      isUserLF: false,
+      userFeedback: {},
+      isAuth: false
     };
   },
   methods: {
@@ -5011,15 +5125,99 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.axios.get('/api/product-get-current/' + this.currentProductID).then(function (response) {
-        _this.productItem.title = response.data.title;
-        _this.productItem.price = response.data.price;
-        _this.productItem.description = response.data.description;
-        _this.productItem.photo = response.data.photo;
+        _this.productItem = response.data;
+
+        _this.isUserLeftFeedback();
       })["catch"]();
+    },
+    addFeedback: function addFeedback() {
+      var _this2 = this;
+
+      this.axios.post('/api/add-feedback', {
+        'feedback': this.feedback,
+        'product_id': this.productItem.id,
+        'user_id': this.user_id
+      }).then(function (response) {
+        _this2.errors.feedback = '';
+        $('#addFeedback').modal('hide');
+        _this2.feedback = '';
+        Swal.fire(response.data.message, '', response.data.messageType);
+
+        _this2.getCurrentProduct();
+      })["catch"](function (error) {
+        _this2.errors = error.response.data.errors;
+
+        if (error.response.status === 403 || error.response.status === 400) {
+          Swal.fire(error.response.data.message, '', 'error');
+          $('#addFeedback').modal('hide');
+        }
+      });
+    },
+    isUserLeftFeedback: function isUserLeftFeedback() {
+      var _this3 = this;
+
+      var returnValue = false;
+      this.axios.post('/api/is-user-left-feedback', {
+        'product_id': this.productItem.id,
+        'user_id': this.user_id
+      }).then(function (response) {
+        _this3.userFeedback = response.data.userFeedback;
+        _this3.isUserLF = true;
+      })["catch"](function (error) {
+        _this3.isUserLF = false;
+      });
+    },
+    editFeedback: function editFeedback() {
+      var _this4 = this;
+
+      this.axios.put('/api/feedback', this.userFeedback).then(function (response) {
+        $('#editFeedback').modal('hide');
+        Swal.fire(response.data.message, '', response.data.messageType);
+
+        _this4.getCurrentProduct();
+      })["catch"](function (error) {
+        _this4.errors = error.response.data.errors;
+
+        if (error.response.status === 400) {
+          Swal.fire(error.response.data.message, '', 'error');
+          $('#editFeedback').modal('hide');
+        }
+      });
+    },
+    deleteFeedback: function deleteFeedback() {
+      var _this5 = this;
+
+      var pi = this;
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          pi.axios["delete"]('/api/feedback/' + _this5.userFeedback.id).then(function (response) {
+            Swal.fire('Deleted!', 'Your feedback has been deleted.', 'success');
+
+            _this5.getCurrentProduct();
+          })["catch"](function (error) {
+            Swal.fire('Error!', 'Something went wrong!!!', 'error');
+          });
+        }
+      });
     }
   },
   mounted: function mounted() {
     this.getCurrentProduct();
+  },
+  created: function created() {
+    if (localStorage.getItem('user')) {
+      this.user_id = JSON.parse(localStorage.getItem('user')).id;
+    }
+
+    this.isAuth = auth.check();
   }
 });
 
@@ -11677,7 +11875,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nh2[data-v-962a54bc]{\n        text-align: left;\n}\n.title[data-v-962a54bc]{\n        margin-bottom: 40px;\n}\nimg[data-v-962a54bc]{\n        width: 100%;\n}\n.price[data-v-962a54bc]{\n    font-size: 30px;\n    margin-bottom: 70px;\n}\n.price span[data-v-962a54bc]{\nbackground: #d8d8d8;\n        padding: 3px 13px;\n        border-radius: 5px;\n}\n.description[data-v-962a54bc]{\n        padding: 30px 0;\n}\n.product-info[data-v-962a54bc]{\n        margin-left: 30px;\n}\n", ""]);
+exports.push([module.i, "\nh2[data-v-962a54bc] {\n    text-align: left;\n}\n.title[data-v-962a54bc] {\n    margin-bottom: 40px;\n}\nimg[data-v-962a54bc] {\n    width: 100%;\n}\n.price[data-v-962a54bc] {\n    font-size: 30px;\n    margin-bottom: 70px;\n}\n.price span[data-v-962a54bc] {\n    background: #d8d8d8;\n    padding: 3px 13px;\n    border-radius: 5px;\n}\n.description[data-v-962a54bc] {\n    padding: 30px 0;\n}\n.product-info[data-v-962a54bc] {\n    margin-left: 30px;\n}\n", ""]);
 
 // exports
 
@@ -72176,10 +72374,393 @@ var render = function() {
           _c("hr")
         ])
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        !_vm.isUserLF && _vm.isAuth
+          ? _c("div", { staticClass: "add-feedback" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success mb-3",
+                  attrs: {
+                    "data-toggle": "modal",
+                    "data-target": "#addFeedback"
+                  }
+                },
+                [_vm._v("Add feedback\n                ")]
+              )
+            ])
+          : _vm.isUserLF && typeof _vm.userFeedback != "undefined"
+          ? _c("div", { staticClass: "user-feedback" }, [
+              _c("div", { staticClass: "feedback border-primary" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "feedback-username d-flex justify-content-between align-items-center"
+                  },
+                  [
+                    _c("h5", [
+                      _c("span", { staticClass: "text-primary" }, [
+                        _vm._v("YOUR FEEDBACK")
+                      ]),
+                      _vm._v(", " + _vm._s(_vm.userFeedback.user.name))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "d-flex flex-column" }, [
+                      _c("small", [
+                        _c("span", { staticClass: "text-primary" }, [
+                          _vm._v("Created at:")
+                        ]),
+                        _vm._v(_vm._s(_vm.userFeedback.created_at))
+                      ]),
+                      _vm._v(" "),
+                      _c("small", [
+                        _c("span", { staticClass: "text-primary" }, [
+                          _vm._v("Updated at:")
+                        ]),
+                        _vm._v(_vm._s(_vm.userFeedback.updated_at))
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "feedback-text",
+                  domProps: { innerHTML: _vm._s(_vm.userFeedback.feedback) }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "likes d-flex justify-content-end" }, [
+                  _c("i", { staticClass: "fas fa-thumbs-up" }),
+                  _vm._v(" "),
+                  _c("i", { staticClass: "fas fa-thumbs-down" }),
+                  _vm._v(" "),
+                  _c("i", {
+                    staticClass: "fas fa-edit green cursor-pointer",
+                    attrs: {
+                      "data-toggle": "modal",
+                      "data-target": "#editFeedback"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("i", {
+                    staticClass: "fas fa-trash-alt red cursor-pointer",
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.deleteFeedback($event)
+                      }
+                    }
+                  })
+                ])
+              ])
+            ])
+          : _c(
+              "div",
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "text-primary",
+                    attrs: { to: { name: "login" } }
+                  },
+                  [_vm._v("Login to left feedback")]
+                )
+              ],
+              1
+            ),
+        _vm._v(" "),
+        Array.isArray(_vm.productItem.feedbacks) &&
+        _vm.productItem.feedbacks.length
+          ? _c(
+              "div",
+              { staticClass: "feedbacks" },
+              _vm._l(_vm.productItem.feedbacks, function(feedback) {
+                return _c("div", { staticClass: "feedback" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "feedback-username d-flex justify-content-between align-items-center"
+                    },
+                    [
+                      _c("h5", [_vm._v(_vm._s(feedback.user.name))]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "d-flex flex-column" }, [
+                        _c("small", [
+                          _c("span", { staticClass: "text-primary" }, [
+                            _vm._v("Created at:")
+                          ]),
+                          _vm._v(_vm._s(feedback.created_at))
+                        ]),
+                        _vm._v(" "),
+                        _c("small", [
+                          _c("span", { staticClass: "text-primary" }, [
+                            _vm._v("Updated at:")
+                          ]),
+                          _vm._v(_vm._s(feedback.updated_at))
+                        ])
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _c("div", {
+                    staticClass: "feedback-text",
+                    domProps: { innerHTML: _vm._s(feedback.feedback) }
+                  }),
+                  _vm._v(" "),
+                  _vm._m(1, true)
+                ])
+              }),
+              0
+            )
+          : _c("div", [
+              _c("h2", { staticClass: "red text-center" }, [
+                _vm._v("\n                    NO FEEDBACKS\n                ")
+              ])
+            ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addFeedback",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addFeedbackTitle",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.addFeedback($event)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "feedback" } }, [
+                          _vm._v("Leave your feedback:")
+                        ]),
+                        _vm._v(" "),
+                        _c("vue-editor", {
+                          attrs: { id: "feedback" },
+                          model: {
+                            value: _vm.feedback,
+                            callback: function($$v) {
+                              _vm.feedback = $$v
+                            },
+                            expression: "feedback"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.feedback
+                          ? _c("div", { staticClass: "red" }, [
+                              _vm._v(_vm._s(_vm.errors.feedback[0]))
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Submit")]
+                    )
+                  ]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "editFeedback",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "editFeedbackTitle",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.editFeedback($event)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("label", { attrs: { for: "feedback" } }, [
+                          _vm._v("Edit your feedback")
+                        ]),
+                        _vm._v(" "),
+                        _c("vue-editor", {
+                          attrs: { id: "edit" },
+                          model: {
+                            value: _vm.userFeedback.feedback,
+                            callback: function($$v) {
+                              _vm.$set(_vm.userFeedback, "feedback", $$v)
+                            },
+                            expression: "userFeedback.feedback"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _vm.errors.feedback
+                          ? _c("div", { staticClass: "red" }, [
+                              _vm._v(_vm._s(_vm.errors.feedback[0]))
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Submit")]
+                    )
+                  ]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "feedbacks-title" }, [
+      _c("h1", [_vm._v("Feedbacks")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "likes d-flex justify-content-end" }, [
+      _c("i", { staticClass: "fas fa-thumbs-up" }),
+      _vm._v(" "),
+      _c("i", { staticClass: "fas fa-thumbs-down" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "addFeedbackTitle" } },
+        [_vm._v("Add new feedback")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "editFeedbackTitle" } },
+        [_vm._v("Add new feedback")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 

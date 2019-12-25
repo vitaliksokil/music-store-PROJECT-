@@ -123,6 +123,6 @@ class ProductController extends Controller
 
     public function getCurrentProductByID($id)
     {
-        return Product::findOrFail($id);
+        return Product::with('feedbacks.user:name,id')->findOrFail($id);
     }
 }

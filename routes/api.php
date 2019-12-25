@@ -50,6 +50,13 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/site-info', 'SiteController@update');
 
 
+    //feedbacks
+    Route::post('/add-feedback','FeedbackController@create');
+    Route::post('/is-user-left-feedback','FeedbackController@isUserLeftFeedback');
+    Route::put('/feedback','FeedbackController@update');
+    Route::delete('/feedback/{id}','FeedbackController@delete');
+
+
 });
 
 
