@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Traits\CategoriesProductsTrait;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    use CategoriesProductsTrait;
 
     public function search(){
         if($search = \Request::get('q')){
@@ -193,35 +195,5 @@ class CategoryController extends Controller
     }
 
 
-    function listCategoriesWithProducts(Array $categories)
-    {
-        static $products = [];
 
-        foreach ($categories as $category) {
-
-            $categoryData = Category::with(['children','products'])->where('id', $category['id'])->first();
-
-            $categoryChildren = $categoryData->children->toArray();
-            $categoryProducts = $categoryData->products->toArray();
-            if($categoryProducts){
-                if(is_array($categoryProducts)){
-                    foreach ($categoryProducts as $cat){
-                        $products[] = $cat;
-                    }
-                }
-            }
-            if($categoryChildren){
-               $this->listCategoriesWithProducts($categoryChildren);
-            }
-
-        }
-        return $products;
-    }
-
-
-    public function getProductsByCategory($id){
-        $data = Category::with(['children','products'])->where('id',$id)->get()->toArray(); // categories with 1 level of children
-        $categories = $this->listCategoriesWithProducts($data); // creating infinite levels of children, children of children!!!
-        return $categories;
-    }
 }

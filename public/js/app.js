@@ -5099,9 +5099,69 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProductItem",
+  watch: {
+    $route: function $route() {
+      this.currentProductID = this.$route.params.id;
+      this.init();
+    }
+  },
   data: function data() {
     return {
       currentProductID: this.$route.params.id,
@@ -5117,10 +5177,15 @@ __webpack_require__.r(__webpack_exports__);
       },
       isUserLF: false,
       userFeedback: {},
-      isAuth: false
+      isAuth: false,
+      recommendedProducts: {}
     };
   },
   methods: {
+    init: function init() {
+      this.getCurrentProduct();
+      this.getRecommendedProducts();
+    },
     getCurrentProduct: function getCurrentProduct() {
       var _this = this;
 
@@ -5130,22 +5195,68 @@ __webpack_require__.r(__webpack_exports__);
         _this.isUserLeftFeedback();
       })["catch"]();
     },
-    addFeedback: function addFeedback() {
+    isLiked: function isLiked(likes) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = likes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var like = _step.value;
+
+          if (like.user_id == this.user_id) {
+            return true;
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return false;
+    },
+    like: function like(feedback, _like) {
       var _this2 = this;
+
+      // if like = 1 it's like, if 0 - dislike
+      this.axios.post('/api/like', {
+        'feedback_id': feedback.id,
+        'like': _like
+      }).then(function (response) {
+        _this2.axios.get('/api/feedback/get-likes/' + feedback.id).then(function (response) {
+          feedback.likes = response.data.likes;
+          feedback.dislikes = response.data.dislikes;
+        });
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    addFeedback: function addFeedback() {
+      var _this3 = this;
 
       this.axios.post('/api/add-feedback', {
         'feedback': this.feedback,
         'product_id': this.productItem.id,
         'user_id': this.user_id
       }).then(function (response) {
-        _this2.errors.feedback = '';
+        _this3.errors.feedback = '';
         $('#addFeedback').modal('hide');
-        _this2.feedback = '';
+        _this3.feedback = '';
         Swal.fire(response.data.message, '', response.data.messageType);
 
-        _this2.getCurrentProduct();
+        _this3.getCurrentProduct();
       })["catch"](function (error) {
-        _this2.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
 
         if (error.response.status === 403 || error.response.status === 400) {
           Swal.fire(error.response.data.message, '', 'error');
@@ -5154,29 +5265,56 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     isUserLeftFeedback: function isUserLeftFeedback() {
-      var _this3 = this;
+      var _this4 = this;
 
       var returnValue = false;
       this.axios.post('/api/is-user-left-feedback', {
         'product_id': this.productItem.id,
         'user_id': this.user_id
       }).then(function (response) {
-        _this3.userFeedback = response.data.userFeedback;
-        _this3.isUserLF = true;
+        var allFeedbacks = _this4.productItem.feedbacks;
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = allFeedbacks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var feedback = _step2.value;
+
+            if (feedback.user_id == _this4.user_id) {
+              _this4.userFeedback = feedback;
+            }
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+              _iterator2["return"]();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+
+        _this4.isUserLF = true;
       })["catch"](function (error) {
-        _this3.isUserLF = false;
+        _this4.isUserLF = false;
       });
     },
     editFeedback: function editFeedback() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.axios.put('/api/feedback', this.userFeedback).then(function (response) {
         $('#editFeedback').modal('hide');
         Swal.fire(response.data.message, '', response.data.messageType);
 
-        _this4.getCurrentProduct();
+        _this5.getCurrentProduct();
       })["catch"](function (error) {
-        _this4.errors = error.response.data.errors;
+        _this5.errors = error.response.data.errors;
 
         if (error.response.status === 400) {
           Swal.fire(error.response.data.message, '', 'error');
@@ -5185,7 +5323,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteFeedback: function deleteFeedback() {
-      var _this5 = this;
+      var _this6 = this;
 
       var pi = this;
       Swal.fire({
@@ -5198,19 +5336,37 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          pi.axios["delete"]('/api/feedback/' + _this5.userFeedback.id).then(function (response) {
+          pi.axios["delete"]('/api/feedback/' + _this6.userFeedback.id).then(function (response) {
             Swal.fire('Deleted!', 'Your feedback has been deleted.', 'success');
 
-            _this5.getCurrentProduct();
+            _this6.getCurrentProduct();
           })["catch"](function (error) {
             Swal.fire('Error!', 'Something went wrong!!!', 'error');
           });
         }
       });
+    },
+    getRecommendedProducts: function getRecommendedProducts() {
+      var _this7 = this;
+
+      this.axios.get('/api/get-recommended-products/' + this.currentProductID).then(function (response) {
+        _this7.recommendedProducts = response.data;
+        setTimeout(function () {
+          $('#recommended-products').slick({
+            infinite: false,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            zIndex: 0,
+            prevArrow: "<button type=\"button\" class=\"btn-prev\"><i class=\"fas fa-chevron-left\"></i></button>",
+            nextArrow: "<button type=\"button\" class=\"btn-next\"><i class=\"fas fa-chevron-right\"></i></button>",
+            adaptiveHeight: true
+          });
+        }, 0);
+      })["catch"](function (error) {});
     }
   },
   mounted: function mounted() {
-    this.getCurrentProduct();
+    this.init();
   },
   created: function created() {
     if (localStorage.getItem('user')) {
@@ -72341,7 +72497,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", { key: _vm.currentProductID, staticClass: "container" }, [
     _c("div", { staticClass: "row mt-5 mb-5" }, [
       _c("div", { staticClass: "col-lg-6 d-flex justify-content-center" }, [
         _c("div", { staticClass: "img" }, [
@@ -72379,6 +72535,93 @@ var render = function() {
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-lg-12" }, [
         _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.recommendedProducts.length,
+                expression: "recommendedProducts.length"
+              }
+            ],
+            staticClass: "recommended-products discounts-items",
+            attrs: { id: "recommended-products" }
+          },
+          _vm._l(_vm.recommendedProducts, function(recommendedProduct) {
+            return _c(
+              "router-link",
+              {
+                staticClass: "discount-item-wrap",
+                attrs: {
+                  replace: "",
+                  to: {
+                    name: "product-item",
+                    params: { id: recommendedProduct.id }
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "discount-item d-flex flex-column" }, [
+                  _c("div", { staticClass: "discount-item-img" }, [
+                    _c("img", {
+                      attrs: {
+                        src: "/images/products/" + recommendedProduct.photo,
+                        alt: ""
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "discount-items-text" }, [
+                    _c("h3", [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(recommendedProduct.title) +
+                          "\n                            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", {
+                      domProps: {
+                        innerHTML: _vm._s(recommendedProduct.description)
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "price" }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(recommendedProduct.price) +
+                          " "
+                      ),
+                      _c("i", { staticClass: "fas fa-ruble-sign" })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "action align-self-center" }, [
+                  _c("ul", { staticClass: "d-flex justify-content-center" }, [
+                    _c("li", [
+                      _c("i", { staticClass: "fas fa-shopping-basket" })
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [_c("i", { staticClass: "fas fa-chart-bar" })]),
+                    _vm._v(" "),
+                    _c("li", [_c("i", { staticClass: "fas fa-heart" })])
+                  ])
+                ])
+              ]
+            )
+          }),
+          1
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12" }, [
+        _vm._m(1),
         _vm._v(" "),
         !_vm.isUserLF && _vm.isAuth
           ? _c("div", { staticClass: "add-feedback" }, [
@@ -72437,9 +72680,40 @@ var render = function() {
                 }),
                 _vm._v(" "),
                 _c("div", { staticClass: "likes d-flex justify-content-end" }, [
-                  _c("i", { staticClass: "fas fa-thumbs-up" }),
+                  _c("div", [
+                    _c("i", {
+                      staticClass: "fas fa-thumbs-up cursor-pointer",
+                      class: {
+                        cyan: _vm.isLiked(_vm.userFeedback.likes, _vm.feedback)
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.like(_vm.userFeedback, 1)
+                        }
+                      }
+                    }),
+                    _c("small", [_vm._v(_vm._s(_vm.userFeedback.likes.length))])
+                  ]),
                   _vm._v(" "),
-                  _c("i", { staticClass: "fas fa-thumbs-down" }),
+                  _c("div", [
+                    _c("i", {
+                      staticClass: "fas fa-thumbs-down cursor-pointer",
+                      class: {
+                        lightred: _vm.isLiked(_vm.userFeedback.dislikes)
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.like(_vm.userFeedback, 0)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("small", [
+                      _vm._v(_vm._s(_vm.userFeedback.dislikes.length))
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("i", {
                     staticClass: "fas fa-edit green cursor-pointer",
@@ -72517,7 +72791,42 @@ var render = function() {
                     domProps: { innerHTML: _vm._s(feedback.feedback) }
                   }),
                   _vm._v(" "),
-                  _vm._m(1, true)
+                  _c(
+                    "div",
+                    { staticClass: "likes d-flex justify-content-end" },
+                    [
+                      _c("div", [
+                        _c("i", {
+                          staticClass: "fas fa-thumbs-up cursor-pointer",
+                          class: {
+                            cyan: _vm.isLiked(feedback.likes, feedback)
+                          },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.like(feedback, 1)
+                            }
+                          }
+                        }),
+                        _c("small", [_vm._v(_vm._s(feedback.likes.length))])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", [
+                        _c("i", {
+                          staticClass: "fas fa-thumbs-down cursor-pointer",
+                          class: { lightred: _vm.isLiked(feedback.dislikes) },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.like(feedback, 0)
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("small", [_vm._v(_vm._s(feedback.dislikes.length))])
+                      ])
+                    ]
+                  )
                 ])
               }),
               0
@@ -72697,17 +73006,15 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "feedbacks-title" }, [
-      _c("h1", [_vm._v("Feedbacks")])
+      _c("h1", [_vm._v("Recommended for you")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "likes d-flex justify-content-end" }, [
-      _c("i", { staticClass: "fas fa-thumbs-up" }),
-      _vm._v(" "),
-      _c("i", { staticClass: "fas fa-thumbs-down" })
+    return _c("div", { staticClass: "feedbacks-title" }, [
+      _c("h1", [_vm._v("Feedbacks")])
     ])
   },
   function() {

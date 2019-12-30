@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Feedback;
+use App\Http\Traits\LikesTrait;
 use App\Product;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ use function GuzzleHttp\Psr7\str;
 
 class FeedbackController extends Controller
 {
+    use LikesTrait;
+
     public function create(Request $request)
     {
         $temp = $request['feedback'];
@@ -79,5 +82,10 @@ class FeedbackController extends Controller
         }else{
             abort(400, 'Something went wrong!!!');
         }
+    }
+    public function getLikes($id){
+        $feedback = Feedback::with('likes')->find($id);
+        $this->divisionToLikesDislikes($feedback);
+        return $feedback;
     }
 }

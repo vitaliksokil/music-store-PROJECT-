@@ -21,11 +21,13 @@ Route::get('/verify-reset-token/{token}-{email}', 'Api\AuthController@verifyRese
 Route::get('/product-get-current/{id}', 'ProductController@getCurrentProductByID');
 
 
-Route::post('/send-verification-email', 'Auth\EmailVerificationController@sendVerificationEmail');
-Route::get('/verify-email/{token}', 'Auth\EmailVerificationController@verify');
+
+
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'API\AuthController@logout');
     Route::get('/get-user', 'API\AuthController@getUser');
+    Route::post('/send-verification-email', 'Auth\EmailVerificationController@sendVerificationEmail');
+    Route::get('/verify-email/{token}', 'Auth\EmailVerificationController@verify');
 
     Route::get('/findUser','Api\UserController@search');
     Route::get('/user','Api\UserController@index');
@@ -45,7 +47,6 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/product-edit/{id}', 'ProductController@update');
     Route::delete('/product-destroy/{id}', 'ProductController@destroy');
     Route::get('/product-category', 'ProductController@getProductCategory');
-    Route::get('/findProduct', 'ProductController@search');
 
     Route::put('/site-info', 'SiteController@update');
 
@@ -55,10 +56,17 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/is-user-left-feedback','FeedbackController@isUserLeftFeedback');
     Route::put('/feedback','FeedbackController@update');
     Route::delete('/feedback/{id}','FeedbackController@delete');
+    Route::get('/feedback/get-likes/{id}','FeedbackController@getLikes');
+
+    //likes
+    Route::post('/like','LikeController@like');
+
 
 
 });
 
+Route::get('/findProduct', 'ProductController@search');
+Route::get('/get-recommended-products/{id}', 'ProductController@getRecommendedProducts'); // id - it's product's id
 
 Route::get('/site-info', 'SiteController@getInfo');
 Route::get('/category-children','CategoryController@getChildren');

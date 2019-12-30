@@ -2,27 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Feedback;
+use App\Http\Traits\CategoriesProductsTrait;
 use App\Product;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use App\Http\Traits\LikesTrait;
 
 class ProductController extends Controller
 {
+    use LikesTrait,CategoriesProductsTrait;
+
     public function __construct()
     {
 
     }
 
-    public function search(){
-        if($search = \Request::get('q')){
-            $products =Product::where(function ($query) use ($search){
-                $query->where('id','LIKE',"%$search%")
-                    ->orWhere('title','LIKE',"%$search%")
-                    ->orWhere('price','LIKE',"%$search%")
-                    ->orWhere('description','LIKE',"%$search%");
+    public function search()
+    {
+        if ($search = \Request::get('q')) {
+            $products = Product::where(function ($query) use ($search) {
+                $query->where('id', 'LIKE', "%$search%")
+                    ->orWhere('title', 'LIKE', "%$search%")
+                    ->orWhere('price', 'LIKE', "%$search%")
+                    ->orWhere('description', 'LIKE', "%$search%");
             })->get();
-        }else{
+        } else {
             $products = $this->getProducts();
         }
         return $products;
@@ -87,7 +94,7 @@ class ProductController extends Controller
     {
         $this->authorize('isAdmin');
 
-        return  Product::with('category:id')->where('id',$id)->get();
+        return Product::with('category:id')->where('id', $id)->get();
     }
 
     public function destroy($id)
@@ -123,6 +130,52 @@ class ProductController extends Controller
 
     public function getCurrentProductByID($id)
     {
-        return Product::with('feedbacks.user:name,id')->findOrFail($id);
+        $product = Product::with('feedbacks.user:name,id', 'feedbacks.likes')->findOrFail($id);
+        // counting likes and dislikes
+        // dividing one likes array into likes and dislikes!!!
+        $this->divisionToLikesDislikes($product->feedbacks);
+        return $product;
     }
+
+    public function getRecommendedProducts($id)
+    {
+        // recommended products - it's some random products from the same category!!!
+        // if there is not many products in that category then take from the others
+
+        $numberOfRecommendedProducts = 10;
+
+        $categoryID = Product::find($id)->category->first()->id;
+        $category = Category::find($categoryID);
+        $products = $category->products;
+
+        while (count($products) < $numberOfRecommendedProducts && $category->parent_id) {
+            $products = $this->getProductsByCategory($category->parent_id);
+            $category = Category::find($category->parent_id);
+        }
+        if(count($products) > $numberOfRecommendedProducts){
+            $newProducts=[];
+            $randomElementsKeys = array_rand($products,$numberOfRecommendedProducts);
+            foreach($randomElementsKeys as $randomKey){
+                $newProducts[] = $products[$randomKey];
+            }
+            shuffle($newProducts);
+            $this->deleteCurrentProduct($newProducts,$id); // deleting current product from recommended
+            return $newProducts;
+        }
+        shuffle($products);
+        $this->deleteCurrentProduct($products,$id); // deleting current product from recommended
+        return $products;
+
+    }
+    private function deleteCurrentProduct(&$products, $currentProductID){
+        for ($i = 0; $i<count($products); $i++){
+            if($products[$i]['id'] == $currentProductID){
+                unset($products[$i]);
+                $products = array_values($products);
+                break;
+            }
+        }
+    }
+
+
 }

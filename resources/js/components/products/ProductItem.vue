@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" :key="currentProductID">
         <div class="row mt-5 mb-5">
             <div class="col-lg-6 d-flex justify-content-center">
                 <div class="img"><img :src="`/images/products/${productItem.photo}`" alt=""></div>
@@ -12,6 +12,41 @@
                     <h2>Description</h2>
                     <div class="description" v-html="productItem.description"></div>
                     <hr>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="feedbacks-title">
+                    <h1>Recommended for you</h1>
+                </div>
+                <div class="recommended-products discounts-items" id="recommended-products"
+                     v-show="recommendedProducts.length">
+                    <router-link replace class="discount-item-wrap" v-for="recommendedProduct in recommendedProducts"
+                                 :to="{name:'product-item',params:{id:recommendedProduct.id}}">
+                        <div class="discount-item d-flex flex-column">
+                            <div class="discount-item-img"><img :src="`/images/products/${recommendedProduct.photo}`"
+                                                                alt=""></div>
+                            <div class="discount-items-text">
+                                <h3>
+                                    {{recommendedProduct.title}}
+                                </h3>
+                                <p v-html="recommendedProduct.description"></p>
+                                <div class="price">
+                                    {{recommendedProduct.price}} <i class="fas fa-ruble-sign"></i>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="action align-self-center">
+                            <ul class="d-flex justify-content-center">
+                                <li><i class="fas fa-shopping-basket"></i></li>
+                                <li><i class="fas fa-chart-bar"></i></li>
+                                <li><i class="fas fa-heart"></i></li>
+                            </ul>
+                        </div>
+                    </router-link>
+
                 </div>
             </div>
         </div>
@@ -36,8 +71,18 @@
                         <hr>
                         <div class="feedback-text" v-html="userFeedback.feedback"></div>
                         <div class="likes d-flex justify-content-end">
-                            <i class="fas fa-thumbs-up"></i>
-                            <i class="fas fa-thumbs-down"></i>
+                            <div><i @click.prevent="like(userFeedback,1)" class="fas fa-thumbs-up cursor-pointer"
+                                    :class="{'cyan':isLiked(userFeedback.likes,feedback)}"
+                            >
+
+                            </i><small>{{userFeedback.likes.length}}</small>
+                            </div>
+                            <div>
+                                <i @click.prevent="like(userFeedback,0)" class="fas fa-thumbs-down cursor-pointer"
+                                   :class="{'lightred':isLiked(userFeedback.dislikes)}"
+                                ></i>
+                                <small>{{userFeedback.dislikes.length}}</small>
+                            </div>
                             <i class="fas fa-edit green cursor-pointer" data-toggle="modal"
                                data-target="#editFeedback"></i>
                             <i class="fas fa-trash-alt red cursor-pointer" @click.prevent="deleteFeedback"></i>
@@ -59,8 +104,18 @@
                         <hr>
                         <div class="feedback-text" v-html="feedback.feedback"></div>
                         <div class="likes d-flex justify-content-end">
-                            <i class="fas fa-thumbs-up"></i>
-                            <i class="fas fa-thumbs-down"></i>
+                            <div><i @click.prevent="like(feedback,1)" class="fas fa-thumbs-up cursor-pointer"
+                                    :class="{'cyan':isLiked(feedback.likes,feedback)}"
+                            >
+
+                            </i><small>{{feedback.likes.length}}</small>
+                            </div>
+                            <div>
+                                <i @click.prevent="like(feedback,0)" class="fas fa-thumbs-down cursor-pointer"
+                                   :class="{'lightred':isLiked(feedback.dislikes)}"
+                                ></i>
+                                <small>{{feedback.dislikes.length}}</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +170,6 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -128,6 +182,12 @@
 
     export default {
         name: "ProductItem",
+        watch: {
+            $route: function () {
+                this.currentProductID = this.$route.params.id;
+                this.init();
+            }
+        },
         data() {
             return {
                 currentProductID: this.$route.params.id,
@@ -143,15 +203,42 @@
                 },
                 isUserLF: false,
                 userFeedback: {},
-                isAuth: false
+                isAuth: false,
+                recommendedProducts: {},
             }
         },
         methods: {
+            init(){
+                this.getCurrentProduct();
+                this.getRecommendedProducts();
+            },
             getCurrentProduct() {
                 this.axios.get('/api/product-get-current/' + this.currentProductID).then((response) => {
                     this.productItem = response.data;
                     this.isUserLeftFeedback();
                 }).catch();
+            },
+            isLiked(likes) {
+                for (let like of likes) {
+                    if (like.user_id == this.user_id) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            like(feedback, like) {
+                // if like = 1 it's like, if 0 - dislike
+                this.axios.post('/api/like', {
+                    'feedback_id': feedback.id,
+                    'like': like
+                }).then(response => {
+                    this.axios.get('/api/feedback/get-likes/' + feedback.id).then(response => {
+                        feedback.likes = response.data.likes;
+                        feedback.dislikes = response.data.dislikes;
+                    });
+                }).catch(error => {
+                    console.log(error)
+                });
             },
             addFeedback() {
                 this.axios.post('/api/add-feedback',
@@ -188,7 +275,12 @@
                     'product_id': this.productItem.id,
                     'user_id': this.user_id
                 }).then(response => {
-                    this.userFeedback = response.data.userFeedback;
+                    let allFeedbacks = this.productItem.feedbacks;
+                    for (let feedback of allFeedbacks) {
+                        if (feedback.user_id == this.user_id) {
+                            this.userFeedback = feedback;
+                        }
+                    }
                     this.isUserLF = true;
                 }).catch(error => {
                     this.isUserLF = false;
@@ -216,9 +308,9 @@
                     }
                 });
             },
-            deleteFeedback(){
+            deleteFeedback() {
                 let pi = this;
-                 Swal.fire({
+                Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
                     icon: 'warning',
@@ -228,14 +320,14 @@
                     confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.value) {
-                        pi.axios.delete('/api/feedback/'+this.userFeedback.id).then((response)=>{
+                        pi.axios.delete('/api/feedback/' + this.userFeedback.id).then((response) => {
                             Swal.fire(
                                 'Deleted!',
                                 'Your feedback has been deleted.',
                                 'success'
                             );
                             this.getCurrentProduct();
-                        }).catch(error=>{
+                        }).catch(error => {
                             Swal.fire(
                                 'Error!',
                                 'Something went wrong!!!',
@@ -244,10 +336,28 @@
                         })
                     }
                 })
+            },
+            getRecommendedProducts() {
+                this.axios.get('/api/get-recommended-products/' + this.currentProductID).then(response => {
+                    this.recommendedProducts = response.data;
+                    setTimeout(function () {
+                        $('#recommended-products').slick({
+                            infinite: false,
+                            slidesToShow: 5,
+                            slidesToScroll: 1,
+                            zIndex: 0,
+                            prevArrow: "<button type=\"button\" class=\"btn-prev\"><i class=\"fas fa-chevron-left\"></i></button>",
+                            nextArrow: "<button type=\"button\" class=\"btn-next\"><i class=\"fas fa-chevron-right\"></i></button>",
+                            adaptiveHeight: true
+                        });
+                    }, 0)
+                }).catch(error => {
+
+                });
             }
         },
         mounted() {
-            this.getCurrentProduct();
+            this.init();
         },
         created() {
             if (localStorage.getItem('user')) {
@@ -260,6 +370,7 @@
 </script>
 
 <style scoped>
+
     h2 {
         text-align: left;
     }

@@ -12,6 +12,7 @@ class EmailVerificationController extends Controller
 {
     public function sendVerificationEmail()
     {
+
         $user = auth()->user();
         $token = Str::random(60);
         $user->verification_token = $token;

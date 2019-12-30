@@ -652,9 +652,12 @@ footer {
 }
 .likes{
     i{
-        margin-right: 15px;
+        margin-right: 5px;
         font-size: 20px;
-
+    }
+    div{
+        display: flex;
+        margin-right: 20px;
     }
 }
 .cursor-pointer{
