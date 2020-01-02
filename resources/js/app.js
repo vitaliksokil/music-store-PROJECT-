@@ -3,6 +3,7 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -20,7 +21,12 @@ import router from './router.js';
 import Swal from 'sweetalert2'
 import VueProgressBar from 'vue-progressbar'
 import {VueEditor} from "vue2-editor";
+import ShoppingCart from "./components/inserts/ShoppingCart";
 
+import rate from 'vue-rate';
+Vue.use(rate);
+
+Vue.component('shopping-cart', ShoppingCart);
 
 import Gate from './Gate'
 
@@ -75,7 +81,7 @@ const app = new Vue({
             isAuth: auth.check(),
             emailVerify: auth.checkEmailVerification(),
             siteInfo: {},
-            query:''
+            query: '',
         }
     },
     methods: {
@@ -93,14 +99,16 @@ const app = new Vue({
                 this.categories = response.data;
             });
         },
-        mainSearch(){
-            if(this.$route.name !== 'search'){
-                router.push({name:'search',params:{query:this.query}});
-            }else{
-                Event.$emit('mainSearchQuery',this.query)
+        mainSearch() {
+            if (this.$route.name !== 'search') {
+                router.push({name: 'search', params: {query: this.query}});
+            } else {
+                Event.$emit('mainSearchQuery', this.query)
             }
 
-        }
+        },
+
+
     },
     mounted() {
         this.getCategories();
@@ -142,5 +150,6 @@ const app = new Vue({
                 }
             );
         });
+
     }
 }).$mount('#app');

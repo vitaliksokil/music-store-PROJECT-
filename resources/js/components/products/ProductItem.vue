@@ -6,7 +6,9 @@
             </div>
             <div class="col-lg-6">
                 <div class="product-info">
-                    <div class="title"><h2>{{productItem.title}}</h2></div>
+                    <rate :length="5" :value="productItem.productRate" :showcount="true" :readonly="true" />
+                    <div class="title d-flex justify-content-between mt-3"><h2>{{productItem.title}}</h2>
+                        <button @click.prevent="addToShoppingCart" class="btn btn-success" :disabled="isAlreadyInShopCart">Add to shopping cart <i class="fas fa-shopping-basket"></i></button></div>
                     <div class="price">Price:<span>{{productItem.price}}$</span></div>
                     <hr>
                     <h2>Description</h2>
@@ -62,7 +64,10 @@
                 <div class="user-feedback" v-else-if="isUserLF && typeof userFeedback != 'undefined'">
                     <div class="feedback border-primary">
                         <div class="feedback-username d-flex justify-content-between align-items-center">
-                            <h5><span class="text-primary">YOUR FEEDBACK</span>, {{userFeedback.user.name}}</h5>
+                            <h5>
+                                <span class="text-primary">YOUR FEEDBACK</span>, {{userFeedback.user.name}}
+                                <rate :length="5" :value="userFeedback.rate" :readonly="true"/>
+                            </h5>
                             <div class="d-flex flex-column">
                                 <small><span class="text-primary">Created at:</span>{{userFeedback.created_at}}</small>
                                 <small><span class="text-primary">Updated at:</span>{{userFeedback.updated_at}}</small>
@@ -95,7 +100,10 @@
                 <div class="feedbacks" v-if="Array.isArray(productItem.feedbacks) && productItem.feedbacks.length">
                     <div v-for="feedback in productItem.feedbacks" class="feedback">
                         <div class="feedback-username d-flex justify-content-between align-items-center">
-                            <h5>{{feedback.user.name}}</h5>
+                            <h5>
+                                {{feedback.user.name}}
+                                <rate :length="5" :value="feedback.rate" :readonly="true"/>
+                            </h5>
                             <div class="d-flex flex-column">
                                 <small><span class="text-primary">Created at:</span>{{feedback.created_at}}</small>
                                 <small><span class="text-primary">Updated at:</span>{{feedback.updated_at}}</small>
@@ -141,6 +149,8 @@
                         <form @submit.prevent="addFeedback">
                             <div class="form-group">
                                 <label for="feedback">Leave your feedback:</label>
+                                Your rate:
+                                <rate :length="5" :showcount="true" v-model="clientRate" />
                                 <vue-editor v-model="feedback" id="feedback"></vue-editor>
                                 <div class="red" v-if="errors.feedback">{{errors.feedback[0]}}</div>
                             </div>
@@ -156,7 +166,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editFeedbackTitle">Add new feedback</h5>
+                        <h5 class="modal-title" id="editFeedbackTitle">Edit your feedback</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -165,6 +175,8 @@
                         <form @submit.prevent="editFeedback">
                             <div class="form-group">
                                 <label for="feedback">Edit your feedback</label>
+                                Your rate:
+                                <rate :length="5" :showcount="true" v-model="userFeedback.rate" />
                                 <vue-editor v-model="userFeedback.feedback" id="edit"></vue-editor>
                                 <div class="red" v-if="errors.feedback">{{errors.feedback[0]}}</div>
                             </div>
@@ -199,18 +211,31 @@
                     price: '',
                     description: '',
                     photo: '',
-                    feedbacks: []
+                    feedbacks: [],
+                    productRate:0,
                 },
                 isUserLF: false,
                 userFeedback: {},
                 isAuth: false,
                 recommendedProducts: {},
+                isAlreadyInShopCart:false,
+                clientRate:0,
             }
         },
         methods: {
             init(){
+                let pi = this;
                 this.getCurrentProduct();
                 this.getRecommendedProducts();
+                this.isAlreadyInShoppingCart();
+                Event.$on('deletedFromShopCart',function () {
+                    pi.isAlreadyInShoppingCart();
+                })
+            },
+            isAlreadyInShoppingCart(){
+                this.axios.get('/api/shopping-cart/is-exists/' + this.currentProductID).then((response) => {
+                    this.isAlreadyInShopCart = response.data.result;
+                })
             },
             getCurrentProduct() {
                 this.axios.get('/api/product-get-current/' + this.currentProductID).then((response) => {
@@ -245,7 +270,7 @@
                     {
                         'feedback': this.feedback,
                         'product_id': this.productItem.id,
-                        'user_id': this.user_id
+                        'rate': this.clientRate
                     }
                 ).then((response) => {
                     this.errors.feedback = '';
@@ -354,6 +379,17 @@
                 }).catch(error => {
 
                 });
+            },
+            addToShoppingCart(){
+                this.axios.post('/api/shopping-cart',{'product_id': this.currentProductID}).then(response => {
+                    Event.$emit('addedToShoppingCart');
+                    this.isAlreadyInShopCart = true;
+                    Swal.fire(
+                        '',
+                        'This product was successfully added to your shopping cart',
+                        'success'
+                    )
+                })
             }
         },
         mounted() {

@@ -22,6 +22,7 @@ class FeedbackController extends Controller
             'feedback' => 'required|min:10',
         ]);
         $request['feedback'] = $temp;
+        $request['user_id'] = Auth::user()->id;
         try {
             $newFeedback = Feedback::create($request->all());
         } catch (QueryException $e) {
@@ -65,6 +66,7 @@ class FeedbackController extends Controller
         ])->first();
         if($feedback){
             $feedback->feedback = $request->feedback;
+            $feedback->rate = $request->rate;
             $feedback->save();
             return response(['messageType' => 'success', 'message' => 'Your feedback was successfully updated!!!']);
         }else{

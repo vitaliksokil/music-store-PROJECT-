@@ -102,7 +102,7 @@ header {
         .cart {
             text-align: center;
 
-            button {
+            > button {
                 border: 1px solid #919191;
                 color: $greyDarken;
                 border-radius: 3px;
@@ -662,4 +662,36 @@ footer {
 }
 .cursor-pointer{
     cursor: pointer;
+}
+
+.shoppingCart{
+    width: 100%;
+}
+
+.shoppingCartItem{
+    tr{
+        padding-bottom: 10px;
+    }
+    td{
+        padding: 10px;
+    }
+    img{
+        max-width: 100px;
+    }
+    .price{
+        border: 1px solid #67e25e;
+        padding: 10px;
+        font-size: 25px;
+        border-radius: 5px;
+    }
+    .delete{
+        font-size: 25px;
+        cursor: pointer;
+    }
+}
+.modal-dialog{
+    max-width: 1000px;
+}
+.Rate__star{
+    padding: 0 !important;
 }

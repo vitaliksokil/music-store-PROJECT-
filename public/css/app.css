@@ -18836,19 +18836,19 @@ header .header-logo .cart {
   text-align: center;
 }
 
-header .header-logo .cart button {
+header .header-logo .cart > button {
   border: 1px solid #919191;
   color: #444444;
   border-radius: 3px;
   background-color: #f1f1f1;
 }
 
-header .header-logo .cart button i {
+header .header-logo .cart > button i {
   color: #777777;
   margin-right: 10px;
 }
 
-header .header-logo .cart button span {
+header .header-logo .cart > button span {
   padding: 2px 5px;
   border-radius: 10px;
   color: #ffffff;
@@ -19407,5 +19407,41 @@ footer .pages table td {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.shoppingCart {
+  width: 100%;
+}
+
+.shoppingCartItem tr {
+  padding-bottom: 10px;
+}
+
+.shoppingCartItem td {
+  padding: 10px;
+}
+
+.shoppingCartItem img {
+  max-width: 100px;
+}
+
+.shoppingCartItem .price {
+  border: 1px solid #67e25e;
+  padding: 10px;
+  font-size: 25px;
+  border-radius: 5px;
+}
+
+.shoppingCartItem .delete {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.modal-dialog {
+  max-width: 1000px;
+}
+
+.Rate__star {
+  padding: 0 !important;
 }
 

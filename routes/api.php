@@ -20,9 +20,6 @@ Route::post('/reset-password', 'Api\AuthController@resetPassword');
 Route::get('/verify-reset-token/{token}-{email}', 'Api\AuthController@verifyResetToken');
 Route::get('/product-get-current/{id}', 'ProductController@getCurrentProductByID');
 
-
-
-
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'API\AuthController@logout');
     Route::get('/get-user', 'API\AuthController@getUser');
@@ -61,6 +58,13 @@ Route::middleware('auth:api')->group(function () {
     //likes
     Route::post('/like','LikeController@like');
 
+
+    // shopping cart
+    Route::get('/shopping-cart', 'ShoppingCartController@show');
+    Route::post('/shopping-cart', 'ShoppingCartController@create');
+    Route::delete('/shopping-cart/{product_id}', 'ShoppingCartController@delete');
+    Route::get('/shopping-cart/count', 'ShoppingCartController@count');
+    Route::get('/shopping-cart/is-exists/{product_id}', 'ShoppingCartController@isAlreadyInShoppingCart');
 
 
 });

@@ -52,16 +52,16 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input type="text" class="input-search" placeholder="Search for products" @keyup.enter="mainSearch" v-model="query" >
+                        <input type="text" class="input-search" placeholder="Search for products"
+                               @keyup.enter="mainSearch" v-model="query">
                         <div class="input-group-append">
-                            <button class="btn btn-search" type="button" @click.prevent="mainSearch"><i class="fas fa-search"></i></button>
+                            <button class="btn btn-search" type="button" @click.prevent="mainSearch"><i
+                                    class="fas fa-search"></i></button>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="cart">
-                        <button class="btn"><i class="fas fa-shopping-basket"></i> Корзина <span>25</span></button>
-                    </div>
+                    <shopping-cart></shopping-cart>
                 </div>
             </div>
         </div>
@@ -75,25 +75,34 @@
                         <ul class="d-flex justify-content-around">
                             <li><a href="" class="active">Акции</a></li>
                             <li id="categoriesShow">
-                                <router-link :to="{name:'category',params:{id:'all'}}">Музыкальные инструменты</router-link>
+                                <router-link :to="{name:'category',params:{id:'all'}}">Музыкальные инструменты
+                                </router-link>
                                 <div class="container">
                                     <div id="categories-items">
                                         <div class="triangle-red"></div>
                                         <div class="triangle"></div>
                                         <div class="border"></div>
                                         <div class="row justify-content-around">
-                                            <div class="col-lg-4 mb-5" v-for="category in categories" v-if="!category.parent_id">
+                                            <div class="col-lg-4 mb-5" v-for="category in categories"
+                                                 v-if="!category.parent_id">
                                                 <div class="categories-item">
                                                     <div class="categories-img text-center">
-                                                        <img :src=`/images/categories/${category.photo}` style="max-width: 100%; height:70px" alt="">
+                                                        <img :src=`/images/categories/${category.photo}`
+                                                             style="max-width: 100%; height:70px" alt="">
                                                     </div>
-                                                    <router-link :to="{name:'category',params:{id:category.id}}" class="categories-title">
+                                                    <router-link :to="{name:'category',params:{id:category.id}}"
+                                                                 class="categories-title">
                                                         <h2 v-text="category.title"></h2>
                                                     </router-link>
 
                                                     <div class="categories-list">
                                                         <ul>
-                                                            <li v-for="child in category.children" style="text-align: center"><router-link :to="{name:'category',params:{id:child.id}}" v-text="child.title"></router-link></li>
+                                                            <li v-for="child in category.children"
+                                                                style="text-align: center">
+                                                                <router-link
+                                                                    :to="{name:'category',params:{id:child.id}}"
+                                                                    v-text="child.title"></router-link>
+                                                            </li>
                                                         </ul>
                                                     </div>
 
@@ -120,3 +129,5 @@
         </div>
     </div>
 </header>
+
+

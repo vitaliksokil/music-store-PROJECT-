@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Traits\LikesTrait;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -131,6 +132,7 @@ class ProductController extends Controller
     public function getCurrentProductByID($id)
     {
         $product = Product::with('feedbacks.user:name,id', 'feedbacks.likes')->findOrFail($id);
+        $product->productRate = DB::table('feedbacks')->where('product_id',$product->id)->avg('rate');
         // counting likes and dislikes
         // dividing one likes array into likes and dislikes!!!
         $this->divisionToLikesDislikes($product->feedbacks);
