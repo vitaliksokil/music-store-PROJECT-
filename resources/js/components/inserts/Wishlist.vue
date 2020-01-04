@@ -24,7 +24,7 @@
                             <tr class="shoppingCartItem" v-for="wishlistItem in wishlist">
                                 <td class="img"><img :src="`/images/products/${wishlistItem.photo}`" alt=""></td>
                                 <td class="title"><h2>{{wishlistItem.title}}</h2></td>
-                                <td class="price">Price:{{wishlistItem.price}}</td>
+                                <td class="price">Price:{{wishlistItem.price}}$</td>
                                 <td @click.prevent="deleteFromWishlist(wishlistItem.id)">
                                     <div class="delete"><i class="fas fa-trash red"></i></div>
                                 </td>

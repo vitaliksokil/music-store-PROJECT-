@@ -70,6 +70,7 @@ Route::middleware('auth:api')->group(function () {
     // shopping cart
     Route::group(['prefix' => 'shopping-cart'], function (){
         Route::get('/', 'ShoppingCartController@show');
+        Route::put('/{quantity}&{product_id}', 'ShoppingCartController@updateQuantity');
         Route::post('/', 'ShoppingCartController@create');
         Route::delete('/{product_id}', 'ShoppingCartController@delete');
         Route::post('/delete-all', 'ShoppingCartController@deleteAll');

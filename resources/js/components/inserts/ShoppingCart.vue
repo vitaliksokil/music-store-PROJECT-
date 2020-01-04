@@ -19,10 +19,11 @@
                     <div class="modal-body" v-if="shoppingCart.length">
                         <table class="shoppingCart mb-3">
                             <tr class="shoppingCartItem" v-for="shoppingCartItem in shoppingCart">
-                                <td class="img"><img :src="`/images/products/${shoppingCartItem.photo}`" alt=""></td>
-                                <td class="title"><h2>{{shoppingCartItem.title}}</h2></td>
-                                <td class="price">Price:{{shoppingCartItem.price}}</td>
-                                <td @click.prevent="deleteFromShoppingCart(shoppingCartItem.id)">
+                                <td class="img"><img :src="`/images/products/${shoppingCartItem.product.photo}`" alt=""></td>
+                                <td class="title"><h2>{{shoppingCartItem.product.title}}</h2></td>
+                                <td><vue-number-input :inputtable="false" v-model="shoppingCartItem.quantity" :min="1" :max="10" size="small" inline center controls @change="e =>{ updateShoppingCart(e,shoppingCartItem.product_id) }" ></vue-number-input></td>
+                                <td class="price">Price:{{shoppingCartItem.product.price * shoppingCartItem.quantity}}$</td>
+                                <td @click.prevent="deleteFromShoppingCart(shoppingCartItem.product.id)">
                                     <div class="delete"><i class="fas fa-trash red"></i></div>
                                 </td>
                             </tr>
@@ -52,6 +53,7 @@
             return {
                 shoppingCartCount: 0,
                 shoppingCart: [],
+                total:0,
             }
         },
         methods: {
@@ -63,8 +65,9 @@
             totalPrice() {
                 let total = 0;
                 for (let item of this.shoppingCart) {
-                    total += item.price;
+                    total += item.product.price * item.quantity;
                 }
+                this.total = total;
                 return total;
             },
             getShoppingCart() {
@@ -126,6 +129,14 @@
                         sc.getShoppingCartCount();
                     });
                 }
+            },
+            updateShoppingCart(e,id){
+                this.$Progress.start();
+                this.axios.put('/api/shopping-cart/'+e+'&'+id).then(response => {
+                    this.$Progress.finish();
+                }).catch(error=>{
+                    this.$Progress.fail();
+                })
             }
         },
         mounted() {

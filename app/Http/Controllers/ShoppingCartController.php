@@ -24,8 +24,7 @@ class ShoppingCartController extends Controller
     }
 
     public function show(){
-        $shoppingCart = ShoppingCart::with('product')->where('user_id', Auth::user()->id)->get()->pluck('product');
-        return $shoppingCart;
+        return  ShoppingCart::with('product')->where('user_id', Auth::user()->id)->get(['quantity','product_id','user_id']);
     }
 
     public function count(){
@@ -47,5 +46,13 @@ class ShoppingCartController extends Controller
         }else{
             return response(['message' => 'An error occurred!!!', 'status'=>'error']);
         }
+    }
+    public function updateQuantity($quantity,$product_id){
+        $shoppingCart = ShoppingCart::where([
+            ['user_id',Auth::user()->id],
+            ['product_id',$product_id],
+        ])->first();
+        $shoppingCart->quantity = $quantity;
+        $shoppingCart->save();
     }
 }

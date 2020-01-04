@@ -23,12 +23,17 @@ import VueProgressBar from 'vue-progressbar'
 import {VueEditor} from "vue2-editor";
 import ShoppingCart from "./components/inserts/ShoppingCart";
 import Wishlist from "./components/inserts/Wishlist"
+import VueNumberInput from '@chenfengyuan/vue-number-input';
+
+
+
 
 import rate from 'vue-rate';
 Vue.use(rate);
 
 Vue.component('shopping-cart', ShoppingCart);
 Vue.component('wishlist', Wishlist);
+Vue.component('vue-number-input', VueNumberInput);
 
 import Gate from './Gate'
 
