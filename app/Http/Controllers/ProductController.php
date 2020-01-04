@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Feedback;
 use App\Http\Traits\CategoriesProductsTrait;
+use App\Http\Traits\ImageTrait;
 use App\Product;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    use LikesTrait,CategoriesProductsTrait;
+    use LikesTrait, CategoriesProductsTrait, ImageTrait;
 
     public function __construct()
     {
@@ -46,19 +47,11 @@ class ProductController extends Controller
             'photo' => 'required',
             'category' => 'required'
         ]);
-        $this->convertImageName($request);
-
+        $request['photo'] = $this->convertImageName($request->photo, 'products/');
         $product = Product::create($request->except('category'));
         $product->category()->attach($request->category);
 
         return response(['messageType' => 'success', 'message' => 'New product has been successfully created!!!']);
-    }
-
-    public function convertImageName(&$request)
-    {
-        $name = time() . '.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
-        \Image::make($request->photo)->save(public_path('images/products/') . $name);
-        $request->merge(['photo' => $name]);
     }
 
     public function update(Request $request, $id)
@@ -75,7 +68,7 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         if (strlen($request->photo) > 50) {
-            $this->convertImageName($request);
+            $request['photo'] = $this->convertImageName($request->photo, 'products/');
             $image_path = public_path() . '/images/products/' . $product->photo;
             @unlink($image_path); // deleting photo
         }
@@ -116,8 +109,6 @@ class ProductController extends Controller
 
     public function getProducts()
     {
-        // todo remove the line below if it would be necessary
-        $this->authorize('isAdmin');
         $products = Product::all();
         $productsWithCategories = [];
         $i = 0;
@@ -132,7 +123,7 @@ class ProductController extends Controller
     public function getCurrentProductByID($id)
     {
         $product = Product::with('feedbacks.user:name,id', 'feedbacks.likes')->findOrFail($id);
-        $product->productRate = DB::table('feedbacks')->where('product_id',$product->id)->avg('rate');
+        $product->productRate = DB::table('feedbacks')->where('product_id', $product->id)->avg('rate');
         // counting likes and dislikes
         // dividing one likes array into likes and dislikes!!!
         $this->divisionToLikesDislikes($product->feedbacks);
@@ -149,34 +140,43 @@ class ProductController extends Controller
         $categoryID = Product::find($id)->category->first()->id;
         $category = Category::find($categoryID);
         $products = $category->products;
-
         while (count($products) < $numberOfRecommendedProducts && $category->parent_id) {
             $products = $this->getProductsByCategory($category->parent_id);
             $category = Category::find($category->parent_id);
         }
-        if(count($products) > $numberOfRecommendedProducts){
-            $newProducts=[];
-            $randomElementsKeys = array_rand($products,$numberOfRecommendedProducts);
-            foreach($randomElementsKeys as $randomKey){
+        if (count($products) > $numberOfRecommendedProducts) {
+            $newProducts = [];
+            $randomElementsKeys = array_rand($products, $numberOfRecommendedProducts);
+            foreach ($randomElementsKeys as $randomKey) {
                 $newProducts[] = $products[$randomKey];
             }
             shuffle($newProducts);
-            $this->deleteCurrentProduct($newProducts,$id); // deleting current product from recommended
+            $this->deleteCurrentProduct($newProducts, $id); // deleting current product from recommended
             return $newProducts;
         }
+        if(is_object($products)) {
+            $products = $products->toArray();
+        }
         shuffle($products);
-        $this->deleteCurrentProduct($products,$id); // deleting current product from recommended
+        $this->deleteCurrentProduct($products, $id); // deleting current product from recommended
         return $products;
 
     }
-    private function deleteCurrentProduct(&$products, $currentProductID){
-        for ($i = 0; $i<count($products); $i++){
-            if($products[$i]['id'] == $currentProductID){
+
+    private function deleteCurrentProduct(&$products, $currentProductID)
+    {
+        for ($i = 0; $i < count($products); $i++) {
+            if ($products[$i]['id'] == $currentProductID) {
                 unset($products[$i]);
                 $products = array_values($products);
                 break;
             }
         }
+    }
+
+    public function getNewProducts(){
+        $products = Product::latest()->take(10)->get();
+        return $products;
     }
 
 

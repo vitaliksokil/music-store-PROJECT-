@@ -80,184 +80,12 @@
                 <div class="row">
                     <div class="col-lg-12 ">
                         <div class="discount-menu d-flex align-items-center flex-column">
-                            <h2 class="mb-5">Распродажа инструментов</h2>
-                            <ul class="d-flex justify-content-center">
-                                <li>Инструменты</li>
-                                <li>Свет</li>
-                                <li>Звук</li>
-                                <li>Уценка</li>
-                            </ul>
+                            <h2 class="mb-5">Новинки</h2>
                         </div>
 
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="discounts-items d-flex justify-content-around">
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/3.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/3.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/3.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/3.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/4.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/3.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/5.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <products-slider :products="newProducts"></products-slider>
                 <div class="row align-items-center">
                     <div class="col-lg-3">
                         <hr>
@@ -367,247 +195,6 @@
                 </div>
             </div>
         </section>
-        <section class="stocks">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="stocks-title">
-                            <h2>Акции</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="stocks-items">
-                    <div class="row">
-                        <div class="col-lg-6 p-2">
-                            <div class="stocks-item d-flex">
-                                <img src="images/4.png" alt="">
-                                <div class="stocks-item-text">
-                                    <h6>Рассрочка без переплаты!</h6>
-                                    <p>В магазинах Музыкальный Арсенал до конца 2014 года Вы можете приобрести любой
-                                        товар в
-                                        рассрочку на 6 месяцев. 0% ПЕРЕПЛАТЫ! Первоначальный взнос 10%!</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 p-2">
-                            <div class="stocks-item d-flex">
-                                <img src="images/4.png" alt="">
-                                <div class="stocks-item-text">
-                                    <h6>Рассрочка без переплаты!</h6>
-                                    <p>В магазинах Музыкальный Арсенал до конца 2014 года Вы можете приобрести любой
-                                        товар в
-                                        рассрочку на 6 месяцев. 0% ПЕРЕПЛАТЫ! Первоначальный взнос 10%!</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-3">
-                        <hr>
-                    </div>
-                    <div class="col-lg-4 offset-1 d-flex justify-content-between">
-                        <h4 class="text-center">Все Акции</h4>
-                        <h4 class="text-center">Подписаться на Акции</h4>
-                    </div>
-                    <div class="col-lg-3 offset-1">
-                        <hr>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="discount">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 ">
-                        <div class="discount-menu d-flex align-items-center flex-column">
-                            <h2 class="mb-5">Новинки</h2>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="discounts-items d-flex justify-content-around">
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/5.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/3.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/5.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/3.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/4.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/5.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="discount-item-wrap">
-                                <div class="discount-item d-flex flex-column">
-                                    <div class="discount-item-img"><img src="images/5.png" alt=""></div>
-                                    <div class="discount-items-text">
-                                        <h3>
-                                            Hohner Bravo III 96 RED
-                                        </h3>
-                                        <p>Аккордеон, в стиле
-                                            «Юнион Джек». Выпущен ограниченным тиражом.</p>
-                                        <div class="price">
-                                            <span>89 750</span> 83 550 <i class="fas fa-ruble-sign"></i>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="action align-self-center">
-                                    <ul class="d-flex justify-content-center">
-                                        <li><i class="fas fa-shopping-basket"></i></li>
-                                        <li><i class="fas fa-chart-bar"></i></li>
-                                        <li><i class="fas fa-heart"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row align-items-center">
-                    <div class="col-lg-3">
-                        <hr>
-                    </div>
-                    <div class="col-lg-4 offset-1 d-flex justify-content-between">
-                        <h4 class="text-center">Все Новинки</h4>
-                        <h4 class="text-center">Подписаться на новинки</h4>
-                    </div>
-                    <div class="col-lg-3 offset-1">
-                        <hr>
-                    </div>
-                </div>
-            </div>
-        </section>
         <section class="news">
             <div class="container">
                 <div class="row">
@@ -700,10 +287,30 @@
 </template>
 
 <script>
+    import {filtersMixin} from "../mixins/filtersMixin";
+    import ProductsSlider from "./inserts/ProductsSlider";
+
     export default {
         name: "Home",
+        data(){
+            return{
+                newProducts:{}
+            }
+        },
+        components:{
+            'products-slider':ProductsSlider
+        },
+        methods:{
+            getNewProducts(){
+                this.axios.get('/api/new-products').then(response => {
+                    this.newProducts = response.data;
 
+                });
+            }
+        },
+        mixins:[filtersMixin],
         mounted: function () {
+            this.getNewProducts();
             $(document).ready(function () {
                 $('.main-slide').owlCarousel({
                     lazyLoad:true,
@@ -725,16 +332,7 @@
                     items:7,
                     margin:35
                 });
-                $('.discounts-items').slick({
-                    infinite: true,
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                    zIndex:0,
-                    prevArrow:"<button type=\"button\" class=\"btn-prev\"><i class=\"fas fa-chevron-left\"></i></button>",
-                    nextArrow:"<button type=\"button\" class=\"btn-next\"><i class=\"fas fa-chevron-right\"></i></button>",
-                    adaptiveHeight: true
 
-                });
             });
         }
     }

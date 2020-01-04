@@ -124,7 +124,6 @@
 
 <script>
     export default {
-        //todo test this !!!
         data() {
             return {
                 editMode: false,

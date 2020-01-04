@@ -12,30 +12,38 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['namespace' => 'Api'], function (){
+    Route::post('/login', 'AuthController@login');
+    Route::post('/register', 'AuthController@register');
+    Route::post('/send-reset-password-email', 'AuthController@sendResetPasswordEmail');
+    Route::post('/reset-password', 'AuthController@resetPassword');
+    Route::get('/verify-reset-token/{token}-{email}', 'AuthController@verifyResetToken');
 
-Route::post('/login', 'Api\AuthController@login');
-Route::post('/register', 'Api\AuthController@register');
-Route::post('/send-reset-password-email', 'Api\AuthController@sendResetPasswordEmail');
-Route::post('/reset-password', 'Api\AuthController@resetPassword');
-Route::get('/verify-reset-token/{token}-{email}', 'Api\AuthController@verifyResetToken');
-Route::get('/product-get-current/{id}', 'ProductController@getCurrentProductByID');
+});
 
 Route::middleware('auth:api')->group(function () {
-    Route::post('/logout', 'API\AuthController@logout');
-    Route::get('/get-user', 'API\AuthController@getUser');
-    Route::post('/send-verification-email', 'Auth\EmailVerificationController@sendVerificationEmail');
-    Route::get('/verify-email/{token}', 'Auth\EmailVerificationController@verify');
+    Route::group(['namespace' => 'Auth'], function () {
+        Route::post('/send-verification-email', 'EmailVerificationController@sendVerificationEmail');
+        Route::get('/verify-email/{token}', 'EmailVerificationController@verify');
+    });
+    Route::group(['namespace' => 'Api'], function () {
+        Route::post('/logout', 'AuthController@logout');
+        Route::get('/get-user', 'AuthController@getUser');
 
-    Route::get('/findUser','Api\UserController@search');
-    Route::get('/user','Api\UserController@index');
-    Route::get('/user/{id}','Api\UserController@user');
-    Route::delete('/user/{id}','Api\UserController@destroy');
-    Route::post('/user','Api\UserController@store');
-    Route::put('/user/{id}','Api\UserController@update');
+        Route::group(['prefix' => 'user'], function () {
+            Route::get('/', 'UserController@index');
+            Route::get('/{id}', 'UserController@user');
+            Route::delete('/{id}', 'UserController@destroy');
+            Route::post('/', 'UserController@store');
+            Route::put('/{id}', 'UserController@update');
+        });
+        Route::get('/findUser', 'UserController@search');
 
-    Route::put('/profile','API\UserController@profileUpdate');
-    Route::post('/update-profile', 'Api\UserController@updateProfile');
-    Route::post('/update-email', 'Api\UserController@updateEmail');
+        Route::put('/profile', 'UserController@profileUpdate');
+        Route::post('/update-profile', 'UserController@updateProfile');
+        Route::post('/update-email', 'UserController@updateEmail');
+    });
+
 
     //products
     Route::post('/product-create', 'ProductController@create');
@@ -49,31 +57,56 @@ Route::middleware('auth:api')->group(function () {
 
 
     //feedbacks
-    Route::post('/add-feedback','FeedbackController@create');
-    Route::post('/is-user-left-feedback','FeedbackController@isUserLeftFeedback');
-    Route::put('/feedback','FeedbackController@update');
-    Route::delete('/feedback/{id}','FeedbackController@delete');
-    Route::get('/feedback/get-likes/{id}','FeedbackController@getLikes');
+    Route::post('/add-feedback', 'FeedbackController@create');
+    Route::post('/is-user-left-feedback', 'FeedbackController@isUserLeftFeedback');
+    Route::put('/feedback', 'FeedbackController@update');
+    Route::delete('/feedback/{id}', 'FeedbackController@delete');
+    Route::get('/feedback/get-likes/{id}', 'FeedbackController@getLikes');
 
     //likes
-    Route::post('/like','LikeController@like');
+    Route::post('/like', 'LikeController@like');
 
 
     // shopping cart
-    Route::get('/shopping-cart', 'ShoppingCartController@show');
-    Route::post('/shopping-cart', 'ShoppingCartController@create');
-    Route::delete('/shopping-cart/{product_id}', 'ShoppingCartController@delete');
-    Route::get('/shopping-cart/count', 'ShoppingCartController@count');
-    Route::get('/shopping-cart/is-exists/{product_id}', 'ShoppingCartController@isAlreadyInShoppingCart');
+    Route::group(['prefix' => 'shopping-cart'], function (){
+        Route::get('/', 'ShoppingCartController@show');
+        Route::post('/', 'ShoppingCartController@create');
+        Route::delete('/{product_id}', 'ShoppingCartController@delete');
+        Route::post('/delete-all', 'ShoppingCartController@deleteAll');
+        Route::get('/count', 'ShoppingCartController@count');
+        Route::get('/is-exists/{product_id}', 'ShoppingCartController@isAlreadyInShoppingCart');
 
+    });
+    // wishlist
+    Route::group(['prefix' => 'wishlist'], function (){
+        Route::get('/', 'WishlistController@show');
+        Route::post('/', 'WishlistController@create');
+        Route::delete('/{product_id}', 'WishlistController@delete');
+        Route::post('/delete-all', 'WishlistController@deleteAll');
+        Route::post('/add-to-shopping-cart', 'WishlistController@addToShoppingCart');
+        Route::post('/add-all-to-shopping-cart', 'WishlistController@addAllToShoppingCart');
+        Route::get('/count', 'WishlistController@count');
+        Route::get('/is-exists/{product_id}', 'WishlistController@isAlreadyInWishlist');
+
+    });
+    Route::group(['prefix' => 'category'],function (){
+        Route::post('/','CategoryController@store');
+        Route::delete('/{category}','CategoryController@destroy');
+        Route::put('/{category}','CategoryController@update');
+    });
 
 });
 
 Route::get('/findProduct', 'ProductController@search');
 Route::get('/get-recommended-products/{id}', 'ProductController@getRecommendedProducts'); // id - it's product's id
+Route::get('/product-get-current/{id}', 'ProductController@getCurrentProductByID');
+Route::get('/new-products', 'ProductController@getNewProducts');
+
+Route::get('/category','CategoryController@index');
+Route::get('/category/{category}','CategoryController@show');
+
 
 Route::get('/site-info', 'SiteController@getInfo');
-Route::get('/category-children','CategoryController@getChildren');
-Route::get('/findCategory','CategoryController@search');
-Route::resource('category', 'CategoryController');
-Route::get('/get-products-by-category/{id}','CategoryController@getProductsByCategory');
+Route::get('/category-children', 'CategoryController@getChildren');
+Route::get('/findCategory', 'CategoryController@search');
+Route::get('/get-products-by-category/{id}', 'CategoryController@getProductsByCategory');

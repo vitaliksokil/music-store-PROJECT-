@@ -60,8 +60,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2">
-                    <shopping-cart></shopping-cart>
+                <div class="col-lg-2 d-flex flex-column">
+                    <wishlist :isauth="isAuth"></wishlist>
+                    <shopping-cart :isauth="isAuth"></shopping-cart>
                 </div>
             </div>
         </div>
@@ -72,8 +73,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <nav>
-                        <ul class="d-flex justify-content-around">
-                            <li><a href="" class="active">Акции</a></li>
+                        <ul class="d-flex justify-content-start">
                             <li id="categoriesShow">
                                 <router-link :to="{name:'category',params:{id:'all'}}">Музыкальные инструменты
                                 </router-link>
@@ -113,13 +113,7 @@
                                 </div>
 
                             </li>
-                            <li><a href="">DJ</a></li>
-                            <li><a href="">Шоу-техника</a></li>
-                            <li><a href="">Студия</a></li>
-                            <li><a href="">Звук</a></li>
-                            <li><a href="">Свет</a></li>
-                            <li><a href="">Коммутация</a></li>
-                            <li><a href="">Стойки</a></li>
+
                         </ul>
                     </nav>
 

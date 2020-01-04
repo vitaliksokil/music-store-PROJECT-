@@ -1,7 +1,7 @@
 <template>
-    <div class="cart">
+    <div class="cart" v-if="isauth">
         <!-- Button trigger modal -->
-        <button @click.prevent="getShoppingCart" class="btn" data-toggle="modal"
+        <button @click.prevent="getShoppingCart" class="btn w-100" data-toggle="modal"
                 data-target="#shoppingCart"><i class="fas fa-shopping-basket"></i> Корзина <span
             v-text="shoppingCartCount"></span></button>
 
@@ -11,7 +11,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="shoppingCartTitle">Modal title</h5>
+                        <h5 class="modal-title" id="shoppingCartTitle">Shopping cart</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -28,7 +28,12 @@
                             </tr>
                         </table>
                         <div class="modal-footer justify-content-between">
-                            <h2>Total:<span class="green">{{totalPrice()}}</span></h2> <button class="btn btn-success">BUY</button>
+                            <h2>Total:<span class="green">{{totalPrice()}}$</span></h2>
+                            <div class="buttons">
+                                <button class="btn btn-danger" @click.prevent="removeAll">Remove all</button>
+                                <button class="btn btn-success">BUY</button>
+                            </div>
+
                         </div>
                     </div>
                     <div v-else><h2>Your shopping cart is empty</h2></div>
@@ -42,6 +47,7 @@
 <script>
     export default {
         name: "ShoppingCart",
+        props: ['isauth'],
         data() {
             return {
                 shoppingCartCount: 0,
@@ -54,12 +60,12 @@
                     this.shoppingCartCount = response.data;
                 });
             },
-            totalPrice(){
-              let total = 0;
-              for (let item of this.shoppingCart){
-                  total += item.price;
-              }
-              return total;
+            totalPrice() {
+                let total = 0;
+                for (let item of this.shoppingCart) {
+                    total += item.price;
+                }
+                return total;
             },
             getShoppingCart() {
                 this.axios.get('/api/shopping-cart').then(response => {
@@ -85,14 +91,50 @@
                         });
                     }
                 })
+            },
+            removeAll(){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.axios.post('/api/shopping-cart/delete-all').then(response => {
+                            Swal.fire(
+                                '',
+                                response.data.message,
+                                response.data.status
+                            );
+                            this.shoppingCart = {};
+                            this.shoppingCartCount = 0;
+                            Event.$emit('isAlreadyInShopCartFalse');
+                            $('#shoppingCart').modal('hide');
+                        });
+                    }
+                })
+            },
+            init() {
+                if (this.isauth) {
+
+                    let sc = this;
+                    this.getShoppingCartCount();
+                    Event.$on('addToShopCart', function () {
+                        sc.getShoppingCartCount();
+                    });
+                }
             }
         },
         mounted() {
-            let sc = this;
-            this.getShoppingCartCount();
-            Event.$on('addedToShoppingCart', function () {
-                sc.shoppingCartCount++;
-            });
+            this.init();
+        },
+        watch: {
+            isauth: function () {
+                this.init();
+            }
         }
     }
 </script>

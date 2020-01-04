@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class ShoppingCartController extends Controller
 {
     // $id - Product id
-    public function create(Request $request){
+    static public function create(Request $request){
         ShoppingCart::create([
             'user_id' => Auth::user()->id,
             'product_id' => $request->product_id,
@@ -40,5 +40,12 @@ class ShoppingCartController extends Controller
         ])->first();
         $isAlreadyInShopCart = $product ? true : false;
         return response(['result' => $isAlreadyInShopCart]);
+    }
+    public function deleteAll(){
+        if(ShoppingCart::where('user_id', Auth::user()->id)->delete()){
+            return response(['message' => 'Successfully removed!!!', 'status'=>'success']);
+        }else{
+            return response(['message' => 'An error occurred!!!', 'status'=>'error']);
+        }
     }
 }

@@ -62,7 +62,7 @@
                                                 <h3>
                                                     {{product.title}}
                                                 </h3>
-                                                <p v-html="product.description"></p>
+                                                {{product.description | threePoints}}
                                                 <div class="price">
                                                     <span>{{product.price}}</span> {{product.price}} <i class="fas fa-ruble-sign"></i>
                                                 </div>
@@ -89,7 +89,21 @@
                 <section class="content" v-else>
                     <div class="container">
 
-                        <allCategoriesTree :allCats='allCategories'></allCategoriesTree>
+                        <div class="container">
+                            <h2>Categories</h2>
+                            <div class="row">
+                                <router-link class="card col-lg-4 " style="width: 18rem;"
+                                             v-for="category in allCategories" v-if="!category.parent_id"
+                                             :to="{name:'category',params:{id:category.id}}">
+                                    <img :src='`/images/categories/${category.photo}`' class="card-img-top ">
+
+                                    <div class="card-body">
+                                        <h5 class="card-title text-center">{{category.title}}</h5>
+                                    </div>
+                                </router-link>
+                            </div>
+                            <hr>
+                        </div>
 
                     </div>
                 </section>
@@ -104,10 +118,11 @@
 </template>
 
 <script>
-    import allCategoriesTree from './allCategoriesTree'
+    import {filtersMixin} from "../../mixins/filtersMixin";
 
     export default {
         name: "Category",
+        mixins:[filtersMixin],
         data() {
             return {
                 id: this.$route.params.id,
@@ -149,9 +164,8 @@
                 this.getCurrentCategory();
             }
         },
-        components: {
-            allCategoriesTree
-        }
+
+
     }
 </script>
 

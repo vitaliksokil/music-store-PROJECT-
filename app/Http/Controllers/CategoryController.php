@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Traits\CategoriesProductsTrait;
+use App\Http\Traits\ImageTrait;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    use CategoriesProductsTrait;
+    use CategoriesProductsTrait, ImageTrait;
 
     public function search(){
         if($search = \Request::get('q')){
@@ -51,17 +52,6 @@ class CategoryController extends Controller
         $categories = $this->list_categories($data); // creating infinite levels of children, children of children!!!
         return $categories;
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -77,17 +67,10 @@ class CategoryController extends Controller
             'photo' => 'required',
 
         ]);
-        $this->convertImageName($request);
+        $request['photo'] = $this->convertImageName($request->photo, 'categories/');
 
         Category::create($request->all());
         return response(['messageType' => 'success', 'message' => 'New category has been successfully created!!!']);
-    }
-
-    public function convertImageName(&$request)
-    {
-        $name = time() . '.' . explode('/', explode(':', substr($request->photo, 0, strpos($request->photo, ';')))[1])[1];
-        \Image::make($request->photo)->save(public_path('images/categories/') . $name);
-        $request->merge(['photo' => $name]);
     }
 
     /**
@@ -100,17 +83,6 @@ class CategoryController extends Controller
     {
 
         return Category::with('children')->where('id', $category)->first();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Category $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
     }
 
     /**
@@ -132,7 +104,7 @@ class CategoryController extends Controller
 
 //todo duplicate fix
         if (strlen($request->photo) > 50) {
-            $this->convertImageName($request);
+            $request['photo'] = $this->convertImageName($request->photo,'categories/');
             $image_path = public_path() . '/images/categories/' . $category->photo;
             @unlink($image_path); // deleting photo
         }

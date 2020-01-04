@@ -1732,6 +1732,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/filtersMixin */ "./resources/js/mixins/filtersMixin.js");
+/* harmony import */ var _inserts_ProductsSlider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./inserts/ProductsSlider */ "./resources/js/components/inserts/ProductsSlider.vue");
 //
 //
 //
@@ -2020,422 +2022,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Home",
+  data: function data() {
+    return {
+      newProducts: {}
+    };
+  },
+  components: {
+    'products-slider': _inserts_ProductsSlider__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  methods: {
+    getNewProducts: function getNewProducts() {
+      var _this = this;
+
+      this.axios.get('/api/new-products').then(function (response) {
+        _this.newProducts = response.data;
+      });
+    }
+  },
+  mixins: [_mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_0__["filtersMixin"]],
   mounted: function mounted() {
+    this.getNewProducts();
     $(document).ready(function () {
       $('.main-slide').owlCarousel({
         lazyLoad: true,
@@ -2455,15 +2065,6 @@ __webpack_require__.r(__webpack_exports__);
         dots: false,
         items: 7,
         margin: 35
-      });
-      $('.discounts-items').slick({
-        infinite: true,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        zIndex: 0,
-        prevArrow: "<button type=\"button\" class=\"btn-prev\"><i class=\"fas fa-chevron-left\"></i></button>",
-        nextArrow: "<button type=\"button\" class=\"btn-next\"><i class=\"fas fa-chevron-right\"></i></button>",
-        adaptiveHeight: true
       });
     });
   }
@@ -2507,6 +2108,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CategoriesList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CategoriesList */ "./resources/js/components/Profile/CategoriesList.vue");
+/* harmony import */ var _mixins_attachmentMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/attachmentMixin */ "./resources/js/mixins/attachmentMixin.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -2562,8 +2164,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AddProduct",
+  mixins: [_mixins_attachmentMixin__WEBPACK_IMPORTED_MODULE_1__["attachmentMixin"]],
   data: function data() {
     return {
       categories: {},
@@ -2614,30 +2218,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           timer: 3000
         });
       });
-    },
-    onAttachmentChange: function onAttachmentChange(e) {
-      var file = e.target.files[0];
-      var reader = new FileReader();
-
-      if (!file.type.match(/image/)) {
-        this.form.errors.set('photo', 'File should be an image');
-        this.form.photo = '';
-        return;
-      }
-
-      if (file.size / 1024 > 2048) {
-        this.form.errors.set('photo', 'Size should be less then 2048KB');
-        this.form.photo = '';
-        return;
-      }
-
-      var ap = this;
-
-      reader.onloadend = function (file) {
-        ap.form.photo = reader.result;
-      };
-
-      reader.readAsDataURL(file);
     }
   },
   mounted: function mounted() {
@@ -3127,6 +2707,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CategoriesList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CategoriesList */ "./resources/js/components/Profile/CategoriesList.vue");
+/* harmony import */ var _mixins_attachmentMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/attachmentMixin */ "./resources/js/mixins/attachmentMixin.js");
 //
 //
 //
@@ -3250,8 +2831,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AddProduct",
+  mixins: [_mixins_attachmentMixin__WEBPACK_IMPORTED_MODULE_1__["attachmentMixin"]],
   data: function data() {
     return {
       categories: '',
@@ -3381,30 +2964,6 @@ __webpack_require__.r(__webpack_exports__);
           timer: 3000
         });
       });
-    },
-    onAttachmentChange: function onAttachmentChange(e) {
-      var file = e.target.files[0];
-      var reader = new FileReader();
-
-      if (!file.type.match(/image/)) {
-        this.form.errors.set('photo', 'File should be an image');
-        this.form.photo = '';
-        return;
-      }
-
-      if (file.size / 1024 > 2048) {
-        this.form.errors.set('photo', 'Size should be less then 2048KB');
-        this.form.photo = '';
-        return;
-      }
-
-      var ap = this;
-
-      reader.onloadend = function (file) {
-        ap.form.photo = reader.result;
-      };
-
-      reader.readAsDataURL(file);
     }
   },
   mounted: function mounted() {
@@ -4167,7 +3726,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  //todo test this !!!
   data: function data() {
     return {
       editMode: false,
@@ -4791,6 +4349,81 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/ProductsSlider.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inserts/ProductsSlider.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/filtersMixin */ "./resources/js/mixins/filtersMixin.js");
+/* harmony import */ var _mixins_shoppingCartMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/shoppingCartMixin */ "./resources/js/mixins/shoppingCartMixin.js");
+/* harmony import */ var _mixins_wishlistMixin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../mixins/wishlistMixin */ "./resources/js/mixins/wishlistMixin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "slider",
+  props: ['products'],
+  mixins: [_mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_0__["filtersMixin"], _mixins_shoppingCartMixin__WEBPACK_IMPORTED_MODULE_1__["shoppingCartMixin"], _mixins_wishlistMixin__WEBPACK_IMPORTED_MODULE_2__["wishlistMixin"]],
+  methods: {},
+  watch: {
+    products: function products() {
+      var slidesToShow = 5;
+
+      if (this.products.length < 5) {
+        slidesToShow = this.products.length;
+      }
+
+      setTimeout(function () {
+        $('.discounts-items').slick({
+          infinite: true,
+          slidesToShow: slidesToShow,
+          slidesToScroll: 1,
+          zIndex: 0,
+          prevArrow: "<button type=\"button\" class=\"btn-prev\"><i class=\"fas fa-chevron-left\"></i></button>",
+          nextArrow: "<button type=\"button\" class=\"btn-next\"><i class=\"fas fa-chevron-right\"></i></button>",
+          adaptiveHeight: true
+        });
+      }, 0);
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/ShoppingCart.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inserts/ShoppingCart.vue?vue&type=script&lang=js& ***!
@@ -4841,8 +4474,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ShoppingCart",
+  props: ['isauth'],
   data: function data() {
     return {
       shoppingCartCount: 0,
@@ -4915,14 +4554,261 @@ __webpack_require__.r(__webpack_exports__);
           });
         }
       });
+    },
+    removeAll: function removeAll() {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.axios.post('/api/shopping-cart/delete-all').then(function (response) {
+            Swal.fire('', response.data.message, response.data.status);
+            _this4.shoppingCart = {};
+            _this4.shoppingCartCount = 0;
+            Event.$emit('isAlreadyInShopCartFalse');
+            $('#shoppingCart').modal('hide');
+          });
+        }
+      });
+    },
+    init: function init() {
+      if (this.isauth) {
+        var sc = this;
+        this.getShoppingCartCount();
+        Event.$on('addToShopCart', function () {
+          sc.getShoppingCartCount();
+        });
+      }
     }
   },
   mounted: function mounted() {
-    var sc = this;
-    this.getShoppingCartCount();
-    Event.$on('addedToShoppingCart', function () {
-      sc.shoppingCartCount++;
-    });
+    this.init();
+  },
+  watch: {
+    isauth: function isauth() {
+      this.init();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/Wishlist.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inserts/Wishlist.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Wishlist",
+  props: ['isauth'],
+  data: function data() {
+    return {
+      wishlistCount: 0,
+      wishlist: []
+    };
+  },
+  methods: {
+    getWishlistCount: function getWishlistCount() {
+      var _this = this;
+
+      this.axios.get('/api/wishlist/count').then(function (response) {
+        _this.wishlistCount = response.data;
+      });
+    },
+    totalPrice: function totalPrice() {
+      var total = 0;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.wishlist[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var item = _step.value;
+          total += item.price;
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return total;
+    },
+    getWishlist: function getWishlist() {
+      var _this2 = this;
+
+      this.axios.get('/api/wishlist').then(function (response) {
+        _this2.wishlist = response.data;
+      });
+    },
+    deleteFromWishlist: function deleteFromWishlist(product_id) {
+      var _this3 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this3.axios["delete"]('/api/wishlist/' + product_id).then(function (response) {
+            Swal.fire('', 'Successfully deleted!!!', 'success');
+            _this3.wishlistCount--;
+
+            _this3.getWishlist();
+
+            Event.$emit('deletedFromWishlist');
+          });
+        }
+      });
+    },
+    removeAll: function removeAll() {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this4.axios.post('/api/wishlist/delete-all').then(function (response) {
+            Swal.fire('', response.data.message, response.data.status);
+            _this4.wishlist = {};
+            _this4.wishlistCount = 0;
+            Event.$emit('isAlreadyInWishlistFalse');
+            $('#wishlist').modal('hide');
+          });
+        }
+      });
+    },
+    addAllToShoppingCart: function addAllToShoppingCart() {
+      var _this5 = this;
+
+      this.axios.post('/api/wishlist/add-all-to-shopping-cart').then(function (response) {
+        Swal.fire('', response.data.message, response.data.status);
+        Event.$emit('addToShopCart'); // checking if this prod is alredy in shop cart / product item comp
+
+        Event.$emit('deletedFromWishlist');
+        _this5.wishlist = {};
+        _this5.wishlistCount = 0;
+      })["catch"](function (error) {
+        Swal.fire('', error.response.data.message, 'error');
+      });
+    },
+    addToShoppingCart: function addToShoppingCart(id) {
+      var _this6 = this;
+
+      this.axios.post('/api/wishlist/add-to-shopping-cart', {
+        product_id: id
+      }).then(function (response) {
+        _this6.getWishlist();
+
+        _this6.wishlistCount--;
+        Event.$emit('addToShopCart'); // checking if this prod is already in shop cart / product item comp
+
+        Event.$emit('deletedFromWishlist');
+        Swal.fire('', response.data.message, response.data.status);
+      })["catch"](function (error) {
+        Swal.fire('', error.response.data.message, 'error');
+      });
+    },
+    init: function init() {
+      if (this.isauth) {
+        var sc = this;
+        this.getWishlistCount();
+        Event.$on('addedToWishlist', function () {
+          sc.wishlistCount++;
+        });
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.init();
+  },
+  watch: {
+    isauth: function isauth() {
+      this.init();
+    }
   }
 });
 
@@ -4937,7 +4823,21 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _allCategoriesTree__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./allCategoriesTree */ "./resources/js/components/products/allCategoriesTree.vue");
+/* harmony import */ var _mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/filtersMixin */ "./resources/js/mixins/filtersMixin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5046,6 +4946,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Category",
+  mixins: [_mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_0__["filtersMixin"]],
   data: function data() {
     return {
       id: this.$route.params.id,
@@ -5093,9 +4994,6 @@ __webpack_require__.r(__webpack_exports__);
       this.id = this.$route.params.id;
       this.getCurrentCategory();
     }
-  },
-  components: {
-    allCategoriesTree: _allCategoriesTree__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -5111,24 +5009,10 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../auth */ "./resources/js/auth.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var _mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixins/filtersMixin */ "./resources/js/mixins/filtersMixin.js");
+/* harmony import */ var _inserts_ProductsSlider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../inserts/ProductsSlider */ "./resources/js/components/inserts/ProductsSlider.vue");
+/* harmony import */ var _mixins_shoppingCartMixin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../mixins/shoppingCartMixin */ "./resources/js/mixins/shoppingCartMixin.js");
+/* harmony import */ var _mixins_wishlistMixin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../mixins/wishlistMixin */ "./resources/js/mixins/wishlistMixin.js");
 //
 //
 //
@@ -5303,8 +5187,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ProductItem",
+  mixins: [_mixins_filtersMixin__WEBPACK_IMPORTED_MODULE_1__["filtersMixin"], _mixins_shoppingCartMixin__WEBPACK_IMPORTED_MODULE_3__["shoppingCartMixin"], _mixins_wishlistMixin__WEBPACK_IMPORTED_MODULE_4__["wishlistMixin"]],
+  components: {
+    'products-slider': _inserts_ProductsSlider__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   watch: {
     $route: function $route() {
       this.currentProductID = this.$route.params.id;
@@ -5329,7 +5221,6 @@ __webpack_require__.r(__webpack_exports__);
       userFeedback: {},
       isAuth: false,
       recommendedProducts: {},
-      isAlreadyInShopCart: false,
       clientRate: 0
     };
   },
@@ -5339,24 +5230,30 @@ __webpack_require__.r(__webpack_exports__);
       this.getCurrentProduct();
       this.getRecommendedProducts();
       this.isAlreadyInShoppingCart();
+      this.isAlreadyInWishlist();
       Event.$on('deletedFromShopCart', function () {
         pi.isAlreadyInShoppingCart();
       });
-    },
-    isAlreadyInShoppingCart: function isAlreadyInShoppingCart() {
-      var _this = this;
-
-      this.axios.get('/api/shopping-cart/is-exists/' + this.currentProductID).then(function (response) {
-        _this.isAlreadyInShopCart = response.data.result;
+      Event.$on('addToShopCart', function () {
+        pi.isAlreadyInShoppingCart();
+      });
+      Event.$on('deletedFromWishlist', function () {
+        pi.isAlreadyInWishlist();
+      });
+      Event.$on('isAlreadyInShopCartFalse', function () {
+        pi.isAlreadyInShopCart = false;
+      });
+      Event.$on('isAlreadyInWishlistFalse', function () {
+        pi.isAlreadyInWishList = false;
       });
     },
     getCurrentProduct: function getCurrentProduct() {
-      var _this2 = this;
+      var _this = this;
 
       this.axios.get('/api/product-get-current/' + this.currentProductID).then(function (response) {
-        _this2.productItem = response.data;
+        _this.productItem = response.data;
 
-        _this2.isUserLeftFeedback();
+        _this.isUserLeftFeedback();
       })["catch"]();
     },
     isLiked: function isLiked(likes) {
@@ -5390,14 +5287,14 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     like: function like(feedback, _like) {
-      var _this3 = this;
+      var _this2 = this;
 
       // if like = 1 it's like, if 0 - dislike
       this.axios.post('/api/like', {
         'feedback_id': feedback.id,
         'like': _like
       }).then(function (response) {
-        _this3.axios.get('/api/feedback/get-likes/' + feedback.id).then(function (response) {
+        _this2.axios.get('/api/feedback/get-likes/' + feedback.id).then(function (response) {
           feedback.likes = response.data.likes;
           feedback.dislikes = response.data.dislikes;
         });
@@ -5406,21 +5303,21 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     addFeedback: function addFeedback() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.axios.post('/api/add-feedback', {
         'feedback': this.feedback,
         'product_id': this.productItem.id,
         'rate': this.clientRate
       }).then(function (response) {
-        _this4.errors.feedback = '';
+        _this3.errors.feedback = '';
         $('#addFeedback').modal('hide');
-        _this4.feedback = '';
+        _this3.feedback = '';
         Swal.fire(response.data.message, '', response.data.messageType);
 
-        _this4.getCurrentProduct();
+        _this3.getCurrentProduct();
       })["catch"](function (error) {
-        _this4.errors = error.response.data.errors;
+        _this3.errors = error.response.data.errors;
 
         if (error.response.status === 403 || error.response.status === 400) {
           Swal.fire(error.response.data.message, '', 'error');
@@ -5429,14 +5326,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     isUserLeftFeedback: function isUserLeftFeedback() {
-      var _this5 = this;
+      var _this4 = this;
 
       var returnValue = false;
       this.axios.post('/api/is-user-left-feedback', {
         'product_id': this.productItem.id,
         'user_id': this.user_id
       }).then(function (response) {
-        var allFeedbacks = _this5.productItem.feedbacks;
+        var allFeedbacks = _this4.productItem.feedbacks;
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;
         var _iteratorError2 = undefined;
@@ -5445,8 +5342,8 @@ __webpack_require__.r(__webpack_exports__);
           for (var _iterator2 = allFeedbacks[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
             var feedback = _step2.value;
 
-            if (feedback.user_id == _this5.user_id) {
-              _this5.userFeedback = feedback;
+            if (feedback.user_id == _this4.user_id) {
+              _this4.userFeedback = feedback;
             }
           }
         } catch (err) {
@@ -5464,21 +5361,21 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
 
-        _this5.isUserLF = true;
+        _this4.isUserLF = true;
       })["catch"](function (error) {
-        _this5.isUserLF = false;
+        _this4.isUserLF = false;
       });
     },
     editFeedback: function editFeedback() {
-      var _this6 = this;
+      var _this5 = this;
 
       this.axios.put('/api/feedback', this.userFeedback).then(function (response) {
         $('#editFeedback').modal('hide');
         Swal.fire(response.data.message, '', response.data.messageType);
 
-        _this6.getCurrentProduct();
+        _this5.getCurrentProduct();
       })["catch"](function (error) {
-        _this6.errors = error.response.data.errors;
+        _this5.errors = error.response.data.errors;
 
         if (error.response.status === 400) {
           Swal.fire(error.response.data.message, '', 'error');
@@ -5487,7 +5384,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     deleteFeedback: function deleteFeedback() {
-      var _this7 = this;
+      var _this6 = this;
 
       var pi = this;
       Swal.fire({
@@ -5500,10 +5397,10 @@ __webpack_require__.r(__webpack_exports__);
         confirmButtonText: 'Yes, delete it!'
       }).then(function (result) {
         if (result.value) {
-          pi.axios["delete"]('/api/feedback/' + _this7.userFeedback.id).then(function (response) {
+          pi.axios["delete"]('/api/feedback/' + _this6.userFeedback.id).then(function (response) {
             Swal.fire('Deleted!', 'Your feedback has been deleted.', 'success');
 
-            _this7.getCurrentProduct();
+            _this6.getCurrentProduct();
           })["catch"](function (error) {
             Swal.fire('Error!', 'Something went wrong!!!', 'error');
           });
@@ -5511,33 +5408,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getRecommendedProducts: function getRecommendedProducts() {
-      var _this8 = this;
+      var _this7 = this;
 
       this.axios.get('/api/get-recommended-products/' + this.currentProductID).then(function (response) {
-        _this8.recommendedProducts = response.data;
-        setTimeout(function () {
-          $('#recommended-products').slick({
-            infinite: false,
-            slidesToShow: 5,
-            slidesToScroll: 1,
-            zIndex: 0,
-            prevArrow: "<button type=\"button\" class=\"btn-prev\"><i class=\"fas fa-chevron-left\"></i></button>",
-            nextArrow: "<button type=\"button\" class=\"btn-next\"><i class=\"fas fa-chevron-right\"></i></button>",
-            adaptiveHeight: true
-          });
-        }, 0);
+        _this7.recommendedProducts = response.data;
       })["catch"](function (error) {});
-    },
-    addToShoppingCart: function addToShoppingCart() {
-      var _this9 = this;
-
-      this.axios.post('/api/shopping-cart', {
-        'product_id': this.currentProductID
-      }).then(function (response) {
-        Event.$emit('addedToShoppingCart');
-        _this9.isAlreadyInShopCart = true;
-        Swal.fire('', 'This product was successfully added to your shopping cart', 'success');
-      });
     }
   },
   mounted: function mounted() {
@@ -5549,121 +5424,6 @@ __webpack_require__.r(__webpack_exports__);
     }
 
     this.isAuth = auth.check();
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/products/allCategoriesTree.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: "allCategoriesTree",
-  props: ['allCats'],
-  data: function data() {
-    return {
-      allCategories: {},
-      allCatsTree: ''
-    };
-  },
-  methods: {
-    allCategoriesTree: function allCategoriesTree() {
-      var categories = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.allCategories;
-      var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      var tree = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = categories[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var category = _step.value;
-
-          if (!category.children) {
-            // category has not children
-            tree += "<li style=\"margin-left: ".concat(delimiter, "px\" value=").concat(category.id, ">\n\n                                <router-link :to=\"{name:'category',params:{id:").concat(category.id, "}}\">\n                                <div class=\"category-list-item\">\n                                <img src=\"/images/categories/").concat(category.photo, "\" alt=\"\">\n                                <h2 >").concat(category.title, "</h2>\n\n                                </div>\n\n                                </router-link>\n\n                                </li>");
-          } else {
-            tree += "<li  style=\"margin-left: ".concat(delimiter, "px\" value=").concat(category.id, ">\n                                <router-link :to=\"{name:'category',params:{id:").concat(category.id, "}}\">\n                                <div class=\"category-list-item\">\n                                <img src=\"/images/categories/").concat(category.photo, "\" alt=\"\">\n                                <h2 >").concat(category.title, "</h2>\n\n                                </div>\n\n                                </router-link>\n\n                                </li>"); // category has children
-
-            delimiter += 30; //get children of category
-
-            var children = category.children; //pass that children to recursion function as categories and take back data to our tree
-
-            tree = this.allCategoriesTree(children, delimiter, tree);
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-              for (var _iterator2 = children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                var child = _step2.value;
-
-                for (var i in this.allCategories) {
-                  if (this.allCategories[i].id == child.id) {
-                    this.allCategories.splice(i, 1);
-                    break;
-                  }
-                }
-              }
-            } catch (err) {
-              _didIteratorError2 = true;
-              _iteratorError2 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-                  _iterator2["return"]();
-                }
-              } finally {
-                if (_didIteratorError2) {
-                  throw _iteratorError2;
-                }
-              }
-            }
-
-            delimiter -= 30;
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return tree;
-    },
-    transformed: function transformed() {
-      return {
-        template: this.allCatsTree,
-        props: this.$options.props
-      };
-    }
-  },
-  created: function created() {
-    this.allCategories = this.allCats;
-    this.allCatsTree = this.allCategoriesTree(this.allCategories);
-    this.allCatsTree = '<ul>' + this.allCatsTree + '</ul>';
-    this.transformed();
   }
 });
 
@@ -12207,25 +11967,6 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\nh2[data-v-962a54bc] {\n    text-align: left;\n}\n.title[data-v-962a54bc] {\n    margin-bottom: 40px;\n}\nimg[data-v-962a54bc] {\n    width: 100%;\n}\n.price[data-v-962a54bc] {\n    font-size: 30px;\n    margin-bottom: 70px;\n}\n.price span[data-v-962a54bc] {\n    background: #d8d8d8;\n    padding: 3px 13px;\n    border-radius: 5px;\n}\n.description[data-v-962a54bc] {\n    padding: 30px 0;\n}\n.product-info[data-v-962a54bc] {\n    margin-left: 30px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css&":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css& ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n.category-list-item img{\n    max-width: 250px;\n    max-height: 200px;\n}\n.category-list-item{\n        background: #e4e4e4;\n        padding: 10px;\n        border: 1px solid #777777;\n        margin-bottom: 5px;\n        border-radius: 5px;\n        display: flex;\n        align-items: center;\n}\n\n", ""]);
 
 // exports
 
@@ -62704,36 +62445,6 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css&":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css& ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./allCategoriesTree.vue?vue&type=style&index=0&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css&");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -67281,1320 +66992,503 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("section", { staticClass: "main-wrap" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
+    _c("section", { staticClass: "discount" }, [
+      _c(
+        "div",
+        { staticClass: "container" },
+        [
+          _vm._m(2),
+          _vm._v(" "),
+          _c("products-slider", { attrs: { products: _vm.newProducts } }),
+          _vm._v(" "),
+          _vm._m(3)
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(4),
+    _vm._v(" "),
+    _vm._m(5)
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("section", { staticClass: "main-wrap" }, [
-      _c("section", { staticClass: "main" }, [
-        _c("div", { staticClass: "main-carousel" }, [
-          _c("div", { staticClass: "owl-carousel owl-theme main-slide" }, [
-            _c("div", {
-              staticClass: "visual slide-item owl-lazy",
-              attrs: { "data-src": "images/main-picture1.png" }
-            }),
-            _vm._v(" "),
-            _c("div", {
-              staticClass: "visual slide-item owl-lazy",
-              attrs: { "data-src": "images/main-picture2.png" }
-            }),
-            _vm._v(" "),
-            _c("div", {
-              staticClass: "visual slide-item owl-lazy",
-              attrs: { "data-src": "images/main-picture3.jpg" }
-            }),
-            _vm._v(" "),
-            _c("div", {
-              staticClass: "visual slide-item owl-lazy",
-              attrs: { "data-src": "images/main-picture4.jpg" }
-            })
+    return _c("section", { staticClass: "main" }, [
+      _c("div", { staticClass: "main-carousel" }, [
+        _c("div", { staticClass: "owl-carousel owl-theme main-slide" }, [
+          _c("div", {
+            staticClass: "visual slide-item owl-lazy",
+            attrs: { "data-src": "images/main-picture1.png" }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "visual slide-item owl-lazy",
+            attrs: { "data-src": "images/main-picture2.png" }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "visual slide-item owl-lazy",
+            attrs: { "data-src": "images/main-picture3.jpg" }
+          }),
+          _vm._v(" "),
+          _c("div", {
+            staticClass: "visual slide-item owl-lazy",
+            attrs: { "data-src": "images/main-picture4.jpg" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "main-title" }, [
+        _c("div", { staticClass: "container" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-lg-6 offset-lg-6" }, [
+              _c("div", { staticClass: "visual-text" }, [
+                _c("div", { staticClass: "visual-title" }, [
+                  _c("p", [_vm._v("Новинка")]),
+                  _vm._v(" "),
+                  _c("h1", [_vm._v("ARIA MAC-STD")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "visual-description" }, [
+                  _c("p", [
+                    _vm._v(
+                      "Станьте ближе к любимой музыке вместе с P5 Series 2. У последней версии полностью\n                                    обновлена\n                                    конструкция динамиков, что подняло качество звука на новый уровень, а материалы\n                                    высокого\n                                    качества обеспечивают комфорт. "
+                    )
+                  ])
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              {
+                staticClass: "col-lg-2 offset-5 d-flex justify-content-around"
+              },
+              [_c("div", { attrs: { id: "customDots" } })]
+            )
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", { staticClass: "brands" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-12 " }, [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "brands-items owl-carousel owl-theme brands-slide d-flex"
+              },
+              [
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/aria.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", {
+                    attrs: { src: " images/d'addario.png", alt: "" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/jts.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/ABK.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/Robe.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/pioneer.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/schecter.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/aria.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", {
+                    attrs: { src: " images/d'addario.png", alt: "" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/jts.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/ABK.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/Robe.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/pioneer.png", alt: "" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "brands-item" }, [
+                  _c("img", { attrs: { src: "images/schecter.png", alt: "" } })
+                ])
+              ]
+            )
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "main-title" }, [
-          _c("div", { staticClass: "container" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-lg-6 offset-lg-6" }, [
-                _c("div", { staticClass: "visual-text" }, [
-                  _c("div", { staticClass: "visual-title" }, [
-                    _c("p", [_vm._v("Новинка")]),
-                    _vm._v(" "),
-                    _c("h1", [_vm._v("ARIA MAC-STD")])
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-12 " }, [
+            _c("h4", { staticClass: "text-center" }, [
+              _vm._v("Все производители")
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "line" }, [
+              _c("img", { attrs: { src: "images/----.png", alt: "" } })
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-12 " }, [
+        _c(
+          "div",
+          {
+            staticClass: "discount-menu d-flex align-items-center flex-column"
+          },
+          [_c("h2", { staticClass: "mb-5" }, [_vm._v("Новинки")])]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row align-items-center" }, [
+      _c("div", { staticClass: "col-lg-3" }, [_c("hr")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-lg-4 offset-1 d-flex justify-content-between" },
+        [
+          _c("h4", { staticClass: "text-center" }, [_vm._v("Все Предложения")]),
+          _vm._v(" "),
+          _c("h4", { staticClass: "text-center" }, [
+            _vm._v("Подписаться на распродажи")
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 offset-1" }, [_c("hr")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", { staticClass: "offers" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-12" }, [
+            _c("div", { staticClass: "offers-wrap" }, [
+              _c("div", { staticClass: "offers-title" }, [
+                _c("h2", [_vm._v("Услуги")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "offers-items" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "offers-item" }, [
+                      _c("div", { staticClass: "offers-item-title" }, [
+                        _c("img", {
+                          attrs: { src: "images/Group%204.png", alt: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("h6", [_vm._v("Доставка до дверей")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "offers-item-text" }, [
+                        _c("p", [
+                          _vm._v(
+                            "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
+                          )
+                        ])
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "visual-description" }, [
-                    _c("p", [
-                      _vm._v(
-                        "Станьте ближе к любимой музыке вместе с P5 Series 2. У последней версии полностью\n                                    обновлена\n                                    конструкция динамиков, что подняло качество звука на новый уровень, а материалы\n                                    высокого\n                                    качества обеспечивают комфорт. "
-                      )
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "offers-item" }, [
+                      _c("div", { staticClass: "offers-item-title" }, [
+                        _c("img", {
+                          attrs: { src: "images/Group%204.png", alt: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("h6", [_vm._v("Доставка до дверей")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "offers-item-text" }, [
+                        _c("p", [
+                          _vm._v(
+                            "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "offers-item" }, [
+                      _c("div", { staticClass: "offers-item-title" }, [
+                        _c("img", {
+                          attrs: { src: "images/Group%204.png", alt: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("h6", [_vm._v("Доставка до дверей")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "offers-item-text" }, [
+                        _c("p", [
+                          _vm._v(
+                            "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "offers-item" }, [
+                      _c("div", { staticClass: "offers-item-title" }, [
+                        _c("img", {
+                          attrs: { src: "images/Group%204.png", alt: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("h6", [_vm._v("Доставка до дверей")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "offers-item-text" }, [
+                        _c("p", [
+                          _vm._v(
+                            "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "offers-item" }, [
+                      _c("div", { staticClass: "offers-item-title" }, [
+                        _c("img", {
+                          attrs: { src: "images/Group%204.png", alt: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("h6", [_vm._v("Доставка до дверей")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "offers-item-text" }, [
+                        _c("p", [
+                          _vm._v(
+                            "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-lg-4" }, [
+                    _c("div", { staticClass: "offers-item" }, [
+                      _c("div", { staticClass: "offers-item-title" }, [
+                        _c("img", {
+                          attrs: { src: "images/Group%204.png", alt: "" }
+                        }),
+                        _vm._v(" "),
+                        _c("h6", [_vm._v("Доставка до дверей")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "offers-item-text" }, [
+                        _c("p", [
+                          _vm._v(
+                            "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
+                          )
+                        ])
+                      ])
                     ])
                   ])
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", { staticClass: "news" }, [
+      _c("div", { staticClass: "container" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "news-title" }, [
+              _c("h5", [_vm._v("Новости")])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "news-item" }, [
+              _c("div", { staticClass: "news-item-img" }, [
+                _c("img", { attrs: { src: "images/6.png", alt: "" } })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "news-item-text" }, [
+                _c("div", { staticClass: "news-item-title" }, [
+                  _c("h3", [
+                    _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "news-item-desc" }, [
+                  _c("p", [
+                    _vm._v(
+                      "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("small", [_vm._v("18 июня 2014 г.")])
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "col-lg-2 offset-5 d-flex justify-content-around"
-                },
-                [_c("div", { attrs: { id: "customDots" } })]
-              )
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("section", { staticClass: "brands" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12 " }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "brands-items owl-carousel owl-theme brands-slide d-flex"
-                },
-                [
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/aria.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", {
-                      attrs: { src: " images/d'addario.png", alt: "" }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/jts.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/ABK.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/Robe.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/pioneer.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", {
-                      attrs: { src: "images/schecter.png", alt: "" }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/aria.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", {
-                      attrs: { src: " images/d'addario.png", alt: "" }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/jts.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/ABK.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/Robe.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", { attrs: { src: "images/pioneer.png", alt: "" } })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "brands-item" }, [
-                    _c("img", {
-                      attrs: { src: "images/schecter.png", alt: "" }
-                    })
-                  ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12 " }, [
-              _c("h4", { staticClass: "text-center" }, [
-                _vm._v("Все производители")
+            _c("div", { staticClass: "news-item" }, [
+              _c("div", { staticClass: "news-item-img" }, [
+                _c("img", { attrs: { src: "images/6.png", alt: "" } })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "line" }, [
-                _c("img", { attrs: { src: "images/----.png", alt: "" } })
-              ])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("section", { staticClass: "discount" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12 " }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "discount-menu d-flex align-items-center flex-column"
-                },
-                [
-                  _c("h2", { staticClass: "mb-5" }, [
-                    _vm._v("Распродажа инструментов")
-                  ]),
-                  _vm._v(" "),
-                  _c("ul", { staticClass: "d-flex justify-content-center" }, [
-                    _c("li", [_vm._v("Инструменты")]),
-                    _vm._v(" "),
-                    _c("li", [_vm._v("Свет")]),
-                    _vm._v(" "),
-                    _c("li", [_vm._v("Звук")]),
-                    _vm._v(" "),
-                    _c("li", [_vm._v("Уценка")])
+              _c("div", { staticClass: "news-item-text" }, [
+                _c("div", { staticClass: "news-item-title" }, [
+                  _c("h3", [
+                    _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
                   ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "discounts-items d-flex justify-content-around"
-                },
-                [
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/3.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/3.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/3.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/3.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/4.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/3.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/5.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row align-items-center" }, [
-            _c("div", { staticClass: "col-lg-3" }, [_c("hr")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "col-lg-4 offset-1 d-flex justify-content-between"
-              },
-              [
-                _c("h4", { staticClass: "text-center" }, [
-                  _vm._v("Все Предложения")
                 ]),
                 _vm._v(" "),
-                _c("h4", { staticClass: "text-center" }, [
-                  _vm._v("Подписаться на распродажи")
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 offset-1" }, [_c("hr")])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("section", { staticClass: "offers" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "offers-wrap" }, [
-                _c("div", { staticClass: "offers-title" }, [
-                  _c("h2", [_vm._v("Услуги")])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "offers-items" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-lg-4" }, [
-                      _c("div", { staticClass: "offers-item" }, [
-                        _c("div", { staticClass: "offers-item-title" }, [
-                          _c("img", {
-                            attrs: { src: "images/Group%204.png", alt: "" }
-                          }),
-                          _vm._v(" "),
-                          _c("h6", [_vm._v("Доставка до дверей")])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "offers-item-text" }, [
-                          _c("p", [
-                            _vm._v(
-                              "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
-                            )
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-4" }, [
-                      _c("div", { staticClass: "offers-item" }, [
-                        _c("div", { staticClass: "offers-item-title" }, [
-                          _c("img", {
-                            attrs: { src: "images/Group%204.png", alt: "" }
-                          }),
-                          _vm._v(" "),
-                          _c("h6", [_vm._v("Доставка до дверей")])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "offers-item-text" }, [
-                          _c("p", [
-                            _vm._v(
-                              "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
-                            )
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-4" }, [
-                      _c("div", { staticClass: "offers-item" }, [
-                        _c("div", { staticClass: "offers-item-title" }, [
-                          _c("img", {
-                            attrs: { src: "images/Group%204.png", alt: "" }
-                          }),
-                          _vm._v(" "),
-                          _c("h6", [_vm._v("Доставка до дверей")])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "offers-item-text" }, [
-                          _c("p", [
-                            _vm._v(
-                              "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
-                            )
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-4" }, [
-                      _c("div", { staticClass: "offers-item" }, [
-                        _c("div", { staticClass: "offers-item-title" }, [
-                          _c("img", {
-                            attrs: { src: "images/Group%204.png", alt: "" }
-                          }),
-                          _vm._v(" "),
-                          _c("h6", [_vm._v("Доставка до дверей")])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "offers-item-text" }, [
-                          _c("p", [
-                            _vm._v(
-                              "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
-                            )
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-4" }, [
-                      _c("div", { staticClass: "offers-item" }, [
-                        _c("div", { staticClass: "offers-item-title" }, [
-                          _c("img", {
-                            attrs: { src: "images/Group%204.png", alt: "" }
-                          }),
-                          _vm._v(" "),
-                          _c("h6", [_vm._v("Доставка до дверей")])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "offers-item-text" }, [
-                          _c("p", [
-                            _vm._v(
-                              "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
-                            )
-                          ])
-                        ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-lg-4" }, [
-                      _c("div", { staticClass: "offers-item" }, [
-                        _c("div", { staticClass: "offers-item-title" }, [
-                          _c("img", {
-                            attrs: { src: "images/Group%204.png", alt: "" }
-                          }),
-                          _vm._v(" "),
-                          _c("h6", [_vm._v("Доставка до дверей")])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "offers-item-text" }, [
-                          _c("p", [
-                            _vm._v(
-                              "Цикл, в том числе, выстраивает пласт. Как мы уже знаем, форшлаг\n                                                регрессийно\n                                                образует звукорядный хорус."
-                            )
-                          ])
-                        ])
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("section", { staticClass: "stocks" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c("div", { staticClass: "stocks-title" }, [
-                _c("h2", [_vm._v("Акции")])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "stocks-items" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-lg-6 p-2" }, [
-                _c("div", { staticClass: "stocks-item d-flex" }, [
-                  _c("img", { attrs: { src: "images/4.png", alt: "" } }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "stocks-item-text" }, [
-                    _c("h6", [_vm._v("Рассрочка без переплаты!")]),
-                    _vm._v(" "),
-                    _c("p", [
-                      _vm._v(
-                        "В магазинах Музыкальный Арсенал до конца 2014 года Вы можете приобрести любой\n                                    товар в\n                                    рассрочку на 6 месяцев. 0% ПЕРЕПЛАТЫ! Первоначальный взнос 10%!"
-                      )
-                    ])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-lg-6 p-2" }, [
-                _c("div", { staticClass: "stocks-item d-flex" }, [
-                  _c("img", { attrs: { src: "images/4.png", alt: "" } }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "stocks-item-text" }, [
-                    _c("h6", [_vm._v("Рассрочка без переплаты!")]),
-                    _vm._v(" "),
-                    _c("p", [
-                      _vm._v(
-                        "В магазинах Музыкальный Арсенал до конца 2014 года Вы можете приобрести любой\n                                    товар в\n                                    рассрочку на 6 месяцев. 0% ПЕРЕПЛАТЫ! Первоначальный взнос 10%!"
-                      )
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row align-items-center" }, [
-            _c("div", { staticClass: "col-lg-3" }, [_c("hr")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "col-lg-4 offset-1 d-flex justify-content-between"
-              },
-              [
-                _c("h4", { staticClass: "text-center" }, [_vm._v("Все Акции")]),
-                _vm._v(" "),
-                _c("h4", { staticClass: "text-center" }, [
-                  _vm._v("Подписаться на Акции")
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 offset-1" }, [_c("hr")])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("section", { staticClass: "discount" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12 " }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "discount-menu d-flex align-items-center flex-column"
-                },
-                [_c("h2", { staticClass: "mb-5" }, [_vm._v("Новинки")])]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "discounts-items d-flex justify-content-around"
-                },
-                [
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/5.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
+                _c("div", { staticClass: "news-item-desc" }, [
+                  _c("p", [
+                    _vm._v(
+                      "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
+                    )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/3.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/5.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/3.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/4.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/5.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-item-wrap" }, [
-                    _c(
-                      "div",
-                      { staticClass: "discount-item d-flex flex-column" },
-                      [
-                        _c("div", { staticClass: "discount-item-img" }, [
-                          _c("img", { attrs: { src: "images/5.png", alt: "" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "discount-items-text" }, [
-                          _c("h3", [
-                            _vm._v(
-                              "\n                                        Hohner Bravo III 96 RED\n                                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("p", [
-                            _vm._v(
-                              "Аккордеон, в стиле\n                                        «Юнион Джек». Выпущен ограниченным тиражом."
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "price" }, [
-                            _c("span", [_vm._v("89 750")]),
-                            _vm._v(" 83 550 "),
-                            _c("i", { staticClass: "fas fa-ruble-sign" })
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "action align-self-center" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "d-flex justify-content-center" },
-                        [
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-shopping-basket" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [
-                            _c("i", { staticClass: "fas fa-chart-bar" })
-                          ]),
-                          _vm._v(" "),
-                          _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                        ]
-                      )
-                    ])
-                  ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "row align-items-center" }, [
-            _c("div", { staticClass: "col-lg-3" }, [_c("hr")]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "col-lg-4 offset-1 d-flex justify-content-between"
-              },
-              [
-                _c("h4", { staticClass: "text-center" }, [
-                  _vm._v("Все Новинки")
-                ]),
-                _vm._v(" "),
-                _c("h4", { staticClass: "text-center" }, [
-                  _vm._v("Подписаться на новинки")
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 offset-1" }, [_c("hr")])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("section", { staticClass: "news" }, [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-6" }, [
-              _c("div", { staticClass: "news-title" }, [
-                _c("h5", [_vm._v("Новости")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "news-item" }, [
-                _c("div", { staticClass: "news-item-img" }, [
-                  _c("img", { attrs: { src: "images/6.png", alt: "" } })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "news-item-text" }, [
-                  _c("div", { staticClass: "news-item-title" }, [
-                    _c("h3", [
-                      _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "news-item-desc" }, [
-                    _c("p", [
-                      _vm._v(
-                        "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("small", [_vm._v("18 июня 2014 г.")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "news-item" }, [
-                _c("div", { staticClass: "news-item-img" }, [
-                  _c("img", { attrs: { src: "images/6.png", alt: "" } })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "news-item-text" }, [
-                  _c("div", { staticClass: "news-item-title" }, [
-                    _c("h3", [
-                      _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "news-item-desc" }, [
-                    _c("p", [
-                      _vm._v(
-                        "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("small", [_vm._v("18 июня 2014 г.")])
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "align-items-center" }, [
-                _c("div", { staticClass: "d-flex justify-content-start" }, [
-                  _c("h4", { staticClass: "text-center mr-5" }, [
-                    _vm._v("Все Новости")
-                  ]),
-                  _vm._v(" "),
-                  _c("h4", { staticClass: "text-center" }, [
-                    _vm._v("Подписаться")
-                  ])
+                  _c("small", [_vm._v("18 июня 2014 г.")])
                 ])
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-lg-6" }, [
-              _c("div", { staticClass: "news-title" }, [
-                _c("h5", [_vm._v("Обзоры")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "news-item" }, [
-                _c("div", { staticClass: "news-item-img" }, [
-                  _c("img", { attrs: { src: "images/6.png", alt: "" } })
+            _c("div", { staticClass: "align-items-center" }, [
+              _c("div", { staticClass: "d-flex justify-content-start" }, [
+                _c("h4", { staticClass: "text-center mr-5" }, [
+                  _vm._v("Все Новости")
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "news-item-text" }, [
-                  _c("div", { staticClass: "news-item-title" }, [
-                    _c("h3", [
-                      _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "news-item-desc" }, [
-                    _c("p", [
-                      _vm._v(
-                        "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("small", [_vm._v("18 июня 2014 г.")])
-                  ])
+                _c("h4", { staticClass: "text-center" }, [
+                  _vm._v("Подписаться")
                 ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-lg-6" }, [
+            _c("div", { staticClass: "news-title" }, [
+              _c("h5", [_vm._v("Обзоры")])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "news-item" }, [
+              _c("div", { staticClass: "news-item-img" }, [
+                _c("img", { attrs: { src: "images/6.png", alt: "" } })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "news-item" }, [
-                _c("div", { staticClass: "news-item-img" }, [
-                  _c("img", { attrs: { src: "images/6.png", alt: "" } })
+              _c("div", { staticClass: "news-item-text" }, [
+                _c("div", { staticClass: "news-item-title" }, [
+                  _c("h3", [
+                    _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
+                  ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "news-item-text" }, [
-                  _c("div", { staticClass: "news-item-title" }, [
-                    _c("h3", [
-                      _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
-                    ])
+                _c("div", { staticClass: "news-item-desc" }, [
+                  _c("p", [
+                    _vm._v(
+                      "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
+                    )
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticClass: "news-item-desc" }, [
-                    _c("p", [
-                      _vm._v(
-                        "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("small", [_vm._v("18 июня 2014 г.")])
-                  ])
+                  _c("small", [_vm._v("18 июня 2014 г.")])
                 ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "news-item" }, [
+              _c("div", { staticClass: "news-item-img" }, [
+                _c("img", { attrs: { src: "images/6.png", alt: "" } })
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "align-items-center" }, [
-                _c("div", { staticClass: "d-flex justify-content-start" }, [
-                  _c("h4", { staticClass: "text-center mr-5" }, [
-                    _vm._v("Все Обзоры")
+              _c("div", { staticClass: "news-item-text" }, [
+                _c("div", { staticClass: "news-item-title" }, [
+                  _c("h3", [
+                    _vm._v("Мастер-класс Данила Прокопьева в Краснодаре")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "news-item-desc" }, [
+                  _c("p", [
+                    _vm._v(
+                      "Мастер-класс состоится 18 октября 2014 года в 15.30 в музыкальном центре\n                                    SOROKA."
+                    )
                   ]),
                   _vm._v(" "),
-                  _c("h4", { staticClass: "text-center" }, [
-                    _vm._v("Подписаться")
-                  ])
+                  _c("small", [_vm._v("18 июня 2014 г.")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "align-items-center" }, [
+              _c("div", { staticClass: "d-flex justify-content-start" }, [
+                _c("h4", { staticClass: "text-center mr-5" }, [
+                  _vm._v("Все Обзоры")
+                ]),
+                _vm._v(" "),
+                _c("h4", { staticClass: "text-center" }, [
+                  _vm._v("Подписаться")
                 ])
               ])
             ])
@@ -72321,6 +71215,110 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true&":
+/*!*************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inserts/ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-lg-12" }, [
+      _c(
+        "div",
+        { staticClass: "discounts-items d-flex justify-content-around" },
+        _vm._l(_vm.products, function(product) {
+          return _c(
+            "router-link",
+            {
+              staticClass: "discount-item-wrap",
+              attrs: {
+                to: { name: "product-item", params: { id: product.id } }
+              }
+            },
+            [
+              _c("div", { staticClass: "discount-item d-flex flex-column" }, [
+                _c("div", { staticClass: "discount-item-img" }, [
+                  _c("img", {
+                    attrs: { src: "/images/products/" + product.photo, alt: "" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "discount-items-text" }, [
+                  _c("h3", [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm._f("threePointsTitle")(product.title)) +
+                        "\n                        "
+                    )
+                  ]),
+                  _vm._v(
+                    "\n                        " +
+                      _vm._s(_vm._f("threePoints")(product.description)) +
+                      "\n                        "
+                  ),
+                  _c("div", { staticClass: "price" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(product.price) +
+                        " $\n                        "
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "action align-self-center" }, [
+                _c("ul", { staticClass: "d-flex justify-content-center" }, [
+                  _c(
+                    "li",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.addToShoppingCart(product.id)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-shopping-basket" })]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.addToWishlist(product.id)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fas fa-heart" })]
+                  )
+                ])
+              ])
+            ]
+          )
+        }),
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/ShoppingCart.vue?vue&type=template&id=10002628&scoped=true&":
 /*!***********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inserts/ShoppingCart.vue?vue&type=template&id=10002628&scoped=true& ***!
@@ -72336,117 +71334,150 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "cart" }, [
-    _c(
-      "button",
-      {
-        staticClass: "btn",
-        attrs: { "data-toggle": "modal", "data-target": "#shoppingCart" },
-        on: {
-          click: function($event) {
-            $event.preventDefault()
-            return _vm.getShoppingCart($event)
-          }
-        }
-      },
-      [
-        _c("i", { staticClass: "fas fa-shopping-basket" }),
-        _vm._v(" Корзина "),
-        _c("span", { domProps: { textContent: _vm._s(_vm.shoppingCartCount) } })
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "modal fade",
-        attrs: {
-          id: "shoppingCart",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "shoppingCartTitle",
-          "aria-hidden": "true"
-        }
-      },
-      [
+  return _vm.isauth
+    ? _c("div", { staticClass: "cart" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn w-100",
+            attrs: { "data-toggle": "modal", "data-target": "#shoppingCart" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.getShoppingCart($event)
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "fas fa-shopping-basket" }),
+            _vm._v(" Корзина "),
+            _c("span", {
+              domProps: { textContent: _vm._s(_vm.shoppingCartCount) }
+            })
+          ]
+        ),
+        _vm._v(" "),
         _c(
           "div",
           {
-            staticClass: "modal-dialog modal-dialog-centered",
-            attrs: { role: "document" }
+            staticClass: "modal fade",
+            attrs: {
+              id: "shoppingCart",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "shoppingCartTitle",
+              "aria-hidden": "true"
+            }
           },
           [
-            _c("div", { staticClass: "modal-content" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _vm.shoppingCart.length
-                ? _c("div", { staticClass: "modal-body" }, [
-                    _c(
-                      "table",
-                      { staticClass: "shoppingCart mb-3" },
-                      _vm._l(_vm.shoppingCart, function(shoppingCartItem) {
-                        return _c("tr", { staticClass: "shoppingCartItem" }, [
-                          _c("td", { staticClass: "img" }, [
-                            _c("img", {
-                              attrs: {
-                                src:
-                                  "/images/products/" + shoppingCartItem.photo,
-                                alt: ""
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "title" }, [
-                            _c("h2", [_vm._v(_vm._s(shoppingCartItem.title))])
-                          ]),
-                          _vm._v(" "),
-                          _c("td", { staticClass: "price" }, [
-                            _vm._v("Price:" + _vm._s(shoppingCartItem.price))
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            {
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.deleteFromShoppingCart(
-                                    shoppingCartItem.id
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog modal-dialog-centered",
+                attrs: { role: "document" }
+              },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _vm.shoppingCart.length
+                    ? _c("div", { staticClass: "modal-body" }, [
+                        _c(
+                          "table",
+                          { staticClass: "shoppingCart mb-3" },
+                          _vm._l(_vm.shoppingCart, function(shoppingCartItem) {
+                            return _c(
+                              "tr",
+                              { staticClass: "shoppingCartItem" },
+                              [
+                                _c("td", { staticClass: "img" }, [
+                                  _c("img", {
+                                    attrs: {
+                                      src:
+                                        "/images/products/" +
+                                        shoppingCartItem.photo,
+                                      alt: ""
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "title" }, [
+                                  _c("h2", [
+                                    _vm._v(_vm._s(shoppingCartItem.title))
+                                  ])
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "price" }, [
+                                  _vm._v(
+                                    "Price:" + _vm._s(shoppingCartItem.price)
                                   )
-                                }
-                              }
-                            },
-                            [_vm._m(1, true)]
-                          )
-                        ])
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "modal-footer justify-content-between" },
-                      [
-                        _c("h2", [
-                          _vm._v("Total:"),
-                          _c("span", { staticClass: "green" }, [
-                            _vm._v(_vm._s(_vm.totalPrice()))
-                          ])
-                        ]),
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.deleteFromShoppingCart(
+                                          shoppingCartItem.id
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._m(1, true)]
+                                )
+                              ]
+                            )
+                          }),
+                          0
+                        ),
                         _vm._v(" "),
-                        _c("button", { staticClass: "btn btn-success" }, [
-                          _vm._v("BUY")
-                        ])
-                      ]
-                    )
-                  ])
-                : _c("div", [_c("h2", [_vm._v("Your shopping cart is empty")])])
-            ])
+                        _c(
+                          "div",
+                          {
+                            staticClass: "modal-footer justify-content-between"
+                          },
+                          [
+                            _c("h2", [
+                              _vm._v("Total:"),
+                              _c("span", { staticClass: "green" }, [
+                                _vm._v(_vm._s(_vm.totalPrice()) + "$")
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "buttons" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.removeAll($event)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Remove all")]
+                              ),
+                              _vm._v(" "),
+                              _c("button", { staticClass: "btn btn-success" }, [
+                                _vm._v("BUY")
+                              ])
+                            ])
+                          ]
+                        )
+                      ])
+                    : _c("div", [
+                        _c("h2", [_vm._v("Your shopping cart is empty")])
+                      ])
+                ])
+              ]
+            )
           ]
         )
-      ]
-    )
-  ])
+      ])
+    : _vm._e()
 }
 var staticRenderFns = [
   function() {
@@ -72457,7 +71488,7 @@ var staticRenderFns = [
       _c(
         "h5",
         { staticClass: "modal-title", attrs: { id: "shoppingCartTitle" } },
-        [_vm._v("Modal title")]
+        [_vm._v("Shopping cart")]
       ),
       _vm._v(" "),
       _c(
@@ -72480,6 +71511,240 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "delete" }, [
       _c("i", { staticClass: "fas fa-trash red" })
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/inserts/Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.isauth
+    ? _c("div", { staticClass: "cart" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn w-100",
+            attrs: { "data-toggle": "modal", "data-target": "#wishlist" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.getWishlist($event)
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "fas fa-heart" }),
+            _vm._v("\n        Wishlist\n        "),
+            _c("span", { domProps: { textContent: _vm._s(_vm.wishlistCount) } })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "modal fade",
+            attrs: {
+              id: "wishlist",
+              tabindex: "-1",
+              role: "dialog",
+              "aria-labelledby": "wishlistTitle",
+              "aria-hidden": "true"
+            }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "modal-dialog modal-dialog-centered",
+                attrs: { role: "document" }
+              },
+              [
+                _c("div", { staticClass: "modal-content" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _vm.wishlist.length
+                    ? _c("div", { staticClass: "modal-body" }, [
+                        _c(
+                          "table",
+                          { staticClass: "shoppingCart mb-3" },
+                          _vm._l(_vm.wishlist, function(wishlistItem) {
+                            return _c(
+                              "tr",
+                              { staticClass: "shoppingCartItem" },
+                              [
+                                _c("td", { staticClass: "img" }, [
+                                  _c("img", {
+                                    attrs: {
+                                      src:
+                                        "/images/products/" +
+                                        wishlistItem.photo,
+                                      alt: ""
+                                    }
+                                  })
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "title" }, [
+                                  _c("h2", [_vm._v(_vm._s(wishlistItem.title))])
+                                ]),
+                                _vm._v(" "),
+                                _c("td", { staticClass: "price" }, [
+                                  _vm._v("Price:" + _vm._s(wishlistItem.price))
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.deleteFromWishlist(
+                                          wishlistItem.id
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._m(1, true)]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    attrs: { title: "Add to shopping cart" },
+                                    on: {
+                                      click: function($event) {
+                                        $event.preventDefault()
+                                        return _vm.addToShoppingCart(
+                                          wishlistItem.id
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [_vm._m(2, true)]
+                                ),
+                                _vm._v(" "),
+                                _c("td", {
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.addToWishlist($event)
+                                    }
+                                  }
+                                })
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "modal-footer justify-content-between"
+                          },
+                          [
+                            _c("h2", [
+                              _vm._v("Total:"),
+                              _c("span", { staticClass: "green" }, [
+                                _vm._v(_vm._s(_vm.totalPrice()) + "$")
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "buttons" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.removeAll($event)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Remove all")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.addAllToShoppingCart($event)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Add all to shopping cart")]
+                              )
+                            ])
+                          ]
+                        )
+                      ])
+                    : _c("div", [_c("h2", [_vm._v("Your wishlist is empty")])])
+                ])
+              ]
+            )
+          ]
+        )
+      ])
+    : _vm._e()
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title", attrs: { id: "wishlistTitle" } }, [
+        _vm._v("Wishlist")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "delete" }, [
+      _c("i", { staticClass: "fas fa-trash red" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "delete" }, [
+      _c("i", { staticClass: "fas fa-plus green" })
     ])
   }
 ]
@@ -72714,15 +71979,15 @@ var render = function() {
                                                     "\n                                            "
                                                 )
                                               ]),
-                                              _vm._v(" "),
-                                              _c("p", {
-                                                domProps: {
-                                                  innerHTML: _vm._s(
-                                                    product.description
-                                                  )
-                                                }
-                                              }),
-                                              _vm._v(" "),
+                                              _vm._v(
+                                                "\n                                            " +
+                                                  _vm._s(
+                                                    _vm._f("threePoints")(
+                                                      product.description
+                                                    )
+                                                  ) +
+                                                  "\n                                            "
+                                              ),
                                               _c(
                                                 "div",
                                                 { staticClass: "price" },
@@ -72802,16 +72067,52 @@ var render = function() {
                     ])
               ])
             : _c("section", { staticClass: "content" }, [
-                _c(
-                  "div",
-                  { staticClass: "container" },
-                  [
-                    _c("allCategoriesTree", {
-                      attrs: { allCats: _vm.allCategories }
-                    })
-                  ],
-                  1
-                )
+                _c("div", { staticClass: "container" }, [
+                  _c("div", { staticClass: "container" }, [
+                    _c("h2", [_vm._v("Categories")]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "row" },
+                      _vm._l(_vm.allCategories, function(category) {
+                        return !category.parent_id
+                          ? _c(
+                              "router-link",
+                              {
+                                staticClass: "card col-lg-4 ",
+                                staticStyle: { width: "18rem" },
+                                attrs: {
+                                  to: {
+                                    name: "category",
+                                    params: { id: category.id }
+                                  }
+                                }
+                              },
+                              [
+                                _c("img", {
+                                  staticClass: "card-img-top ",
+                                  attrs: {
+                                    src: "/images/categories/" + category.photo
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "card-body" }, [
+                                  _c(
+                                    "h5",
+                                    { staticClass: "card-title text-center" },
+                                    [_vm._v(_vm._s(category.title))]
+                                  )
+                                ])
+                              ]
+                            )
+                          : _vm._e()
+                      }),
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("hr")
+                  ])
+                ])
               ])
         ])
       ])
@@ -72866,27 +72167,54 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "title d-flex justify-content-between mt-3" },
+              {
+                staticClass:
+                  "title d-flex justify-content-between mt-3 flex-wrap"
+              },
               [
                 _c("h2", [_vm._v(_vm._s(_vm.productItem.title))]),
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-success",
-                    attrs: { disabled: _vm.isAlreadyInShopCart },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.addToShoppingCart($event)
-                      }
-                    }
-                  },
-                  [
-                    _vm._v("Add to shopping cart "),
-                    _c("i", { staticClass: "fas fa-shopping-basket" })
-                  ]
-                )
+                _vm.isAuth
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { disabled: _vm.isAlreadyInWishList },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.addToWishlist($event)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        Add to wishlist\n                        "
+                        ),
+                        _c("i", { staticClass: "fas fa-heart" })
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.isAuth
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        attrs: { disabled: _vm.isAlreadyInShopCart },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.addToShoppingCart($event)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("Add to shopping cart "),
+                        _c("i", { staticClass: "fas fa-shopping-basket" })
+                      ]
+                    )
+                  : _vm._e()
               ]
             ),
             _vm._v(" "),
@@ -72912,90 +72240,18 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-12" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.recommendedProducts.length,
-                expression: "recommendedProducts.length"
-              }
-            ],
-            staticClass: "recommended-products discounts-items",
-            attrs: { id: "recommended-products" }
-          },
-          _vm._l(_vm.recommendedProducts, function(recommendedProduct) {
-            return _c(
-              "router-link",
-              {
-                staticClass: "discount-item-wrap",
-                attrs: {
-                  replace: "",
-                  to: {
-                    name: "product-item",
-                    params: { id: recommendedProduct.id }
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "discount-item d-flex flex-column" }, [
-                  _c("div", { staticClass: "discount-item-img" }, [
-                    _c("img", {
-                      attrs: {
-                        src: "/images/products/" + recommendedProduct.photo,
-                        alt: ""
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "discount-items-text" }, [
-                    _c("h3", [
-                      _vm._v(
-                        "\n                                " +
-                          _vm._s(recommendedProduct.title) +
-                          "\n                            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("p", {
-                      domProps: {
-                        innerHTML: _vm._s(recommendedProduct.description)
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "price" }, [
-                      _vm._v(
-                        "\n                                " +
-                          _vm._s(recommendedProduct.price) +
-                          " "
-                      ),
-                      _c("i", { staticClass: "fas fa-ruble-sign" })
-                    ])
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "action align-self-center" }, [
-                  _c("ul", { staticClass: "d-flex justify-content-center" }, [
-                    _c("li", [
-                      _c("i", { staticClass: "fas fa-shopping-basket" })
-                    ]),
-                    _vm._v(" "),
-                    _c("li", [_c("i", { staticClass: "fas fa-chart-bar" })]),
-                    _vm._v(" "),
-                    _c("li", [_c("i", { staticClass: "fas fa-heart" })])
-                  ])
-                ])
-              ]
-            )
-          }),
-          1
-        )
-      ])
+      _c(
+        "div",
+        { staticClass: "col-lg-12" },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("products-slider", {
+            attrs: { products: _vm.recommendedProducts }
+          })
+        ],
+        1
+      )
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
@@ -73505,33 +72761,6 @@ var staticRenderFns = [
     ])
   }
 ]
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=template&id=d5e7030a&":
-/*!*****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/products/allCategoriesTree.vue?vue&type=template&id=d5e7030a& ***!
-  \*****************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    _vm.transformed(),
-    _vm._b({ tag: "component" }, "component", _vm.$props, false)
-  )
-}
-var staticRenderFns = []
 render._withStripped = true
 
 
@@ -89575,9 +88804,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_progressbar__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vue_progressbar__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var vue2_editor__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue2-editor */ "./node_modules/vue2-editor/dist/vue2-editor.esm.js");
 /* harmony import */ var _components_inserts_ShoppingCart__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/inserts/ShoppingCart */ "./resources/js/components/inserts/ShoppingCart.vue");
-/* harmony import */ var vue_rate__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue-rate */ "./node_modules/vue-rate/dist/vue-rate.js");
-/* harmony import */ var vue_rate__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(vue_rate__WEBPACK_IMPORTED_MODULE_9__);
-/* harmony import */ var _Gate__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./Gate */ "./resources/js/Gate.js");
+/* harmony import */ var _components_inserts_Wishlist__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/inserts/Wishlist */ "./resources/js/components/inserts/Wishlist.vue");
+/* harmony import */ var vue_rate__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue-rate */ "./node_modules/vue-rate/dist/vue-rate.js");
+/* harmony import */ var vue_rate__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(vue_rate__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _Gate__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Gate */ "./resources/js/Gate.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -89602,11 +88832,13 @@ __webpack_require__(/*! slick-carousel */ "./node_modules/slick-carousel/slick/s
 
 
 
-Vue.use(vue_rate__WEBPACK_IMPORTED_MODULE_9___default.a);
+
+Vue.use(vue_rate__WEBPACK_IMPORTED_MODULE_10___default.a);
 Vue.component('shopping-cart', _components_inserts_ShoppingCart__WEBPACK_IMPORTED_MODULE_8__["default"]);
+Vue.component('wishlist', _components_inserts_Wishlist__WEBPACK_IMPORTED_MODULE_9__["default"]);
 
 window.auth = new _auth_js__WEBPACK_IMPORTED_MODULE_3__["default"]();
-Vue.prototype.$gate = new _Gate__WEBPACK_IMPORTED_MODULE_10__["default"](localStorage.getItem('user'));
+Vue.prototype.$gate = new _Gate__WEBPACK_IMPORTED_MODULE_11__["default"](localStorage.getItem('user'));
 Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_6___default.a, {
   color: 'rgb(143, 255, 199)',
   failedColor: 'red'
@@ -89687,7 +88919,7 @@ var app = new Vue({
     var app = this;
     Event.$on('userLoggedIn', function () {
       _this3.isAuth = auth.check();
-      Vue.prototype.$gate = new _Gate__WEBPACK_IMPORTED_MODULE_10__["default"](localStorage.getItem('user'));
+      Vue.prototype.$gate = new _Gate__WEBPACK_IMPORTED_MODULE_11__["default"](localStorage.getItem('user'));
     });
     Event.$on('logout', function () {
       _this3.isAuth = false;
@@ -91033,6 +90265,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/inserts/ProductsSlider.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/inserts/ProductsSlider.vue ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ProductsSlider_vue_vue_type_template_id_8bd7d736_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true& */ "./resources/js/components/inserts/ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true&");
+/* harmony import */ var _ProductsSlider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductsSlider.vue?vue&type=script&lang=js& */ "./resources/js/components/inserts/ProductsSlider.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ProductsSlider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ProductsSlider_vue_vue_type_template_id_8bd7d736_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ProductsSlider_vue_vue_type_template_id_8bd7d736_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "8bd7d736",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/inserts/ProductsSlider.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/inserts/ProductsSlider.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/inserts/ProductsSlider.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductsSlider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ProductsSlider.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/ProductsSlider.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductsSlider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/inserts/ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true&":
+/*!*******************************************************************************************************!*\
+  !*** ./resources/js/components/inserts/ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true& ***!
+  \*******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductsSlider_vue_vue_type_template_id_8bd7d736_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/ProductsSlider.vue?vue&type=template&id=8bd7d736&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductsSlider_vue_vue_type_template_id_8bd7d736_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ProductsSlider_vue_vue_type_template_id_8bd7d736_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/inserts/ShoppingCart.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/inserts/ShoppingCart.vue ***!
@@ -91097,6 +90398,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShoppingCart_vue_vue_type_template_id_10002628_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShoppingCart_vue_vue_type_template_id_10002628_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/inserts/Wishlist.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/inserts/Wishlist.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Wishlist_vue_vue_type_template_id_19b0ccc5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true& */ "./resources/js/components/inserts/Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true&");
+/* harmony import */ var _Wishlist_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Wishlist.vue?vue&type=script&lang=js& */ "./resources/js/components/inserts/Wishlist.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Wishlist_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Wishlist_vue_vue_type_template_id_19b0ccc5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Wishlist_vue_vue_type_template_id_19b0ccc5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "19b0ccc5",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/inserts/Wishlist.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/inserts/Wishlist.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/inserts/Wishlist.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wishlist_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Wishlist.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/Wishlist.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Wishlist_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/inserts/Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/inserts/Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Wishlist_vue_vue_type_template_id_19b0ccc5_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/inserts/Wishlist.vue?vue&type=template&id=19b0ccc5&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Wishlist_vue_vue_type_template_id_19b0ccc5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Wishlist_vue_vue_type_template_id_19b0ccc5_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -91276,90 +90646,164 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/products/allCategoriesTree.vue":
-/*!****************************************************************!*\
-  !*** ./resources/js/components/products/allCategoriesTree.vue ***!
-  \****************************************************************/
-/*! exports provided: default */
+/***/ "./resources/js/mixins/attachmentMixin.js":
+/*!************************************************!*\
+  !*** ./resources/js/mixins/attachmentMixin.js ***!
+  \************************************************/
+/*! exports provided: attachmentMixin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _allCategoriesTree_vue_vue_type_template_id_d5e7030a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./allCategoriesTree.vue?vue&type=template&id=d5e7030a& */ "./resources/js/components/products/allCategoriesTree.vue?vue&type=template&id=d5e7030a&");
-/* harmony import */ var _allCategoriesTree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./allCategoriesTree.vue?vue&type=script&lang=js& */ "./resources/js/components/products/allCategoriesTree.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _allCategoriesTree_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./allCategoriesTree.vue?vue&type=style&index=0&lang=css& */ "./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attachmentMixin", function() { return attachmentMixin; });
+var attachmentMixin = {
+  methods: {
+    onAttachmentChange: function onAttachmentChange(e) {
+      var file = e.target.files[0];
+      var reader = new FileReader();
 
+      if (!file.type.match(/image/)) {
+        this.form.errors.set('photo', 'File should be an image');
+        this.form.photo = '';
+        return;
+      }
 
+      if (file.size / 1024 > 2048) {
+        this.form.errors.set('photo', 'Size should be less then 2048KB');
+        this.form.photo = '';
+        return;
+      }
 
+      var ap = this;
 
+      reader.onloadend = function (file) {
+        ap.form.photo = reader.result;
+      };
 
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _allCategoriesTree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _allCategoriesTree_vue_vue_type_template_id_d5e7030a___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _allCategoriesTree_vue_vue_type_template_id_d5e7030a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/products/allCategoriesTree.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+      reader.readAsDataURL(file);
+    }
+  }
+};
 
 /***/ }),
 
-/***/ "./resources/js/components/products/allCategoriesTree.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************!*\
-  !*** ./resources/js/components/products/allCategoriesTree.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************/
-/*! exports provided: default */
+/***/ "./resources/js/mixins/filtersMixin.js":
+/*!*********************************************!*\
+  !*** ./resources/js/mixins/filtersMixin.js ***!
+  \*********************************************/
+/*! exports provided: filtersMixin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./allCategoriesTree.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filtersMixin", function() { return filtersMixin; });
+var filtersMixin = {
+  filters: {
+    threePoints: function threePoints(value) {
+      var re = /<.+?>/g;
+      value = value.replace(re, '');
+
+      if (value.length > 20) {
+        return value.slice(0, 20) + '...';
+      } else {
+        return value;
+      }
+    },
+    threePointsTitle: function threePointsTitle(value) {
+      if (value.length > 10) {
+        return value.slice(0, 10) + '...';
+      } else {
+        return value;
+      }
+    }
+  }
+};
 
 /***/ }),
 
-/***/ "./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css& ***!
-  \*************************************************************************************************/
-/*! no static exports found */
+/***/ "./resources/js/mixins/shoppingCartMixin.js":
+/*!**************************************************!*\
+  !*** ./resources/js/mixins/shoppingCartMixin.js ***!
+  \**************************************************/
+/*! exports provided: shoppingCartMixin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./allCategoriesTree.vue?vue&type=style&index=0&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=style&index=0&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_style_index_0_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "shoppingCartMixin", function() { return shoppingCartMixin; });
+var shoppingCartMixin = {
+  data: function data() {
+    return {
+      isAlreadyInShopCart: false
+    };
+  },
+  methods: {
+    isAlreadyInShoppingCart: function isAlreadyInShoppingCart() {
+      var _this = this;
+
+      this.axios.get('/api/shopping-cart/is-exists/' + this.currentProductID).then(function (response) {
+        _this.isAlreadyInShopCart = response.data.result;
+      });
+    },
+    addToShoppingCart: function addToShoppingCart(id) {
+      var _this2 = this;
+
+      var productID = this.currentProductID ? this.currentProductID : id;
+      this.axios.post('/api/shopping-cart', {
+        'product_id': productID
+      }).then(function (response) {
+        Event.$emit('addToShopCart');
+        _this2.isAlreadyInShopCart = true;
+        Swal.fire('', 'This product was successfully added to your shopping cart', 'success');
+      })["catch"](function (error) {
+        Swal.fire('', 'Error. This product probably is already in your shopping cart!!!', 'error');
+      });
+    }
+  }
+};
 
 /***/ }),
 
-/***/ "./resources/js/components/products/allCategoriesTree.vue?vue&type=template&id=d5e7030a&":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/components/products/allCategoriesTree.vue?vue&type=template&id=d5e7030a& ***!
-  \***********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
+/***/ "./resources/js/mixins/wishlistMixin.js":
+/*!**********************************************!*\
+  !*** ./resources/js/mixins/wishlistMixin.js ***!
+  \**********************************************/
+/*! exports provided: wishlistMixin */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_template_id_d5e7030a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./allCategoriesTree.vue?vue&type=template&id=d5e7030a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/products/allCategoriesTree.vue?vue&type=template&id=d5e7030a&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_template_id_d5e7030a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "wishlistMixin", function() { return wishlistMixin; });
+var wishlistMixin = {
+  data: function data() {
+    return {
+      isAlreadyInWishList: false
+    };
+  },
+  methods: {
+    isAlreadyInWishlist: function isAlreadyInWishlist() {
+      var _this = this;
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_allCategoriesTree_vue_vue_type_template_id_d5e7030a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+      this.axios.get('/api/wishlist/is-exists/' + this.currentProductID).then(function (response) {
+        _this.isAlreadyInWishList = response.data.result;
+      });
+    },
+    addToWishlist: function addToWishlist(id) {
+      var _this2 = this;
 
-
+      var productID = this.currentProductID ? this.currentProductID : id;
+      this.axios.post('/api/wishlist', {
+        'product_id': productID
+      }).then(function (response) {
+        Event.$emit('addedToWishlist');
+        _this2.isAlreadyInWishList = true;
+        Swal.fire('', 'This product was successfully added to your wishlist', 'success');
+      })["catch"](function (error) {
+        Swal.fire('', 'Error. This product probably is already in your wishlist!!!', 'error');
+      });
+    }
+  }
+};
 
 /***/ }),
 

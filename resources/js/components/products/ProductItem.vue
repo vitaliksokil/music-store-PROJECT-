@@ -6,9 +6,18 @@
             </div>
             <div class="col-lg-6">
                 <div class="product-info">
-                    <rate :length="5" :value="productItem.productRate" :showcount="true" :readonly="true" />
-                    <div class="title d-flex justify-content-between mt-3"><h2>{{productItem.title}}</h2>
-                        <button @click.prevent="addToShoppingCart" class="btn btn-success" :disabled="isAlreadyInShopCart">Add to shopping cart <i class="fas fa-shopping-basket"></i></button></div>
+                    <rate :length="5" :value="productItem.productRate" :showcount="true" :readonly="true"/>
+                    <div class="title d-flex justify-content-between mt-3 flex-wrap">
+                        <h2>{{productItem.title}}</h2>
+                        <button v-if="isAuth" @click.prevent="addToWishlist" class="btn btn-primary"
+                                :disabled="isAlreadyInWishList">
+                            Add to wishlist
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <button v-if="isAuth" @click.prevent="addToShoppingCart" class="btn btn-success"
+                                :disabled="isAlreadyInShopCart">Add to shopping cart <i
+                            class="fas fa-shopping-basket"></i></button>
+                    </div>
                     <div class="price">Price:<span>{{productItem.price}}$</span></div>
                     <hr>
                     <h2>Description</h2>
@@ -22,34 +31,7 @@
                 <div class="feedbacks-title">
                     <h1>Recommended for you</h1>
                 </div>
-                <div class="recommended-products discounts-items" id="recommended-products"
-                     v-show="recommendedProducts.length">
-                    <router-link replace class="discount-item-wrap" v-for="recommendedProduct in recommendedProducts"
-                                 :to="{name:'product-item',params:{id:recommendedProduct.id}}">
-                        <div class="discount-item d-flex flex-column">
-                            <div class="discount-item-img"><img :src="`/images/products/${recommendedProduct.photo}`"
-                                                                alt=""></div>
-                            <div class="discount-items-text">
-                                <h3>
-                                    {{recommendedProduct.title}}
-                                </h3>
-                                <p v-html="recommendedProduct.description"></p>
-                                <div class="price">
-                                    {{recommendedProduct.price}} <i class="fas fa-ruble-sign"></i>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="action align-self-center">
-                            <ul class="d-flex justify-content-center">
-                                <li><i class="fas fa-shopping-basket"></i></li>
-                                <li><i class="fas fa-chart-bar"></i></li>
-                                <li><i class="fas fa-heart"></i></li>
-                            </ul>
-                        </div>
-                    </router-link>
-
-                </div>
+                <products-slider :products="recommendedProducts"></products-slider>
             </div>
         </div>
         <div class="row">
@@ -150,7 +132,7 @@
                             <div class="form-group">
                                 <label for="feedback">Leave your feedback:</label>
                                 Your rate:
-                                <rate :length="5" :showcount="true" v-model="clientRate" />
+                                <rate :length="5" :showcount="true" v-model="clientRate"/>
                                 <vue-editor v-model="feedback" id="feedback"></vue-editor>
                                 <div class="red" v-if="errors.feedback">{{errors.feedback[0]}}</div>
                             </div>
@@ -176,7 +158,7 @@
                             <div class="form-group">
                                 <label for="feedback">Edit your feedback</label>
                                 Your rate:
-                                <rate :length="5" :showcount="true" v-model="userFeedback.rate" />
+                                <rate :length="5" :showcount="true" v-model="userFeedback.rate"/>
                                 <vue-editor v-model="userFeedback.feedback" id="edit"></vue-editor>
                                 <div class="red" v-if="errors.feedback">{{errors.feedback[0]}}</div>
                             </div>
@@ -191,9 +173,17 @@
 
 <script>
     import Auth from "../../auth";
+    import {filtersMixin} from "../../mixins/filtersMixin";
+    import ProductsSlider from "../inserts/ProductsSlider";
+    import {shoppingCartMixin} from "../../mixins/shoppingCartMixin";
+    import {wishlistMixin} from "../../mixins/wishlistMixin";
 
     export default {
         name: "ProductItem",
+        mixins: [filtersMixin,shoppingCartMixin,wishlistMixin],
+        components: {
+            'products-slider': ProductsSlider
+        },
         watch: {
             $route: function () {
                 this.currentProductID = this.$route.params.id;
@@ -212,31 +202,39 @@
                     description: '',
                     photo: '',
                     feedbacks: [],
-                    productRate:0,
+                    productRate: 0,
                 },
                 isUserLF: false,
                 userFeedback: {},
                 isAuth: false,
                 recommendedProducts: {},
-                isAlreadyInShopCart:false,
-                clientRate:0,
+                clientRate: 0,
             }
         },
         methods: {
-            init(){
+            init() {
                 let pi = this;
                 this.getCurrentProduct();
                 this.getRecommendedProducts();
                 this.isAlreadyInShoppingCart();
-                Event.$on('deletedFromShopCart',function () {
+                this.isAlreadyInWishlist();
+                Event.$on('deletedFromShopCart', function () {
                     pi.isAlreadyInShoppingCart();
+                });
+                Event.$on('addToShopCart', function () {
+                    pi.isAlreadyInShoppingCart();
+                });
+                Event.$on('deletedFromWishlist', function () {
+                    pi.isAlreadyInWishlist();
+                });
+                Event.$on('isAlreadyInShopCartFalse',function () {
+                    pi.isAlreadyInShopCart = false;
+                });
+                Event.$on('isAlreadyInWishlistFalse',function () {
+                    pi.isAlreadyInWishList = false;
                 })
             },
-            isAlreadyInShoppingCart(){
-                this.axios.get('/api/shopping-cart/is-exists/' + this.currentProductID).then((response) => {
-                    this.isAlreadyInShopCart = response.data.result;
-                })
-            },
+
             getCurrentProduct() {
                 this.axios.get('/api/product-get-current/' + this.currentProductID).then((response) => {
                     this.productItem = response.data;
@@ -365,32 +363,11 @@
             getRecommendedProducts() {
                 this.axios.get('/api/get-recommended-products/' + this.currentProductID).then(response => {
                     this.recommendedProducts = response.data;
-                    setTimeout(function () {
-                        $('#recommended-products').slick({
-                            infinite: false,
-                            slidesToShow: 5,
-                            slidesToScroll: 1,
-                            zIndex: 0,
-                            prevArrow: "<button type=\"button\" class=\"btn-prev\"><i class=\"fas fa-chevron-left\"></i></button>",
-                            nextArrow: "<button type=\"button\" class=\"btn-next\"><i class=\"fas fa-chevron-right\"></i></button>",
-                            adaptiveHeight: true
-                        });
-                    }, 0)
                 }).catch(error => {
 
                 });
             },
-            addToShoppingCart(){
-                this.axios.post('/api/shopping-cart',{'product_id': this.currentProductID}).then(response => {
-                    Event.$emit('addedToShoppingCart');
-                    this.isAlreadyInShopCart = true;
-                    Swal.fire(
-                        '',
-                        'This product was successfully added to your shopping cart',
-                        'success'
-                    )
-                })
-            }
+
         },
         mounted() {
             this.init();
@@ -400,7 +377,8 @@
                 this.user_id = JSON.parse(localStorage.getItem('user')).id;
             }
             this.isAuth = auth.check();
-        }
+        },
+
 
     }
 </script>
