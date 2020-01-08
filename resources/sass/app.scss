@@ -695,3 +695,38 @@ footer {
 .Rate__star{
     padding: 0 !important;
 }
+.card{
+    padding: 20px 0;
+    img {
+        transition: all 0.2s ease;
+
+    }
+    &:hover{
+        img {
+            transform: scale(1.2);
+        }
+    }
+}
+.card-body {
+    flex: 0;
+    margin-top: auto;
+}
+
+.card-img-top {
+    margin-top: auto;
+    max-height: 200px;
+    max-width: 270px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.card-text {
+    color: #777;
+}
+
+.price {
+    color: #ed1c24;
+}
+.products a:hover{
+    text-decoration: none;
+}

@@ -50,37 +50,38 @@
                         </div>
                         <hr>
                     </div>
-                    <div class="container" v-if="Array.isArray(products) && products.length">
+                    <div class="container" v-if="products.data">
                         <h2>Products</h2>
-                        <div class="row justify-content-between products">
-                            <router-link :to="{name:'product-item',params:{id:product.id}}" class="col-lg-3 m-3" v-for="product in products">
-                                <div class="discounts-items d-flex justify-content-around">
-                                    <div class="discount-item-wrap">
-                                        <div class="discount-item d-flex flex-column">
-                                            <div class="discount-item-img"><img :src="`/images/products/${product.photo}`" alt=""></div>
-                                            <div class="discount-items-text">
-                                                <h3>
-                                                    {{product.title}}
-                                                </h3>
-                                                {{product.description | threePoints}}
-                                                <div class="price">
-                                                    <span>{{product.price}}</span> {{product.price}} <i class="fas fa-ruble-sign"></i>
-                                                </div>
+                        <div class="dropdown mb-3 text-center">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort by
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="sort">
+                                <button class="dropdown-item" type="button" @click.prevent="sort='title';order='asc';getProducts(page = 1)">title(ascending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='title';order='desc';getProducts(page = 1)">title(descending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='price';order='asc';getProducts(page = 1)">price(ascending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='price';order='desc';getProducts(page = 1)">price(descending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='created_at';order='asc';getProducts(page = 1)">date(ascending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='created_at';order='desc';getProducts(page = 1)">date(descending)</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <router-link class="card col-lg-4 " style="width: 18rem;"
+                                         v-for="product in products.data"
+                                         :to="{name:'product-item',params:{id:product.id}}">
+                                <img :src="`/images/products/${product.photo}`" class="card-img-top ">
 
-                                            </div>
-                                        </div>
-                                        <div class="action align-self-center">
-                                            <ul class="d-flex justify-content-center">
-                                                <li><i class="fas fa-shopping-basket"></i></li>
-                                                <li><i class="fas fa-chart-bar"></i></li>
-                                                <li><i class="fas fa-heart"></i></li>
-                                            </ul>
-                                        </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-center">{{product.title}}</h5>
+                                    {{product.description | threePoints}}
+                                    <div class="price">
+                                        {{product.price}} <i class="fas fa-ruble-sign"></i>
                                     </div>
-
                                 </div>
                             </router-link>
                         </div>
+                        <pagination :data="products" @pagination-change-page="getProducts"></pagination>
+
                     </div>
                     <div class="container" v-else>
                         <h2 class="red">There are no products</h2>
@@ -129,6 +130,8 @@
                 products: {},
                 currentCategory: {},
                 allCategories: {},
+                sort:'created_at',
+                order:'desc'
             }
         },
         methods: {
@@ -149,9 +152,10 @@
                     this.getProducts();
                 }
             },
-            getProducts() {
-                this.axios.get('/api/get-products-by-category/' + this.id).then((response) => {
+            getProducts(page = 1) {
+                this.axios.get('/api/get-products-by-category/' + this.id + '?page='+page+'&sort='+this.sort+'&order='+this.order).then((response) => {
                     this.products = response.data;
+                    if(response.data.data.length == 0) this.products.data = null;
                 });
             }
         },
@@ -184,27 +188,5 @@
         white-space: normal;
     }
 
-    .card-body {
-        flex: 0;
-        margin-top: auto;
-    }
 
-    .card-img-top {
-        margin-top: auto;
-        max-height: 200px;
-        max-width: 270px;
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    .card-text {
-        color: #777;
-    }
-
-    .price {
-        color: #ed1c24;
-    }
-    .products a:hover{
-        text-decoration: none;
-    }
 </style>

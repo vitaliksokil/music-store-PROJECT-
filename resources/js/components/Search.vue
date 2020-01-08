@@ -5,37 +5,36 @@
                 <h2>Search results: </h2>
                 <div class="container" v-if="Array.isArray(products) && products.length">
                     <h2>Products</h2>
-                    <div class="row justify-content-between products">
-                        <router-link :to="{name:'product-item',params:{id:product.id}}" class="col-lg-3 m-3"
-                                     v-for="product in products">
-                            <div class="discounts-items d-flex justify-content-around">
-                                <div class="discount-item-wrap">
-                                    <div class="discount-item d-flex flex-column">
-                                        <div class="discount-item-img"><img :src="`/images/products/${product.photo}`"
-                                                                            alt=""></div>
-                                        <div class="discount-items-text">
-                                            <h3>
-                                                {{product.title}}
-                                            </h3>
-                                            <p v-html="product.description"></p>
-                                            <div class="price">
-                                                <span>{{product.price}}</span> {{product.price}} <i
-                                                class="fas fa-ruble-sign"></i>
-                                            </div>
+                    <div class="container" v-if="products">
+                        <h2>Products</h2>
+                        <div class="dropdown mb-3 text-center">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="sort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sort by
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="sort">
+                                <button class="dropdown-item" type="button" @click.prevent="sort='title';order='asc';search()">title(ascending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='title';order='desc';search()">title(descending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='price';order='asc';search()">price(ascending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='price';order='desc';search()">price(descending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='created_at';order='asc';search()">date(ascending)</button>
+                                <button class="dropdown-item" type="button" @click.prevent="sort='created_at';order='desc';search()">date(descending)</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <router-link class="card col-lg-4 " style="width: 18rem;"
+                                         v-for="product in products"
+                                         :to="{name:'product-item',params:{id:product.id}}">
+                                <img :src="`/images/products/${product.photo}`" class="card-img-top ">
 
-                                        </div>
-                                    </div>
-                                    <div class="action align-self-center">
-                                        <ul class="d-flex justify-content-center">
-                                            <li><i class="fas fa-shopping-basket"></i></li>
-                                            <li><i class="fas fa-chart-bar"></i></li>
-                                            <li><i class="fas fa-heart"></i></li>
-                                        </ul>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-center">{{product.title}}</h5>
+                                    {{product.description | threePoints}}
+                                    <div class="price">
+                                        {{product.price}} <i class="fas fa-ruble-sign"></i>
                                     </div>
                                 </div>
-
-                            </div>
-                        </router-link>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
                 <div class="container" v-else>
@@ -47,19 +46,24 @@
 </template>
 
 <script>
+    import {filtersMixin} from "../mixins/filtersMixin";
+
     export default {
         name: "Search",
+        mixins:[filtersMixin],
         data() {
             return {
                 products: {},
-                query: this.$route.params.query
+                query: this.$route.params.query,
+                sort:'created_at',
+                order:'desc'
             }
         },
         methods: {
             search() {
                 this.$Progress.start();
                 let query = this.query;
-                this.axios.get('/api/findProduct?q=' + this.query)
+                this.axios.get('/api/findProduct?q=' + this.query +'&sort='+this.sort+'&order='+this.order)
                     .then((data) => {
                         this.$Progress.finish();
                         this.products = data.data;

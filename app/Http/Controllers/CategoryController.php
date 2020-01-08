@@ -49,7 +49,7 @@ class CategoryController extends Controller
     public function index()
     {
         $data = Category::with('children')->orderBy('parent_id')->get()->toArray(); // categories with 1 level of children
-        $categories = $this->list_categories($data); // creating infinite levels of children, children of children!!!
+        $categories = $this->list_categories($data);  // creating infinite levels of children, children of children!!!
         return $categories;
     }
     /**
@@ -102,7 +102,6 @@ class CategoryController extends Controller
             'title' => 'required',
         ]);
 
-//todo duplicate fix
         if (strlen($request->photo) > 50) {
             $request['photo'] = $this->convertImageName($request->photo,'categories/');
             $image_path = public_path() . '/images/categories/' . $category->photo;

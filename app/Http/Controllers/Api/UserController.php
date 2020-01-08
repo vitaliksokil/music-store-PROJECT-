@@ -110,7 +110,7 @@ class UserController extends Controller
     {
         $this->authorize('isAdmin');
 
-        return User::latest()->paginate(15);
+        return User::latest()->paginate(5);
 
     }
 

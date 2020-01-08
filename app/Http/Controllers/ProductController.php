@@ -12,10 +12,13 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use App\Http\Traits\LikesTrait;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class ProductController extends Controller
 {
     use LikesTrait, CategoriesProductsTrait, ImageTrait;
+
+    private $elementsPerPage = 10;
 
     public function __construct()
     {
@@ -24,13 +27,15 @@ class ProductController extends Controller
 
     public function search()
     {
+        $sort = Input::get('sort');
+        $order = Input::get('order');
         if ($search = \Request::get('q')) {
-            $products = Product::where(function ($query) use ($search) {
+            $products = Product::with('category:title')->where(function ($query) use ($search) {
                 $query->where('id', 'LIKE', "%$search%")
                     ->orWhere('title', 'LIKE', "%$search%")
                     ->orWhere('price', 'LIKE', "%$search%")
                     ->orWhere('description', 'LIKE', "%$search%");
-            })->get();
+            })->orderBy($sort,$order)->get();
         } else {
             $products = $this->getProducts();
         }
@@ -109,15 +114,8 @@ class ProductController extends Controller
 
     public function getProducts()
     {
-        $products = Product::all();
-        $productsWithCategories = [];
-        $i = 0;
-        foreach ($products as $product) {
-            $productsWithCategories[$i] = $product->toArray();
-            $productsWithCategories[$i]['category_title'] = $product->category->first()->title;
-            $i++;
-        }
-        return $productsWithCategories;
+        $products = Product::with('category:title')->latest()->paginate($this->elementsPerPage);
+        return $products;
     }
 
     public function getCurrentProductByID($id)
@@ -141,7 +139,7 @@ class ProductController extends Controller
         $category = Category::find($categoryID);
         $products = $category->products;
         while (count($products) < $numberOfRecommendedProducts && $category->parent_id) {
-            $products = $this->getProductsByCategory($category->parent_id);
+            $products = $this->getProductsByCategory(new Request(['id' => $category->parent_id]),false);
             $category = Category::find($category->parent_id);
         }
         if (count($products) > $numberOfRecommendedProducts) {

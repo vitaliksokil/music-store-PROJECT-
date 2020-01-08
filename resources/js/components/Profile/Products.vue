@@ -22,10 +22,10 @@
                     </thead>
                     <tbody>
 
-                    <tr v-for="product in products">
+                    <tr v-for="product in products.data">
                         <td><img :src="`/images/products/${product.photo}`" alt=""></td>
                         <th>{{product.id}}</th>
-                        <th>{{product.category_title}}</th>
+                        <th>{{product.category[0].title}}</th>
                         <td>{{product.title}}</td>
                         <td>{{product.description | threePoints}}</td>
                         <td>{{product.price}}</td>
@@ -50,9 +50,11 @@
 
                         </td>
 
-
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr><pagination :data="products" @pagination-change-page="getProducts"></pagination></tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -130,7 +132,7 @@
         data() {
             return {
                 categories:'',
-                products: [],
+                products: {},
                 form: new Form({
                     title: '',
                     description: '',
@@ -172,9 +174,9 @@
                     console.log(response);
                 })
             },
-            getProducts() {
+            getProducts(page = 1) {
                 this.$Progress.start();
-                this.axios.get('/api/products-get').then((response) => {
+                this.axios.get('/api/products-get?page='+page).then(response => {
                     this.$Progress.finish();
                     this.products = response.data;
                 }).catch((response) => {
