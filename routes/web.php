@@ -18,7 +18,6 @@ Route::get('/', function () {
 
 //Route::get('profile', 'UserController@profile')->middleware('verified');
 
-
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/{any}', 'HomeController@index')->where('any', '.*');
 //Route::get('{path}', 'HomeController@index')->where('path','([A-z\d-\/_.]+)?');

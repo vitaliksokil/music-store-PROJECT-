@@ -96,12 +96,22 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{category}','CategoryController@update');
     });
 
+    Route::group(['prefix' => 'order'],function (){
+        Route::post('/','OrderController@store');
+        Route::get('/','OrderController@myOrders');
+        Route::get('/unverified-orders','OrderController@unverifiedOrders'); // for admin!
+        Route::get('/byUserID/{user_id}','OrderController@ordersByUserID'); // for admin!
+        Route::put('/verifyAllByUserID/{user_id}','OrderController@verifyAllByUserID'); // for admin!
+        Route::put('/verify/{order_id}','OrderController@verify'); // for admin!
+
+    });
 });
 
 Route::get('/findProduct', 'ProductController@search');
 Route::get('/get-recommended-products/{id}', 'ProductController@getRecommendedProducts'); // id - it's product's id
 Route::get('/product-get-current/{id}', 'ProductController@getCurrentProductByID');
 Route::get('/new-products', 'ProductController@getNewProducts');
+Route::get('/products-random', 'ProductController@random');
 
 Route::get('/category','CategoryController@index');
 Route::get('/category/{category}','CategoryController@show');

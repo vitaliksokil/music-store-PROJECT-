@@ -124,7 +124,7 @@
 
 <script>
     import CategoriesList from './CategoriesList'
-    import {attachmentMixin} from "../../mixins/attachmentMixin";
+    import {attachmentMixin} from "../../../mixins/attachmentMixin";
 
     export default {
         name: "AddProduct",

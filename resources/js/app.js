@@ -24,32 +24,35 @@ import {VueEditor} from "vue2-editor";
 import ShoppingCart from "./components/inserts/ShoppingCart";
 import Wishlist from "./components/inserts/Wishlist"
 import VueNumberInput from '@chenfengyuan/vue-number-input';
-
-
-
-
 import rate from 'vue-rate';
+import Gate from './Gate'
+import { debounce } from "debounce";
+
+
+
+Vue.use(VueAxios, axios);
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+});
 Vue.use(rate);
+
+
 
 Vue.component('shopping-cart', ShoppingCart);
 Vue.component('wishlist', Wishlist);
 Vue.component('vue-number-input', VueNumberInput);
 
-import Gate from './Gate'
 
 window.auth = new Auth();
 
 
 Vue.prototype.$gate = new Gate(localStorage.getItem('user'));
 
-Vue.use(VueProgressBar, {
-    color: 'rgb(143, 255, 199)',
-    failedColor: 'red',
-});
+
 
 window.Swal = Swal;
-
-Vue.use(VueAxios, axios);
+window.debounce = debounce;
 
 // vform
 

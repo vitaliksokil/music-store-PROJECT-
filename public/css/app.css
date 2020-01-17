@@ -19482,3 +19482,7 @@ footer .pages table td {
   text-decoration: none;
 }
 
+table img {
+  width: 200px;
+}
+

@@ -177,5 +177,10 @@ class ProductController extends Controller
         return $products;
     }
 
+    public function random(){
+        $products = Product::inRandomOrder()->take(9)->get();
+        return $products;
+    }
+
 
 }

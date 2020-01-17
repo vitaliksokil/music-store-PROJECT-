@@ -32,7 +32,7 @@
                             <h2>Total:<span class="green">{{totalPrice()}}$</span></h2>
                             <div class="buttons">
                                 <button class="btn btn-danger" @click.prevent="removeAll">Remove all</button>
-                                <button class="btn btn-success">BUY</button>
+                                <button class="btn btn-success" @click.prvent="buy">BUY</button>
                             </div>
 
                         </div>
@@ -46,9 +46,12 @@
 </template>
 
 <script>
+    import {priceMixin} from "../../mixins/priceMixin";
+
     export default {
         name: "ShoppingCart",
         props: ['isauth'],
+        mixins:[priceMixin],
         data() {
             return {
                 shoppingCartCount: 0,
@@ -57,18 +60,14 @@
             }
         },
         methods: {
+            buy(){
+                $('#shoppingCart').modal('hide');
+                this.$router.push({name:'buy',params:{shoppingCart: this.shoppingCart}});
+            },
             getShoppingCartCount() {
                 this.axios.get('/api/shopping-cart/count').then(response => {
                     this.shoppingCartCount = response.data;
                 });
-            },
-            totalPrice() {
-                let total = 0;
-                for (let item of this.shoppingCart) {
-                    total += item.product.price * item.quantity;
-                }
-                this.total = total;
-                return total;
             },
             getShoppingCart() {
                 this.axios.get('/api/shopping-cart').then(response => {
@@ -127,6 +126,9 @@
                     this.getShoppingCartCount();
                     Event.$on('addToShopCart', function () {
                         sc.getShoppingCartCount();
+                    });
+                    Event.$on('dropShoppingCartCount', function () {
+                        sc.shoppingCartCount = 0;
                     });
                 }
             },

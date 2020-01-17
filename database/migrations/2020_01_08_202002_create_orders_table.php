@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -19,9 +20,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->tinyInteger('quantity')->default(1);
             $table->unsignedInteger('total_price');
-            $table->string('region');
+            $table->string('area');
             $table->string('city');
-            $table->char('delivery',5);
             $table->string('post_office');
             $table->string('client_name');
             $table->string('client_surname');
@@ -29,11 +29,12 @@ class CreateOrdersTable extends Migration
             $table->string('client_email');
             $table->string('client_phone_number');
             $table->boolean('is_verified')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+
 
             $table->index('user_id');
             $table->index('product_id');
-            $table->unique(['user_id','product_id']);
 
         });
         Schema::table('orders',function (Blueprint $table){

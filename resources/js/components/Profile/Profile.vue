@@ -27,7 +27,9 @@
                             </router-link>
                         </li>
                         <li>
-
+                            <router-link :to="{name:'profile-my-orders'}"><i class="fas fa-shopping-cart lightred"></i>
+                                <span>My orders</span>
+                            </router-link>
                         </li>
                     </ul>
                     <ul class="sidebar-menu" data-widget="tree" v-if="$gate.isAdmin()">
@@ -68,6 +70,11 @@
                         <li>
                             <router-link :to="{name:'profile-categories'}"><i class="fas fa-drum pink"></i>
                                 <span>Categories</span>
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{name:'profile-orders'}"><i class="fas fa-truck red"></i>
+                                <span>Orders</span>
                             </router-link>
                         </li>
                     </ul>

@@ -28,6 +28,7 @@
         "@chenfengyuan/vue-number-input": "^1.2.0",
         "@websanova/vue-auth": "^2.21.14-beta",
         "admin-lte": "^2.4.17",
+        "debounce": "^1.2.0",
         "froala-editor": "^3.0.5",
         "laravel-vue-pagination": "^2.3.1",
         "owl.carousel": "^2.3.4",

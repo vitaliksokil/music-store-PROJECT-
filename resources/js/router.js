@@ -34,7 +34,7 @@ const routes = [
             },
             {
                 path: 'products',
-                component: require('./components/Profile/Products').default,
+                component: require('./components/Profile/admin/Products').default,
                 name: 'profile-products',
                 meta:
                     {
@@ -45,7 +45,7 @@ const routes = [
             },
             {
                 path: 'add-product',
-                component: require('./components/Profile/AddProduct').default,
+                component: require('./components/Profile/admin/AddProduct').default,
                 name: 'profile-add-product',
                 meta:
                     {
@@ -56,7 +56,7 @@ const routes = [
             },
             {
                 path: 'site-info',
-                component: require('./components/Profile/SiteInfo').default,
+                component: require('./components/Profile/admin/SiteInfo').default,
                 name: 'profile-site-info',
 
                 meta:
@@ -68,7 +68,7 @@ const routes = [
             },
             {
                 path: 'categories',
-                component: require('./components/Profile/Categories').default,
+                component: require('./components/Profile/admin/Categories').default,
                 name: 'profile-categories',
 
                 meta:
@@ -80,7 +80,7 @@ const routes = [
             },
             {
                 path: 'users',
-                component: require('./components/Profile/Users').default,
+                component: require('./components/Profile/admin/Users').default,
                 name: 'profile-users',
 
                 meta:
@@ -88,6 +88,41 @@ const routes = [
                         requiresAuth: true,
                         emailVerify: true,
                         isAdmin: true
+                    },
+            },
+            {
+                path: 'orders',
+                component: require('./components/Profile/admin/Orders').default,
+                name: 'profile-orders',
+
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
+                        isAdmin: true
+                    },
+            },
+            {
+                path: 'orders/:userid',
+                component: require('./components/Profile/admin/OrderByUserID').default,
+                name: 'profile-orders-by-user-id',
+
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
+                        isAdmin: true
+                    },
+            },
+            {
+                path: 'my-orders',
+                component: require('./components/Profile/MyOrders').default,
+                name: 'profile-my-orders',
+
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
                     },
             }
         ]
@@ -162,6 +197,17 @@ const routes = [
 
     },
     {
+        path: '/buy',
+        component: require('./components/products/Buy').default,
+        name: 'buy',
+        meta:
+            {
+                requiresAuth: true,
+                emailVerify: true,
+            },
+
+    },
+    {
         path: '*',
         component: require('./components/NotFound').default,
         name: '404'
@@ -187,6 +233,10 @@ router.beforeEach((to, from, next) => {
             if (auth.check()) {
                 if (!auth.checkEmailVerification()) {
                     next('/verify/token');
+                }
+                // buy page
+                if(to.name == 'buy' && Object.entries(to.params).length === 0 && to.params.constructor === Object){
+                    next({name: 'home'});
                 }
             }
             if (to.matched.some(record => record.meta.isAdmin)) {

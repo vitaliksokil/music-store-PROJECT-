@@ -17,9 +17,9 @@
                 <div class="col-lg-6">
                     <nav>
                         <ul class="d-flex justify-content-end">
-                            <li><a href="">Как купить</a></li>
-                            <li><a href="">Гарантия</a></li>
-                            <li><a href="">Доставка</a></li>
+{{--                            <li><a href="">Как купить</a></li>--}}
+{{--                            <li><a href="">Гарантия</a></li>--}}
+{{--                            <li><a href="">Доставка</a></li>--}}
 
                             <li v-if="!isAuth">
                                 <router-link :to="{name:'login'}" class="hover-off">Sign in</router-link>

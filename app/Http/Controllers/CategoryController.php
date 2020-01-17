@@ -165,6 +165,4 @@ class CategoryController extends Controller
         $category->delete();
     }
 
-
-
 }
