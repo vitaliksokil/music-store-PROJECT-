@@ -10,6 +10,7 @@
                         <th scope="col">Quantity</th>
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Is payed</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -23,6 +24,7 @@
                         <td :class="{'red':!order.is_verified, 'green':order.is_verified}">{{order.is_verified |
                             isVerified}}
                         </td>
+                        <td :class="{'red':!order.is_paid, 'green':order.is_paid}">{{order.is_paid | isPaid}}</td>
                         <td>
                             <router-link :to="{name:'product-item',params:{id:order.product_id}}">
                                 <button class="btn btn-info" :title="'View'">
@@ -115,6 +117,10 @@
                             <tr>
                                 <td>Is verified</td>
                                 <td :class="{'red':!orderDetails.is_verified, 'green':orderDetails.is_verified}">{{orderDetails.is_verified | isVerified}}</td>
+                            </tr>
+                            <tr>
+                                <td>Is paid</td>
+                                <td :class="{'red':!orderDetails.is_paid, 'green':orderDetails.is_paid}">{{orderDetails.is_paid | isPaid}}</td>
                             </tr>
                             <tr>
                                 <td>Created at</td>
@@ -219,6 +225,13 @@
                     return 'VERIFIED';
                 } else {
                     return "UNVERIFIED";
+                }
+            },
+            isPaid: function (val) {
+                if (val) {
+                    return 'PAID';
+                } else {
+                    return "UNPAID";
                 }
             }
         }

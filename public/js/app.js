@@ -2612,6 +2612,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MyOrders",
   data: function data() {
@@ -2633,6 +2639,7 @@ __webpack_require__.r(__webpack_exports__);
         client_email: '',
         client_phone_number: '',
         is_verified: '',
+        is_paid: '',
         created_at: ''
       }
     };
@@ -2684,6 +2691,13 @@ __webpack_require__.r(__webpack_exports__);
         return 'VERIFIED';
       } else {
         return "UNVERIFIED";
+      }
+    },
+    isPaid: function isPaid(val) {
+      if (val) {
+        return 'PAID';
+      } else {
+        return "UNPAID";
       }
     }
   }
@@ -3871,6 +3885,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "OrderByUserID",
   data: function data() {
@@ -3987,6 +4007,13 @@ __webpack_require__.r(__webpack_exports__);
         return 'VERIFIED';
       } else {
         return "UNVERIFIED";
+      }
+    },
+    isPaid: function isPaid(val) {
+      if (val) {
+        return 'PAID';
+      } else {
+        return "UNPAID";
       }
     }
   }
@@ -5881,6 +5908,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Buy",
@@ -5992,6 +6029,11 @@ __webpack_require__.r(__webpack_exports__);
             _this2.$router.push('/');
 
             Event.$emit('dropShoppingCartCount');
+
+            if (_this2.form.paymentMethod == 2) {
+              var wmForm = $('#webmoney');
+              wmForm.submit();
+            }
           })["catch"](function (error) {
             Swal.fire('', 'An error is occured!!!', 'error');
           });
@@ -69293,6 +69335,12 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "td",
+                  { class: { red: !order.is_paid, green: order.is_paid } },
+                  [_vm._v(_vm._s(_vm._f("isPaid")(order.is_paid)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
                   [
                     _c(
                       "router-link",
@@ -69473,6 +69521,25 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
+                      _c("td", [_vm._v("Is paid")]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          class: {
+                            red: !_vm.orderDetails.is_paid,
+                            green: _vm.orderDetails.is_paid
+                          }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(_vm._f("isPaid")(_vm.orderDetails.is_paid))
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
                       _c("td", [_vm._v("Created at")]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(_vm.orderDetails.created_at))])
@@ -69503,6 +69570,8 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Price")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Is paid")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Action")])
       ])
@@ -70899,6 +70968,12 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "td",
+                  { class: { red: !order.is_paid, green: order.is_paid } },
+                  [_vm._v(_vm._s(_vm._f("isPaid")(order.is_paid)))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "td",
                   [
                     _c(
                       "router-link",
@@ -71111,6 +71186,25 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
+                      _c("td", [_vm._v("Is paid")]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        {
+                          class: {
+                            red: !_vm.orderDetails.is_paid,
+                            green: _vm.orderDetails.is_paid
+                          }
+                        },
+                        [
+                          _vm._v(
+                            _vm._s(_vm._f("isPaid")(_vm.orderDetails.is_paid))
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
                       _c("td", [_vm._v("Created at")]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(_vm.orderDetails.created_at))])
@@ -71141,6 +71235,8 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Price")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Is payed")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Action")])
       ])
@@ -74359,46 +74455,120 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("option", { attrs: { value: "2" } }, [
-                              _vm._v("Google pay")
+                              _vm._v("Webmoney")
                             ])
                           ]
                         )
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "buttons text-right mt-5" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-danger",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.cancel($event)
-                              }
-                            }
-                          },
-                          [_vm._v("Cancel")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success",
-                            attrs: { type: "submit" }
-                          },
-                          [_vm._v("BUY")]
-                        )
-                      ])
+                      _vm.form.paymentMethod == 1
+                        ? _c("div", { staticClass: "buttons mt-5" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success",
+                                attrs: { type: "submit" }
+                              },
+                              [_vm._v("BUY")]
+                            )
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.form.paymentMethod == 2
+                        ? _c("div", { staticClass: "buttons" }, [
+                            _vm._v(
+                              "\n                        Buy with\n                        "
+                            ),
+                            _vm._m(0),
+                            _vm._v(" "),
+                            _c(
+                              "form",
+                              {
+                                attrs: {
+                                  method: "POST",
+                                  action:
+                                    "https://merchant.webmoney.ru/lmi/payment_utf.asp",
+                                  "accept-charset": "utf-8",
+                                  id: "webmoney"
+                                }
+                              },
+                              [
+                                _c("input", {
+                                  attrs: {
+                                    type: "hidden",
+                                    name: "LMI_PAYMENT_AMOUNT"
+                                  },
+                                  domProps: { value: _vm.total }
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: {
+                                    type: "hidden",
+                                    name: "LMI_PAYMENT_DESC",
+                                    value: "Music store payment"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: {
+                                    type: "hidden",
+                                    name: "LMI_PAYEE_PURSE",
+                                    value: "Z942256158258"
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: {
+                                    type: "hidden",
+                                    name: "LMI_SIM_MODE",
+                                    value: "0"
+                                  }
+                                })
+                              ]
+                            )
+                          ])
+                        : _vm._e()
                     ])
                   : _vm._e()
               ]
-            )
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "buttons" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.cancel($event)
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              )
+            ])
           ])
         ])
       ])
     : _vm._e()
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-success", attrs: { type: "submit" } },
+      [
+        _c("img", {
+          attrs: { width: "100px", src: "/images/webmoney.png", alt: "" }
+        })
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 

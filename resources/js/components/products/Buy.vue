@@ -72,17 +72,27 @@
                             <label for="paymentMethod">Payment method*:</label>
                             <select required class="form-control" v-model="form.paymentMethod" id="paymentMethod">
                                 <option value="1">On receipt</option>
-                                <option value="2">Google pay</option>
+                                <option value="2">Webmoney</option>
                             </select>
                         </div>
-
-
-                        <div class="buttons text-right mt-5">
-                            <button class="btn btn-danger" @click.prevent="cancel">Cancel</button>
+                        <div class="buttons mt-5" v-if="form.paymentMethod == 1">
                             <button class="btn btn-success" type="submit">BUY</button>
+                        </div>
+                        <div class="buttons" v-if="form.paymentMethod == 2">
+                            Buy with
+                            <button class="btn btn-success" type="submit"><img width="100px" src="/images/webmoney.png" alt=""></button>
+                            <form method="POST" action="https://merchant.webmoney.ru/lmi/payment_utf.asp" accept-charset="utf-8" id="webmoney">
+                                <input type="hidden" name="LMI_PAYMENT_AMOUNT" :value="total">
+                                <input type="hidden" name="LMI_PAYMENT_DESC" value="Music store payment">
+                                <input type="hidden" name="LMI_PAYEE_PURSE" value="Z942256158258">
+                                <input type="hidden" name="LMI_SIM_MODE" value="0">
+                            </form>
                         </div>
                     </div>
                 </form>
+                <div class="buttons">
+                    <button class="btn btn-danger" @click.prevent="cancel">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -139,6 +149,7 @@
                 })
             },
             buy() {
+
                 if(!this.form.client.phoneNumber.match(/\+380[0-9]{9}/)){
                     this.errors.phoneNumber = 'Incorrect phone number format! Should be "+380xxxxxxxxx"';
                     Swal.fire('','Some data is invalid!!!','error');
@@ -173,13 +184,21 @@
                             order.push(orderItem);
                             orderItem = {};
                         }
-                        this.axios.post('/api/order',order).then(response => {
-                            Swal.fire('',response.data.message,response.data.status);
-                            this.$router.push('/');
-                            Event.$emit('dropShoppingCartCount');
-                        }).catch(error=>{
-                            Swal.fire('','An error is occured!!!','error');
-                        });
+
+                            this.axios.post('/api/order',order).then(response => {
+                                Swal.fire('',response.data.message,response.data.status);
+                                this.$router.push('/');
+                                Event.$emit('dropShoppingCartCount');
+
+                                if(this.form.paymentMethod == 2){
+                                    let wmForm = $('#webmoney');
+                                    wmForm.submit();
+                                }
+                            }).catch(error=>{
+                                Swal.fire('','An error is occured!!!','error');
+                            });
+
+
                     }
                 })
             },

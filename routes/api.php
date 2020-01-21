@@ -103,8 +103,11 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/byUserID/{user_id}','OrderController@ordersByUserID'); // for admin!
         Route::put('/verifyAllByUserID/{user_id}','OrderController@verifyAllByUserID'); // for admin!
         Route::put('/verify/{order_id}','OrderController@verify'); // for admin!
-
     });
+    Route::group(['prefix' => 'payment'],function (){
+        Route::post('/','PaymentController@pay');
+    });
+
 });
 
 Route::get('/findProduct', 'ProductController@search');
