@@ -61,4 +61,7 @@ class PaymentController extends Controller
             return response(['message' => 'Thank you for your purchase', 'status' => 'success']);
         }
     }
+    public function show(){
+        return Payment::all();
+    }
 }

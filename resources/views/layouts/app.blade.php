@@ -10,6 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Music Store') }}</title>
+    <link rel="shortcut icon" href="/images/Favicon.jpg" type="image/x-icon">
 
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">

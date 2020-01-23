@@ -147,8 +147,11 @@
 </template>
 
 <script>
+    import {filtersMixin} from "../../mixins/filtersMixin";
+
     export default {
         name: "MyOrders",
+        mixins:[filtersMixin],
         data() {
             return {
                 orders: [],
@@ -210,22 +213,6 @@
         mounted() {
             this.getOrders();
         },
-        filters: {
-            isVerified: function (val) {
-                if (val) {
-                    return 'VERIFIED';
-                } else {
-                    return "UNVERIFIED";
-                }
-            },
-            isPaid: function (val) {
-                if (val) {
-                    return 'PAID';
-                } else {
-                    return "UNPAID";
-                }
-            }
-        }
     }
 </script>
 

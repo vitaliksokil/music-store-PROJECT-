@@ -16,5 +16,19 @@ export const filtersMixin = {
                 return value;
             }
         },
+        isVerified: function (val) {
+            if (val) {
+                return 'VERIFIED';
+            } else {
+                return "UNVERIFIED";
+            }
+        },
+        isPaid: function (val) {
+            if (val) {
+                return 'PAID';
+            } else {
+                return "UNPAID";
+            }
+        }
     },
 };

@@ -27,7 +27,7 @@ import VueNumberInput from '@chenfengyuan/vue-number-input';
 import rate from 'vue-rate';
 import Gate from './Gate'
 import { debounce } from "debounce";
-
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 
 Vue.use(VueAxios, axios);
@@ -36,7 +36,10 @@ Vue.use(VueProgressBar, {
     failedColor: 'red',
 });
 Vue.use(rate);
-
+// Install BootstrapVue
+Vue.use(BootstrapVue);
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin);
 
 
 Vue.component('shopping-cart', ShoppingCart);

@@ -115,6 +115,18 @@ const routes = [
                     },
             },
             {
+                path: 'payments',
+                component: require('./components/Profile/admin/Payments').default,
+                name: 'profile-payments',
+
+                meta:
+                    {
+                        requiresAuth: true,
+                        emailVerify: true,
+                        isAdmin: true
+                    },
+            },
+            {
                 path: 'my-orders',
                 component: require('./components/Profile/MyOrders').default,
                 name: 'profile-my-orders',

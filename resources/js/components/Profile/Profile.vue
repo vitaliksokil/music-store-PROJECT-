@@ -77,6 +77,11 @@
                                 <span>Orders</span>
                             </router-link>
                         </li>
+                        <li>
+                            <router-link :to="{name:'profile-payments'}"><i class="fas fa-money-bill-alt green"></i>
+                                <span>Payments</span>
+                            </router-link>
+                        </li>
                     </ul>
                     <!-- /.sidebar-menu -->
                 </section>

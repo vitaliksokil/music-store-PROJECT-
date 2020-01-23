@@ -25,7 +25,7 @@ class OrderController extends Controller
                 return $item['product_id'];
             }, $orders);
             if (DB::table('shopping_carts')->whereIn('product_id', $prods_ids_to_delete)->where('user_id', Auth::user()->id)->delete()) {
-                return response(['status' => 'success', 'message' => 'Your order was successfully created. We will contact you to confirm your order!','orders_ids'=>$orders_ids]);
+                return response(['status' => 'success', 'message' => 'Your order was successfully created. We will contact you to confirm your order!', 'orders_ids' => $orders_ids]);
             }
         }
         abort('400');
@@ -73,5 +73,10 @@ class OrderController extends Controller
             return response(['message' => 'An error occurred!', 'status' => 'error']);
         }
 
+    }
+
+    public function orderByID($id)
+    {
+        return Order::with('product')->findOrFail($id);
     }
 }
