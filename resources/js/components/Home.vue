@@ -102,7 +102,7 @@
                                 <h5 class="card-title text-center">{{product.title}}</h5>
                                 {{product.description | threePoints}}
                                 <div class="price">
-                                    {{product.price}} <i class="fas fa-ruble-sign"></i>
+                                    {{product.price}} $
                                 </div>
                             </div>
                         </router-link>

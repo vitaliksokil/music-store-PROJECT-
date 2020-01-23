@@ -10,6 +10,7 @@
                         <th scope="col">Quantity</th>
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Payment method</th>
                         <th scope="col">Is paid</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -24,6 +25,7 @@
                         <td :class="{'red':!order.is_verified, 'green':order.is_verified}">{{order.is_verified |
                             isVerified}}
                         </td>
+                        <td>{{order.payment_method}}</td>
                         <td :class="{'red':!order.is_paid, 'green':order.is_paid}">{{order.is_paid | isPaid}}</td>
                         <td>
                             <router-link :to="{name:'product-item',params:{id:order.product_id}}">
@@ -36,6 +38,18 @@
                                     @click.prevent="findOrderByID(order.id)">
                                 <i class="fas fa-ellipsis-h"></i>
                             </button>
+
+                            <form v-if="!order.is_paid && order.payment_method == 'webmoney'"  method="POST" action="https://merchant.webmoney.ru/lmi/payment_utf.asp" accept-charset="utf-8" id="webmoney">
+                                <input type="hidden" name="LMI_PAYMENT_AMOUNT" :value="order.total_price">
+                                <input type="hidden" name="LMI_PAYMENT_DESC" value="Music store payment">
+                                <input type="hidden" name="LMI_PAYEE_PURSE" value="Z942256158258">
+                                <input type="hidden" name="LMI_SIM_MODE" value="0">
+                                <input type="hidden" name="orders_ids" :value="order.id">
+                                <button class="btn bg-green" :title="'Pay with webmoney'"
+                                        @click="piecePayment(order.id,order.total_price)">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>
@@ -111,6 +125,10 @@
                                 <td :class="{'red':!orderDetails.is_verified, 'green':orderDetails.is_verified}">{{orderDetails.is_verified | isVerified}}</td>
                             </tr>
                             <tr>
+                                <td>Payment method</td>
+                                <td>{{orderDetails.payment_method}}</td>
+                            </tr>
+                            <tr>
                                 <td>Is paid</td>
                                 <td :class="{'red':!orderDetails.is_paid, 'green':orderDetails.is_paid}">{{orderDetails.is_paid | isPaid}}</td>
                             </tr>
@@ -150,6 +168,7 @@
                     client_email:'',
                     client_phone_number:'',
                     is_verified:'',
+                    payment_method:'',
                     is_paid:'',
                     created_at:'',
                 }
@@ -168,6 +187,24 @@
                         return
                     }
                 }
+            },
+            piecePayment(order_id,total_price){
+                // doing fake(piece) payment, because free hosting doesn't allow to make payments
+                let payer_purse = 'Z'; // random purse
+                let payer_wm = ''; // and wm id
+                for(let i =0;i<12;i++) {
+                    payer_purse += Math.floor(Math.random() * 10);
+                    payer_wm += Math.floor(Math.random() * 10);
+                }
+                this.axios.post('/api/payment/piece-payment',{
+                    'orders_ids':[order_id], // should be array
+                    'amount':total_price,
+                    'payer_purse':payer_purse,
+                    'payer_wm':payer_wm,
+                });
+                //send wm form
+                let wmForm = $('#webmoney');
+                wmForm.submit();
             }
         },
         mounted() {

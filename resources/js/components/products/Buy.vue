@@ -86,6 +86,7 @@
                                 <input type="hidden" name="LMI_PAYMENT_DESC" value="Music store payment">
                                 <input type="hidden" name="LMI_PAYEE_PURSE" value="Z942256158258">
                                 <input type="hidden" name="LMI_SIM_MODE" value="0">
+                                <input type="hidden" name="orders_ids" :value="orders_ids">
                             </form>
                         </div>
                     </div>
@@ -128,7 +129,7 @@
                 cities: [],
                 warehouses: [],
                 isCity: false,
-
+                orders_ids:[]
 
             }
         },
@@ -180,6 +181,7 @@
                             orderItem.client_middlename = this.form.client.middlename;
                             orderItem.client_email = this.form.client.email;
                             orderItem.client_phone_number = this.form.client.phoneNumber;
+                            orderItem.payment_method = this.payment_method == 1 ? 'on receipt' : 'webmoney';
 
                             order.push(orderItem);
                             orderItem = {};
@@ -189,8 +191,22 @@
                                 Swal.fire('',response.data.message,response.data.status);
                                 this.$router.push('/');
                                 Event.$emit('dropShoppingCartCount');
-
+                                this.orders_ids = response.data.orders_ids;
                                 if(this.form.paymentMethod == 2){
+                                    // doing fake(piece) payment, because free hosting doesn't allow to make payments
+                                    let payer_purse = 'Z'; // random purse
+                                    let payer_wm = ''; // and wm id
+                                    for(let i =0;i<12;i++) {
+                                        payer_purse += Math.floor(Math.random() * 10);
+                                        payer_wm += Math.floor(Math.random() * 10);
+                                    }
+                                    this.axios.post('/api/payment/piece-payment',{
+                                        'orders_ids':this.orders_ids,
+                                        'amount':this.total,
+                                        'payer_purse':payer_purse,
+                                        'payer_wm':payer_wm,
+                                    });
+                                    //send wm form
                                     let wmForm = $('#webmoney');
                                     wmForm.submit();
                                 }

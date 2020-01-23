@@ -104,12 +104,12 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/verifyAllByUserID/{user_id}','OrderController@verifyAllByUserID'); // for admin!
         Route::put('/verify/{order_id}','OrderController@verify'); // for admin!
     });
-    Route::group(['prefix' => 'payment'],function (){
-        Route::post('/','PaymentController@pay');
-    });
 
 });
-
+Route::group(['prefix' => 'payment'],function (){
+    Route::post('/','PaymentController@pay');
+    Route::post('/piece-payment','PaymentController@piecePayment');
+});
 Route::get('/findProduct', 'ProductController@search');
 Route::get('/get-recommended-products/{id}', 'ProductController@getRecommendedProducts'); // id - it's product's id
 Route::get('/product-get-current/{id}', 'ProductController@getCurrentProductByID');

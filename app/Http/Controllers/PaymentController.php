@@ -2,27 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
+use App\Payment;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function pay()
+    public function pay(Request $request)
     {
-        $key = hash('sign', $_POST['LMI_PAYEE_PURSE'] .
-            $_POST['LMI_PAYMENT_AMOUNT'] .
-            $_POST['LMI_HOLD'] .
-            $_POST['LMI_PAYMENT_NO'] .
-            $_POST['LMI_MODE'] .
-            $_POST['LMI_SYS_INVS_NO'] .
-            $_POST['LMI_SYS_TRANS_NO'] .
-            $_POST['LMI_SYS_TRANS_DATE'] .
+        $post = $request->all();
+        $key = hash('sha256', $post['LMI_PAYEE_PURSE'] .
+            $post['LMI_PAYMENT_AMOUNT'] .
+            $post['LMI_HOLD'] .
+            $post['LMI_PAYMENT_NO'] .
+            $post['LMI_MODE'] .
+            $post['LMI_SYS_INVS_NO'] .
+            $post['LMI_SYS_TRANS_NO'] .
+            $post['LMI_SYS_TRANS_DATE'] .
             'EtOdJAjoNb' .
-            $_POST['LMI_PAYER_PURSE'] .
-            $_POST['LMI_PAYER_WM']);
-        if (strtoupper($key) != $_POST['LMI_HASH']) {
-            exit;
+            $post['LMI_PAYER_PURSE'] .
+            $post['LMI_PAYER_WM']);
+        if (strtoupper($key) != $post['LMI_HASH']) {
+            abort(500, 'An error occurred');
+        }
+        $payments = [];
+        foreach ($post['orders_ids'] as $orders_id) {
+            $payments[] = [
+                'order_id' => $orders_id,
+                'amount' => $post['LMI_PAYMENT_AMOUNT'],
+                'payer_purse' => $post['LMI_PAYER_PURSE'],
+                'payer_wm' => $post['LMI_PAYER_WM'],
+                'created_at' => $post['LMI_SYS_TRANS_DATE'],
+            ];
         }
 
-        // todo confirm orders , set payed to true
+        if (Payment::insert($payments)) {
+            foreach ($post['orders_ids'] as $orders_id) {
+                Order::where('id', $orders_id)->update(['is_paid' => 1]);
+            }
+            echo response(['message' => 'Thank you for your purchase', 'status' => 'success']);
+        }
+    }
+
+    public function piecePayment(Request $request){
+        $payments = [];
+        foreach ($request['orders_ids'] as $orders_id) {
+            $payments[] = [
+                'order_id' => $orders_id,
+                'amount' => $request['amount'],
+                'payer_purse' => $request['payer_purse'],
+                'payer_wm' => $request['payer_wm'],
+            ];
+        }
+        if (Payment::insert($payments)) {
+            foreach ($request['orders_ids'] as $orders_id) {
+                Order::where('id', $orders_id)->update(['is_paid' => 1]);
+            }
+            return response(['message' => 'Thank you for your purchase', 'status' => 'success']);
+        }
     }
 }

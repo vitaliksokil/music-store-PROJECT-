@@ -43,9 +43,10 @@
                 this.axios.get('/api/order/unverified-orders').then(response=>{
                     this.usersOrders = response.data;
                 });
-            }
+            },
+
         },
-        mounted() {
+         mounted() {
             this.getUsersOrders();
         }
     }

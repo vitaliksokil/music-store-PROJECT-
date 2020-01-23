@@ -2618,6 +2618,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MyOrders",
   data: function data() {
@@ -2639,6 +2657,7 @@ __webpack_require__.r(__webpack_exports__);
         client_email: '',
         client_phone_number: '',
         is_verified: '',
+        payment_method: '',
         is_paid: '',
         created_at: ''
       }
@@ -2680,6 +2699,28 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }
+    },
+    piecePayment: function piecePayment(order_id, total_price) {
+      // doing fake(piece) payment, because free hosting doesn't allow to make payments
+      var payer_purse = 'Z'; // random purse
+
+      var payer_wm = ''; // and wm id
+
+      for (var i = 0; i < 12; i++) {
+        payer_purse += Math.floor(Math.random() * 10);
+        payer_wm += Math.floor(Math.random() * 10);
+      }
+
+      this.axios.post('/api/payment/piece-payment', {
+        'orders_ids': [order_id],
+        // should be array
+        'amount': total_price,
+        'payer_purse': payer_purse,
+        'payer_wm': payer_wm
+      }); //send wm form
+
+      var wmForm = $('#webmoney');
+      wmForm.submit();
     }
   },
   mounted: function mounted() {
@@ -3753,6 +3794,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5918,6 +5965,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Buy",
@@ -5945,7 +5993,8 @@ __webpack_require__.r(__webpack_exports__);
       ukrainianAreas: [],
       cities: [],
       warehouses: [],
-      isCity: false
+      isCity: false,
+      orders_ids: []
     };
   },
   methods: {
@@ -6005,6 +6054,7 @@ __webpack_require__.r(__webpack_exports__);
               orderItem.client_middlename = _this2.form.client.middlename;
               orderItem.client_email = _this2.form.client.email;
               orderItem.client_phone_number = _this2.form.client.phoneNumber;
+              orderItem.payment_method = _this2.payment_method == 1 ? 'on receipt' : 'webmoney';
               order.push(orderItem);
               orderItem = {};
             }
@@ -6029,8 +6079,27 @@ __webpack_require__.r(__webpack_exports__);
             _this2.$router.push('/');
 
             Event.$emit('dropShoppingCartCount');
+            _this2.orders_ids = response.data.orders_ids;
 
             if (_this2.form.paymentMethod == 2) {
+              // doing fake(piece) payment, because free hosting doesn't allow to make payments
+              var payer_purse = 'Z'; // random purse
+
+              var payer_wm = ''; // and wm id
+
+              for (var i = 0; i < 12; i++) {
+                payer_purse += Math.floor(Math.random() * 10);
+                payer_wm += Math.floor(Math.random() * 10);
+              }
+
+              _this2.axios.post('/api/payment/piece-payment', {
+                'orders_ids': _this2.orders_ids,
+                'amount': _this2.total,
+                'payer_purse': payer_purse,
+                'payer_wm': payer_wm
+              }); //send wm form
+
+
               var wmForm = $('#webmoney');
               wmForm.submit();
             }
@@ -68563,9 +68632,8 @@ var render = function() {
                         _vm._v(
                           "\n                                " +
                             _vm._s(product.price) +
-                            " "
-                        ),
-                        _c("i", { staticClass: "fas fa-ruble-sign" })
+                            " $\n                            "
+                        )
                       ])
                     ])
                   ]
@@ -69333,6 +69401,8 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(order.payment_method))]),
+                _vm._v(" "),
                 _c(
                   "td",
                   { class: { red: !order.is_paid, green: order.is_paid } },
@@ -69381,7 +69451,81 @@ var render = function() {
                         }
                       },
                       [_c("i", { staticClass: "fas fa-ellipsis-h" })]
-                    )
+                    ),
+                    _vm._v(" "),
+                    !order.is_paid && order.payment_method == "webmoney"
+                      ? _c(
+                          "form",
+                          {
+                            attrs: {
+                              method: "POST",
+                              action:
+                                "https://merchant.webmoney.ru/lmi/payment_utf.asp",
+                              "accept-charset": "utf-8",
+                              id: "webmoney"
+                            }
+                          },
+                          [
+                            _c("input", {
+                              attrs: {
+                                type: "hidden",
+                                name: "LMI_PAYMENT_AMOUNT"
+                              },
+                              domProps: { value: order.total_price }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              attrs: {
+                                type: "hidden",
+                                name: "LMI_PAYMENT_DESC",
+                                value: "Music store payment"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              attrs: {
+                                type: "hidden",
+                                name: "LMI_PAYEE_PURSE",
+                                value: "Z942256158258"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              attrs: {
+                                type: "hidden",
+                                name: "LMI_SIM_MODE",
+                                value: "0"
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("input", {
+                              attrs: { type: "hidden", name: "orders_ids" },
+                              domProps: { value: order.id }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn bg-green",
+                                attrs: { title: "Pay with webmoney" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.piecePayment(
+                                      order.id,
+                                      order.total_price
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fas fa-money-bill-wave"
+                                })
+                              ]
+                            )
+                          ]
+                        )
+                      : _vm._e()
                   ],
                   1
                 )
@@ -69521,6 +69665,14 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
+                      _c("td", [_vm._v("Payment method")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(_vm._s(_vm.orderDetails.payment_method))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
                       _c("td", [_vm._v("Is paid")]),
                       _vm._v(" "),
                       _c(
@@ -69570,6 +69722,8 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Price")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Payment method")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Is paid")]),
         _vm._v(" "),
@@ -70966,6 +71120,8 @@ var render = function() {
                   ]
                 ),
                 _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(order.payment_method))]),
+                _vm._v(" "),
                 _c(
                   "td",
                   { class: { red: !order.is_paid, green: order.is_paid } },
@@ -71186,6 +71342,14 @@ var render = function() {
                     ]),
                     _vm._v(" "),
                     _c("tr", [
+                      _c("td", [_vm._v("Payment method")]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _vm._v(_vm._s(_vm.orderDetails.payment_method))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("tr", [
                       _c("td", [_vm._v("Is paid")]),
                       _vm._v(" "),
                       _c(
@@ -71235,6 +71399,8 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Price")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Status")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Payment method")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Is payed")]),
         _vm._v(" "),
@@ -74523,6 +74689,11 @@ var render = function() {
                                     name: "LMI_SIM_MODE",
                                     value: "0"
                                   }
+                                }),
+                                _vm._v(" "),
+                                _c("input", {
+                                  attrs: { type: "hidden", name: "orders_ids" },
+                                  domProps: { value: _vm.orders_ids }
                                 })
                               ]
                             )
@@ -74922,11 +75093,8 @@ var render = function() {
                                       _vm._v(
                                         "\n                                    " +
                                           _vm._s(product.price) +
-                                          " "
-                                      ),
-                                      _c("i", {
-                                        staticClass: "fas fa-ruble-sign"
-                                      })
+                                          " $\n                                "
+                                      )
                                     ])
                                   ]
                                 )

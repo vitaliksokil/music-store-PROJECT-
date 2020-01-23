@@ -10,6 +10,7 @@
                         <th scope="col">Quantity</th>
                         <th scope="col">Price</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Payment method</th>
                         <th scope="col">Is payed</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -24,6 +25,7 @@
                         <td :class="{'red':!order.is_verified, 'green':order.is_verified}">{{order.is_verified |
                             isVerified}}
                         </td>
+                        <td >{{order.payment_method}}</td>
                         <td :class="{'red':!order.is_paid, 'green':order.is_paid}">{{order.is_paid | isPaid}}</td>
                         <td>
                             <router-link :to="{name:'product-item',params:{id:order.product_id}}">
@@ -117,6 +119,10 @@
                             <tr>
                                 <td>Is verified</td>
                                 <td :class="{'red':!orderDetails.is_verified, 'green':orderDetails.is_verified}">{{orderDetails.is_verified | isVerified}}</td>
+                            </tr>
+                            <tr>
+                                <td>Payment method</td>
+                                <td>{{orderDetails.payment_method}}</td>
                             </tr>
                             <tr>
                                 <td>Is paid</td>
