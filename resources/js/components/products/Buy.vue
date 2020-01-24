@@ -181,7 +181,7 @@
                             orderItem.client_middlename = this.form.client.middlename;
                             orderItem.client_email = this.form.client.email;
                             orderItem.client_phone_number = this.form.client.phoneNumber;
-                            orderItem.payment_method = this.payment_method == 1 ? 'on receipt' : 'webmoney';
+                            orderItem.payment_method = this.form.paymentMethod  == 1 ? 'on receipt' : 'webmoney';
 
                             order.push(orderItem);
                             orderItem = {};

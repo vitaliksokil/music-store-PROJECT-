@@ -30,6 +30,6 @@ class emailVerificationMail extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.emailVerification');
+        return $this->from(env('MAIL_USERNAME','musicalarsenal@ukr.net'))->view('mail.emailVerification');
     }
 }

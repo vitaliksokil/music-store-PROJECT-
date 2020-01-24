@@ -37,9 +37,32 @@
                 messageType: '',
                 message: '',
                 token: this.$route.params.token,
+                isVerificationToken:true
             }
         },
         methods: {
+            isSend(){
+              this.axios.post('/api/user/is-verification-token').then(response=>{
+                  this.isVerificationToken = response.data;
+
+                  if(this.token === 'token'){
+                      if(!this.isVerificationToken){
+                          this.axios.post('/api/send-verification-email').then(({message})=>{
+
+                          });
+                      }
+                  }else{
+                      this.axios.get('/api/verify-email/' + this.token).then((response) => {
+                          this.messageType = response.data.messageType;
+                          this.message = response.data.message;
+                          if(response.data.messageType === 'success'){
+                              Event.$emit('emailVerified');
+                          }
+                      })
+                  }
+
+              })
+            },
             resend() {
                 this.axios.post('/api/send-verification-email').then(({message}) => {
                     this.message = 'Email is resent';
@@ -49,19 +72,7 @@
         },
         name: "Verify",
         mounted() {
-            if(this.token === 'token'){
-                this.axios.post('/api/send-verification-email').then(({message})=>{
-
-                });
-            }else{
-                this.axios.get('/api/verify-email/' + this.token).then((response) => {
-                    this.messageType = response.data.messageType;
-                    this.message = response.data.message;
-                    if(response.data.messageType === 'success'){
-                        Event.$emit('emailVerified');
-                    }
-                })
-            }
+            this.isSend();
         }
 
     }

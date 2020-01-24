@@ -36,6 +36,8 @@ Route::middleware('auth:api')->group(function () {
             Route::delete('/{id}', 'UserController@destroy');
             Route::post('/', 'UserController@store');
             Route::put('/{id}', 'UserController@update');
+            Route::post('/is-verification-token', 'UserController@isVerificationToken');
+
         });
         Route::get('/findUser', 'UserController@search');
 
