@@ -22,7 +22,7 @@ export const wishlistMixin={
                 )
             }).catch(error=>{
                 Swal.fire('',
-                    'Error. This product probably is already in your wishlist!!!',
+                    error.response.data.message,
                     'error'
                 )
             })

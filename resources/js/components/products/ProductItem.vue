@@ -260,7 +260,11 @@
                         feedback.dislikes = response.data.dislikes;
                     });
                 }).catch(error => {
-                    console.log(error)
+                    Swal.fire(
+                        '',
+                        error.response.data.message,
+                        'error'
+                    )
                 });
             },
             addFeedback() {

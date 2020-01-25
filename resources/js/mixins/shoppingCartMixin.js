@@ -22,7 +22,7 @@ export const shoppingCartMixin={
               )
           }).catch(error=>{
               Swal.fire('',
-                  'Error. This product probably is already in your shopping cart!!!',
+                  error.response.data.message,
                   'error'
               )
           })

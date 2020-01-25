@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ShoppingCart;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,10 +11,15 @@ class ShoppingCartController extends Controller
 {
     // $id - Product id
     static public function create(Request $request){
-        ShoppingCart::create([
-            'user_id' => Auth::user()->id,
-            'product_id' => $request->product_id,
-        ]);
+        try{
+            ShoppingCart::create([
+                'user_id' => Auth::user()->id,
+                'product_id' => $request->product_id,
+            ]);
+        }catch (QueryException $exception){
+            abort(500,'Error. This product probably is already in your shopping cart!!!');
+        }
+
     }
 
 
