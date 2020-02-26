@@ -3,7 +3,7 @@
 Site - http://f0392410.xsph.ru/
 
 # Short description of the project 
-This project is an musical online store.
+This project is a **SPA** musical online store.
 It was created by using **PHP(Laravel)** and **JS(Vue.js)** technologies
 
 ## Registration
