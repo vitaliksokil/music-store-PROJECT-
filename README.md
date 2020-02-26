@@ -24,7 +24,7 @@ To get ukrainian cities and post offices was used **"New post" REST API**.
 User can pay online by Webmoney ( **was used Webmoney REST API**)
 
 ###### P.S
-I was focusing on back-end, so html layout is a little bit bad(some blocks can be moved from their place)  :)
+I was focusing on the back-end, so html layout is a little bit bad(some blocks can be moved from their place)  :)
 
 
 
