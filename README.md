@@ -1,6 +1,9 @@
 # music-store-PROJECT-
 
-Site - http://f0392410.xsph.ru/
+Site - http://f0392410.xsph.ru/  
+For testing functionality you can login as admin:
+- Admin Login : admin@gmail.com
+- Admin Pass : Admin123
 
 # Short description of the project 
 This project is a **SPA** musical online store.
