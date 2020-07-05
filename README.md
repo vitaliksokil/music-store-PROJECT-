@@ -11,7 +11,7 @@ It was created by using **PHP(Laravel)** and **JS(Vue.js)** technologies
 
 ## Registration
 User must register to work with the site, otherwise he or she can only look at the products.
-To create registration was used **Laravel Passport**.
+To create registration was used **Laravel Passport, JWT**.
 Authentication also includes **email verification and password reset**.
 ## Profile
 To get to the profile user must cofirm email adress.
